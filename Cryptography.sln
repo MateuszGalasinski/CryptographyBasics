@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DES", "DES\DES.csproj", "{5CA6D1DF-A1C7-4C39-B34F-F5873052F1C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptoTests", "DESTests\CryptoTests.csproj", "{0CDFF945-5739-40E4-8CDC-390D339DD14A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CA6D1DF-A1C7-4C39-B34F-F5873052F1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CA6D1DF-A1C7-4C39-B34F-F5873052F1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CA6D1DF-A1C7-4C39-B34F-F5873052F1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CA6D1DF-A1C7-4C39-B34F-F5873052F1C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CDFF945-5739-40E4-8CDC-390D339DD14A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CDFF945-5739-40E4-8CDC-390D339DD14A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CDFF945-5739-40E4-8CDC-390D339DD14A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CDFF945-5739-40E4-8CDC-390D339DD14A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2782E1B8-A10E-4677-A4B7-5F53EC5FD5EC}
+	EndGlobalSection
+EndGlobal
