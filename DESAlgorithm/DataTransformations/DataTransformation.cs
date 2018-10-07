@@ -7,16 +7,16 @@ namespace DES.DataTransformations
 {
     public class DataTransformation : IDataTransformation
     {
-        public Action<BitArray> Transformation { get; }
+        public Func<BitArray, BitArray> Transformation { get; }
 
-        public DataTransformation(Action<BitArray> transformation)
+        public DataTransformation(Func<BitArray, BitArray> transformation)
         {
             Transformation = transformation;
         }
 
-        public void Transform(BitArray data)
+        public BitArray Transform(BitArray data)
         {
-            Transformation(data);
+            return Transformation(data);
         }
     }
 }
