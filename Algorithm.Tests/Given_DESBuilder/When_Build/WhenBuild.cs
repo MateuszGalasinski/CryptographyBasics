@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using FluentAssertions;
@@ -7,9 +8,9 @@ namespace CryptoTests.Given_DESBuilder.When_Build
 {
     public class WhenBuild : GivenDESBuilder
     {
-        private byte[] _data;
+        private BitArray _data;
 
-        public void When_Encrypt(byte[] data)
+        public void When_Encrypt(BitArray data)
         {
             try
             {
@@ -30,13 +31,13 @@ namespace CryptoTests.Given_DESBuilder.When_Build
         {
             With_EncryptPermutation();
 
-            _data = new byte[] {0b_1000_0000};
+            _data = new BitArray(new byte[] {0b_1000_0000});
             When_Encrypt(_data);
 
-            Then_EcnryptedShouldBe(new byte[] { 0b_0111_1111 });
+            Then_EcnryptedShouldBe(new BitArray(new byte[] { 0b_0111_1111 }));
         }
 
-        public void Then_EcnryptedShouldBe(byte[] correctData)
+        public void Then_EcnryptedShouldBe(BitArray correctData)
         {
             _data.Should().Equal(correctData);
         }

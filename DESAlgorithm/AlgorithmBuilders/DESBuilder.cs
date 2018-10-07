@@ -30,7 +30,7 @@ namespace DES.AlgorithmBuilders
         {
             _encryptSteps.Add(new DataTransformation(p =>
             {
-                p[0] = unchecked((byte)~p[0]);
+                p.Not();
             }));
         }
 
@@ -100,5 +100,35 @@ namespace DES.AlgorithmBuilders
             return result;
         }
     
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dataToShuffle">entry data</param>
+        /// <param name="permutationTable"> Consists of numbers specifing which bit from data to choose.</param>
+        /// <returns></returns>
+        public BitArray Shuffle(BitArray dataToShuffle, int[] permutationTable)
+        {
+            if (permutationTable.Length % 8 != 0)
+            {
+                throw new ValidationException("Table descripting where to put specific bits needs to have size divisible by 8.");
+            }
+
+            if (permutationTable.Max() >= dataToShuffle.Length)
+            {
+                throw new ValidationException($"Found too big number: {permutationTable.Max()} in permutation table. Data to choose from is too short for it.");
+
+            }
+            
+            BitArray resultData = new BitArray(permutationTable.Length);
+
+            for (int i = 0; i < permutationTable.Length; i++)
+            {
+                int dataIndex = permutationTable[i] - 1; ;
+                resultData[i] = dataToShuffle[dataIndex];
+            }
+
+            return resultData;
+        }
     }
 }

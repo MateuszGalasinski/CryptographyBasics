@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,14 +7,14 @@ namespace DES.DataTransformations
 {
     public class DataTransformation : IDataTransformation
     {
-        public Action<byte[]> Transformation { get; }
+        public Action<BitArray> Transformation { get; }
 
-        public DataTransformation(Action<byte[]> transformation)
+        public DataTransformation(Action<BitArray> transformation)
         {
             Transformation = transformation;
         }
 
-        public void Transform(byte[] data)
+        public void Transform(BitArray data)
         {
             Transformation(data);
         }
