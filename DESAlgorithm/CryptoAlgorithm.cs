@@ -6,24 +6,23 @@ namespace DES
 {
     public class CryptoAlgorithm : ICryptoAlgorithm
     {
-        public List<IDataTransformation> EncryptSteps { get; } = new List<IDataTransformation>();
+        private List<IDataTransformation> _encryptSteps { get; }
+        private List<IDataTransformation> _decryptSteps { get; }
 
-        public CryptoAlgorithm(List<IDataTransformation> algorithmSteps)
+        public CryptoAlgorithm(List<IDataTransformation> encryptSteps, List<IDataTransformation> decryptSteps)
         {
-            EncryptSteps = algorithmSteps;
+            _encryptSteps = encryptSteps;
+            _decryptSteps = decryptSteps;
         }
 
         public void Decrypt(byte[] data)
         {
-            throw new NotImplementedException();
+            _decryptSteps.ForEach(p => p.Transform(data));
         }
 
         public void Encrypt(byte[] data)
         {
-            foreach (var dataTransformation in EncryptSteps)
-            {
-                dataTransformation.Transform(data);
-            }
+            _encryptSteps.ForEach(p => p.Transform(data));
         }
     }
 }

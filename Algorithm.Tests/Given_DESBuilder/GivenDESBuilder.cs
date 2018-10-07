@@ -17,9 +17,9 @@ namespace CryptoTests.Given_DESBuilder
             context = new DESBuilder();
         }
 
-        public void With_Permutation()
+        public void With_EncryptPermutation()
         {
-            context.AddPermutation();
+            context.AddEncryptPermutation();
         }
     }
 }

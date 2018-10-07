@@ -28,7 +28,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
         [Test]
         public void And_Permutation()
         {
-            With_Permutation();
+            With_EncryptPermutation();
 
             _data = new byte[] {0b_1000_0000};
             When_Encrypt(_data);

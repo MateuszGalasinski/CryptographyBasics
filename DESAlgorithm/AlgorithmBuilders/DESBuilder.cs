@@ -7,22 +7,23 @@ namespace DES.AlgorithmBuilders
 {
     public class DESBuilder
     {
-        List<IDataTransformation> steps = new List<IDataTransformation>();
+        List<IDataTransformation> _encryptSteps = new List<IDataTransformation>();
+        List<IDataTransformation> _decryptSteps = new List<IDataTransformation>();
 
         public CryptoAlgorithm Build()
         {
-            return new CryptoAlgorithm(steps);
+            return new CryptoAlgorithm(_encryptSteps, _decryptSteps);
         }
 
         public void AddWholeDES()
         {
-            AddPermutation();
+            AddEncryptPermutation();
         }
 
         //1st step
-        public void AddPermutation()
+        public void AddEncryptPermutation()
         {
-            steps.Add(new DataTransformation(p =>
+            _encryptSteps.Add(new DataTransformation(p =>
             {
                 p[0] = unchecked((byte)~p[0]);
             }));
