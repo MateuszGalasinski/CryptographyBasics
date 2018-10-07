@@ -13,7 +13,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
         {
             try
             {
-                when = Task.Run(() =>
+                when = (Task<byte[]>) Task.Run(() =>
                 {
                     var algorithm = context.Build();
                     return algorithm.Encrypt(data);
