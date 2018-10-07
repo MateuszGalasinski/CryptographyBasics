@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,9 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Shuffle
 {
     public class WhenShuffle : GivenDESBuilder
     {
-        private byte[] _resultData;
+        private BitArray _resultData;
 
-        public void When_Shuffle(byte[] dataToShuffle, int[] permutationTable)
+        public void When_Shuffle(BitArray dataToShuffle, int[] permutationTable)
         {
             try
             {
@@ -28,18 +29,18 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Shuffle
         [Test]
         public void And_Permutation()
         {
-            byte[] data = new byte[] { 0b_1111_1111, 0b_0000_0000 };
+            BitArray data = new BitArray(new byte[] { 0b_1111_1111, 0b_0000_0000 });
             int[] permutationTable = new int[]
             {
-                1, 8, 1, 8,  1, 8, 1, 8
+                1, 9, 1, 9,  1, 9, 1, 9
             };
 
             When_Shuffle(data, permutationTable);
             
-            Then_ShuffledShouldBe(new byte[] { 0b_1010_1010 });
+            Then_ShuffledShouldBe(new BitArray(new byte[] { 0b_0101_0101 }));
         }
 
-        public void Then_ShuffledShouldBe(byte[] correctData)
+        public void Then_ShuffledShouldBe(BitArray correctData)
         {
             _resultData.Should().Equal(correctData);
         }
