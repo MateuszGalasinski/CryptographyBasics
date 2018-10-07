@@ -50,7 +50,7 @@ namespace DES.AlgorithmBuilders
                 };
 
                 BitArray extendedData = Shuffle(data, permutationTable);
-                data = extendedData;
+
             }));
         }
 
