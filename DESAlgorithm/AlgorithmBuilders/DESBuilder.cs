@@ -14,6 +14,11 @@ namespace DES.AlgorithmBuilders
             return new CryptoAlgorithm(steps);
         }
 
+        public void AddWholeDES()
+        {
+            AddPermutation();
+        }
+
         //1st step
         public void AddPermutation()
         {

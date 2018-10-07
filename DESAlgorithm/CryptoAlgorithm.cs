@@ -6,11 +6,11 @@ namespace DES
 {
     public class CryptoAlgorithm : ICryptoAlgorithm
     {
-        public List<IDataTransformation> AlgorithmSteps { get; } = new List<IDataTransformation>();
+        public List<IDataTransformation> EncryptSteps { get; } = new List<IDataTransformation>();
 
         public CryptoAlgorithm(List<IDataTransformation> algorithmSteps)
         {
-            AlgorithmSteps = algorithmSteps;
+            EncryptSteps = algorithmSteps;
         }
 
         public void Decrypt(byte[] data)
@@ -20,7 +20,7 @@ namespace DES
 
         public void Encrypt(byte[] data)
         {
-            foreach (var dataTransformation in AlgorithmSteps)
+            foreach (var dataTransformation in EncryptSteps)
             {
                 dataTransformation.Transform(data);
             }

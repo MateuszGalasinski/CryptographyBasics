@@ -8,9 +8,9 @@ namespace DES.DataTransformations
     {
         public Action<byte[]> Transformation { get; }
 
-        public DataTransformation(Action<byte[]> transormation)
+        public DataTransformation(Action<byte[]> transformation)
         {
-            Transformation = transormation;
+            Transformation = transformation;
         }
 
         public void Transform(byte[] data)

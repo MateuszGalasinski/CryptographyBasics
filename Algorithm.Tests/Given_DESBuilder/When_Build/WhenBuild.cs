@@ -8,6 +8,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
     public class WhenBuild : GivenDESBuilder
     {
         private byte[] _data;
+
         public void When_Encrypt(byte[] data)
         {
             try

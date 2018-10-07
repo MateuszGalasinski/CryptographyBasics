@@ -9,9 +9,9 @@ namespace DES.DataTransformations
         public Action<byte[], byte[]> Transformation { get; }
         public byte[] Key { get; }
 
-        public TransformationWithKey(Action<byte[], byte[]> transormation, byte[] key)
+        public TransformationWithKey(Action<byte[], byte[]> transformation, byte[] key)
         {
-            Transformation = transormation;
+            Transformation = transformation;
             Key = key;
 
         }
