@@ -27,7 +27,7 @@ namespace DES.AlgorithmBuilders
         {
             _encryptSteps.Add(new DataTransformation(p =>
             {
-                //p[0] = unchecked((byte)~p[0]);
+                p.Not();
             }));
         }
 
