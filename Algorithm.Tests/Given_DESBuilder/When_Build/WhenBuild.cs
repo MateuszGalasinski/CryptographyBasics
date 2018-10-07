@@ -17,7 +17,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                 Task.Run(() =>
                 {
                     var algorithm = context.Build();
-                    algorithm.Encrypt(data);
+                    _data = algorithm.Encrypt(data);
                 }).Wait();
             }
             catch (AggregateException)
@@ -31,8 +31,8 @@ namespace CryptoTests.Given_DESBuilder.When_Build
         {
             With_EncryptPermutation();
 
-            _data = new BitArray(new byte[] {0b_1000_0000});
-            When_Encrypt(_data);
+            BitArray data = new BitArray(new byte[] {0b_1000_0000});
+            When_Encrypt(data);
 
             Then_EcnryptedShouldBe(new BitArray(new byte[] { 0b_0111_1111 }));
         }

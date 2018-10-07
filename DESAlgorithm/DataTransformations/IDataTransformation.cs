@@ -7,6 +7,6 @@ namespace DES
 {
     public interface IDataTransformation
     {
-        void Transform(BitArray data);
+        BitArray Transform(BitArray data);
     }
 }

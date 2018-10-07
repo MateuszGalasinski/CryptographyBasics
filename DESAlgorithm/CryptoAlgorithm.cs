@@ -16,14 +16,24 @@ namespace DES
             _decryptSteps = decryptSteps;
         }
 
-        public void Decrypt(BitArray data)
+        public BitArray Decrypt(BitArray data)
         {
-            _decryptSteps.ForEach(p => p.Transform(data));
+            foreach (IDataTransformation transformation in _decryptSteps)
+            {
+                data = transformation.Transform(data);
+            }
+
+            return data;
         }
 
-        public void Encrypt(BitArray data)
+        public BitArray Encrypt(BitArray data)
         {
-            _encryptSteps.ForEach(p => p.Transform(data));
+            foreach (IDataTransformation transformation in _encryptSteps)
+            {
+                data = transformation.Transform(data);
+            }
+
+            return data;
         }
     }
 }

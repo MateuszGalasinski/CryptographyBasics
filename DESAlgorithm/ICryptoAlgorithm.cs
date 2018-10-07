@@ -7,7 +7,7 @@ namespace DES
 {
     interface ICryptoAlgorithm
     {
-        void Encrypt(BitArray data);
-        void Decrypt(BitArray data);
+        BitArray Encrypt(BitArray data);
+        BitArray Decrypt(BitArray data);
     }
 }
