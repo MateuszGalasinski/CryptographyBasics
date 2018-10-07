@@ -46,7 +46,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
             //0b_1011_1010,
             //0b_0110_0110,
             //0b_1001_1011
-            _data = new BitArray(new bool[]
+            BitArray data = new BitArray(new bool[]
             {
                 true, false, true, false,  false, true, false, true,
                 true, false, true, true,  true, false, true, false,
@@ -54,12 +54,12 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                 true, false, false, true,  true, false, true, true
             });
 
-            When_Encrypt(_data);
+            When_Encrypt(data);
 
             //    0b_1101_0000,
             //    0b_1011_1101,
             //    0b_1111_0100,
-            //    0b_0111_0000,
+            //    0b_0011_0000,
             //    0b_1101_0100,
             //    0b_1111_0111,
             Then_EncryptedShouldBe(
@@ -68,7 +68,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                         true, true, false, true,  false, false, false, false,
                         true, false, true, true,  true, true, false, true,
                         true, true, true, true,  false, true, false, false,
-                        false, true, true, true,  false, false, false, false,
+                        false, false, true, true,  false, false, false, false,
                         true, true, false, true,  false, true, false, false,
                         true, true, true, true,  false, true, true, true
                     }));
@@ -76,6 +76,18 @@ namespace CryptoTests.Given_DESBuilder.When_Build
 
         public void Then_EncryptedShouldBe(BitArray correctData)
         {
+            string correctDataText = "";
+            for (int i = 0; i < correctData.Length; i++)
+            {
+                correctDataText += $"{i}: " + correctData[i].ToString() + " ";
+            }
+
+            string realDataText = "";
+            for (int i = 0; i < correctData.Length; i++)
+            {
+                realDataText += $"{i}: " + _data[i].ToString() + " ";
+            }
+
             _data.Should().Equal(correctData);
         }
     }

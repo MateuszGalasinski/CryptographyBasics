@@ -50,7 +50,7 @@ namespace DES.AlgorithmBuilders
                 };
 
                 BitArray extendedData = Shuffle(data, permutationTable);
-
+                return extendedData;
             }));
         }
 
@@ -67,7 +67,7 @@ namespace DES.AlgorithmBuilders
                 throw new ValidationException("Table descripting where to put specific bits needs to have size divisible by 8.");
             }
 
-            if (permutationTable.Max() >= dataToShuffle.Length)
+            if (permutationTable.Max() > dataToShuffle.Length)
             {
                 throw new ValidationException($"Found too big number: {permutationTable.Max()} in permutation table. Data to choose from is too short for it.");
 
