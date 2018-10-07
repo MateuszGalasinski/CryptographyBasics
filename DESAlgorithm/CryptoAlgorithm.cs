@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -15,12 +16,12 @@ namespace DES
             _decryptSteps = decryptSteps;
         }
 
-        public void Decrypt(byte[] data)
+        public void Decrypt(BitArray data)
         {
             _decryptSteps.ForEach(p => p.Transform(data));
         }
 
-        public void Encrypt(byte[] data)
+        public void Encrypt(BitArray data)
         {
             _encryptSteps.ForEach(p => p.Transform(data));
         }
