@@ -21,5 +21,10 @@ namespace CryptoTests.Given_DESBuilder
         {
             context.AddEncryptPermutation();
         }
+
+        public void With_ExtendingPermutation()
+        {
+            context.AddExtendingPermutation();
+        }
     }
 }
