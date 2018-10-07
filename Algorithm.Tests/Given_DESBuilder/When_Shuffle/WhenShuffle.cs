@@ -18,7 +18,7 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Shuffle
         {
             try
             {
-                Task.Run(() => { _resultData = context.Shuffle(dataToShuffle, permutationTable); });
+                Task.Run(() => { _resultData = context.Shuffle(dataToShuffle, permutationTable); }).Wait();
             }
             catch (AggregateException)
             {
