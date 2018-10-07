@@ -7,16 +7,15 @@ namespace CryptoTests.Given_DESBuilder.When_Build
 {
     public class WhenBuild : GivenDESBuilder
     {
-        Task<byte[]> when;
-
+        private byte[] _data;
         public void When_Encrypt(byte[] data)
         {
             try
             {
-                when = (Task<byte[]>) Task.Run(() =>
+                Task.Run(() =>
                 {
                     var algorithm = context.Build();
-                    return algorithm.Encrypt(data);
+                    algorithm.Encrypt(data);
                 });
             }
             catch (AggregateException)
@@ -37,7 +36,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
 
         public void Then_EcnryptedShouldBe(byte[] correctData)
         {
-            when.Result.Should().Equal(correctData);
+            _data.Should().Equal(correctData);
         }
     }
 }

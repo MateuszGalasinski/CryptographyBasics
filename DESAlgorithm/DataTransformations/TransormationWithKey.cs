@@ -4,12 +4,12 @@ using System.Text;
 
 namespace DES.DataTransformations
 {
-    public class TransormationWithKey : IDataTransformation
+    public class TransformationWithKey : IDataTransformation
     {
         public Action<byte[], byte[]> Transformation { get; }
         public byte[] Key { get; }
 
-        public TransormationWithKey(Action<byte[], byte[]> transormation, byte[] key)
+        public TransformationWithKey(Action<byte[], byte[]> transormation, byte[] key)
         {
             Transformation = transormation;
             Key = key;

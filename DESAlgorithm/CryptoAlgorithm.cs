@@ -13,14 +13,17 @@ namespace DES
             AlgorithmSteps = algorithmSteps;
         }
 
-        public byte[] Decrypt(byte[] data)
+        public void Decrypt(byte[] data)
         {
             throw new NotImplementedException();
         }
 
-        public byte[] Encrypt(byte[] data)
+        public void Encrypt(byte[] data)
         {
-            throw new NotImplementedException();
+            foreach (var dataTransformation in AlgorithmSteps)
+            {
+                dataTransformation.Transform(data);
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ namespace DES
 {
     interface ICryptoAlgorithm
     {
-        byte[] Encrypt(byte[] data);
-        byte[] Decrypt(byte[] data);
+        void Encrypt(byte[] data);
+        void Decrypt(byte[] data);
     }
 }
