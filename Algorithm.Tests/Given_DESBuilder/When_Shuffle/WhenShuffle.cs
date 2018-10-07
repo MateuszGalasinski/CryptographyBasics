@@ -18,7 +18,7 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Shuffle
         {
             try
             {
-                Task.Run(() => { _resultData = context.Shuffle(dataToShuffle, permutationTable); });
+                Task.Run(() => { _resultData = context.Shuffle(dataToShuffle, permutationTable); }).Wait();
             }
             catch (AggregateException)
             {
@@ -27,7 +27,7 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Shuffle
         }
 
         [Test]
-        public void And_Permutation()
+        public void And_Shuffle()
         {
             BitArray data = new BitArray(new byte[] { 0b_1111_1111, 0b_0000_0000 });
             int[] permutationTable = new int[]
