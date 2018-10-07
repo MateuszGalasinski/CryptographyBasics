@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Schema;
 using DES.Constants;
+using DESAlgorithm.Exceptions;
 
 namespace DES.AlgorithmBuilders
 {
@@ -33,59 +34,42 @@ namespace DES.AlgorithmBuilders
                 return p.Not();
             }));
         }
-
-        public void MoveBits(BitArray data, int translation, Direction direction)
+    
+        public BitArray ShiftBits(BitArray data, int translation, Direction direction)
         {
             int length = data.Length;
-        
-            //BitArray frontToEnd = new BitArray(64);
-            //BitArray endToFront = new BitArray(data.Length);
-
             BitArray result = new BitArray(data.Length);
 
             if (direction == Direction.Left)
             {
-                
-                //for (int i = 0; i < translation; i++)
-                //{
-                //    frontToEnd.Set(i,data.Get(i));
-                //}
-
-                //frontToEnd = data  //.Take(translation).ToArray();
-
-                result = blockCopy(data, 0, translation, length - translation);
-
                 //old front to new end
+                result = blockCopy(data, 0 , translation, length , length);
+
                 for (int i = length-translation; i < length ; i++)
                 {
                     result.Set(i, data.Get(i-length+translation) );
                 }
 
-
-                //Buffer.BlockCopy(data, translation, data, 0, length - translation);
             }
-            else
+            else if(direction == Direction.Right)
             {
                 //old end to new front
-                result = blockCopy(data, translation, 0, length - translation);
+                result = blockCopy(data, translation, 0, length - translation, length);
 
                 for (int i = 0; i < translation; i++)
                 {
-                    result.Set(i, data.Get(length - translation + i);
+                    result.Set(i, data.Get(length - translation + i));
                 }
-
-                //endToFront = data.Skip(data.Length - translation).ToArray();
-                //Buffer.BlockCopy(data, 0, endToFront, translation , length - translation);
-                //Array.Copy(endToFront, data, length);
             }
 
-            data = result;
+
+           return result;
 
         }
 
-        private BitArray blockCopy(BitArray data, int destOffSet, int offSet, int count )
+        private BitArray blockCopy(BitArray data, int destOffSet, int offSet, int count, int arrayLength )
         {
-            BitArray result = new BitArray(64);
+            BitArray result = new BitArray(arrayLength);
 
             for(int i = 0; i < destOffSet; i++)
             {
@@ -94,7 +78,7 @@ namespace DES.AlgorithmBuilders
 
             for (int j = offSet; j < count; j++)
             {
-                result.Set(j, data.Get(j));
+                result.Set(destOffSet + j - offSet, data.Get(j));
             }
 
             return result;

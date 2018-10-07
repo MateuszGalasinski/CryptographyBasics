@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Given_DESBuilder\GivenDESBuilder.cs" />
     <Compile Include="Given_DESBuilder\When_Build\WhenBuild.cs" />
+    <Compile Include="Given_DESBuilder\When_Shift\WhenShiftBits.cs" />
     <Compile Include="Given_DESBuilder\When_Shuffle\WhenShuffle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -70,6 +71,7 @@
       <Name>DESAlgorithm</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
