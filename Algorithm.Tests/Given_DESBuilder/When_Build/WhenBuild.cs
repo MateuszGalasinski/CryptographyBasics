@@ -18,7 +18,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                 {
                     var algorithm = context.Build();
                     algorithm.Encrypt(data);
-                });
+                }).Wait();
             }
             catch (AggregateException)
             {
