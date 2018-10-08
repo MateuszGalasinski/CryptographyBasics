@@ -28,5 +28,11 @@ namespace CryptoTests.Given_DESBuilder
         {
             context.AddExtendingPermutation();
         }
+
+        public void With_PblockPermutation()
+        {
+            context.AddPblockPermutation();
+        }
+
     }
 }

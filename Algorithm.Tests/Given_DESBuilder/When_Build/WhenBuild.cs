@@ -74,6 +74,34 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                     }));
         }
 
+        [Test]
+        public void And_PblockPermutation()
+        {
+            BitArray data = new BitArray(new bool[]
+            {
+                true, false, true, false,  false, true, false, true,
+                true, false, true, true,  true, false, true, false,
+                false, true, true, false,  false, true, true, false,
+                true, false, false, true,  true, false, true, true
+            });
+
+            BitArray result = new BitArray(new bool[]
+            {
+                false, false, false, false, true, true, true, false,
+                true, true, true, false, false, true, true, false,
+                false, true, false, false, true, false, true, true,
+                true, true, false, true, true, true, false, true
+            });
+
+            With_PblockPermutation();
+
+            When_Encrypt(data);
+
+            Then_EncryptedShouldBe(result);
+        }
+
+
+
         public void Then_EncryptedShouldBe(BitArray correctData)
         {
             _data.Should().Equal(correctData);
