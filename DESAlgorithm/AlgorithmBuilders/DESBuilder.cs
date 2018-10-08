@@ -34,7 +34,16 @@ namespace DES.AlgorithmBuilders
                 return p.Not();
             }));
         }
-    
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="data">entry data</param>
+        /// <param name="translation"> Bits to shift number.</param>
+        /// /// <param name="direction"> Direction of translation.</param>
+        /// <returns></returns>
         public BitArray ShiftBits(BitArray data, int translation, Direction direction)
         {
             int length = data.Length;
@@ -45,9 +54,14 @@ namespace DES.AlgorithmBuilders
                 //old front to new end
                 result = blockCopy(data, 0 , translation, length , length);
 
-                for (int i = length-translation; i < length ; i++)
+                //for (int i = length-translation; i < length ; i++)
+                //{
+                //    result[i] =  data.Get(i-length+translation) ;
+                //}
+
+                for (int i = 0; i < translation; i++)
                 {
-                    result.Set(i, data.Get(i-length+translation) );
+                    result[length - translation + i] = data.Get(i);
                 }
 
             }
@@ -58,7 +72,7 @@ namespace DES.AlgorithmBuilders
 
                 for (int i = 0; i < translation; i++)
                 {
-                    result.Set(i, data.Get(length - translation + i));
+                    result[i] = data.Get(length - translation + i);
                 }
             }
 
@@ -73,17 +87,16 @@ namespace DES.AlgorithmBuilders
 
             for(int i = 0; i < destOffSet; i++)
             {
-                result.Set(i, false);
+                result[i] = false;
             }
 
             for (int j = offSet; j < count; j++)
             {
-                result.Set(destOffSet + j - offSet, data.Get(j));
+                result[destOffSet + j - offSet] = data.Get(j);
             }
 
             return result;
         }
-    
 
         public void AddExtendingPermutation()
         {
@@ -136,5 +149,88 @@ namespace DES.AlgorithmBuilders
 
             return resultData;
         }
+
+
+        public BitArray GenerateLongKeyForCycle(BitArray previousKey, int cycle)
+        {
+            Int16[] shiftInCycle = {0,1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
+
+            if (previousKey.Length != 56)
+            {
+                throw new ValidationException("Previous key must have 56 bits");
+            }
+
+            BitArray[] keyInHalfs = SplitBitArrayInHalf(previousKey);
+
+            keyInHalfs[0] = ShiftBits(keyInHalfs[0], shiftInCycle[cycle - 1], Direction.Left);
+            keyInHalfs[1] = ShiftBits(keyInHalfs[1], shiftInCycle[cycle - 1], Direction.Left);
+
+            return JoinBitArraysFromHalfs(keyInHalfs);
+
+        }
+
+        private BitArray[] SplitBitArrayInHalf(BitArray arrayToSplit)
+        {
+            if (arrayToSplit.Length % 2 != 0)
+            {
+                throw new ValidationException("Number of bits (array size) to split must be even");
+            }
+
+            int halfOfArrayCount = arrayToSplit.Length / 2;
+
+            BitArray firstHalf = new BitArray(halfOfArrayCount);
+            BitArray secondHalf = new BitArray(halfOfArrayCount);
+
+            for (int i = 0; i < halfOfArrayCount; i++)
+            {
+                firstHalf[i] = arrayToSplit.Get(i);
+            }
+
+            for (int i = 0; i < halfOfArrayCount; i++)
+            {
+                secondHalf[i] = arrayToSplit.Get(i + halfOfArrayCount);
+            }
+
+            return new BitArray[]{firstHalf, secondHalf};
+        }
+
+        private BitArray JoinBitArraysFromHalfs(BitArray[] splitedArrays)
+        {
+            int halfOfArrayCount = splitedArrays[0].Length;
+            BitArray result = new BitArray(halfOfArrayCount * 2);
+
+            for (int i = 0; i < halfOfArrayCount; i++)
+            {
+                result[i] = splitedArrays[0].Get(i);
+                result[i + halfOfArrayCount] = splitedArrays[1].Get(i);
+            }
+
+            return result;
+        }
+
+        public BitArray GenerateShortKeyfromLongKey(BitArray key)
+        {
+            if (key.Length != 56)
+            {
+                throw new ValidationException("Long key must have 56 bits");
+            }
+
+            int[] permutationTable =
+            {
+                14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10,
+                23, 19, 12, 4, 26, 8, 16, 7, 27, 20, 13, 2,
+                41, 52, 31, 37, 47, 55, 30, 40, 51, 45, 33, 48,
+                44, 49, 39, 56, 34, 53, 46, 42, 50, 36, 29, 32
+            };
+
+            return Shuffle(key, permutationTable);
+
+        }
+
+        public BitArray SumModuloTwo(BitArray key, BitArray key2)
+        {
+            return key.Xor(key2);
+        }
+
     }
 }
