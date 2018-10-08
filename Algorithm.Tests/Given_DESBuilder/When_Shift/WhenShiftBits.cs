@@ -44,7 +44,5 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Shift
         {
             _resultData.Should().Equal(correctData);
         }
-
-
     }
 }

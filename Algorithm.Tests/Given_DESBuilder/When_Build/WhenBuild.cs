@@ -76,22 +76,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
 
         public void Then_EncryptedShouldBe(BitArray correctData)
         {
-            string correctDataText = "";
-            for (int i = 0; i < correctData.Length; i++)
-            {
-                correctDataText += $"{i}: " + correctData[i].ToString() + " ";
-            }
-
-            string realDataText = "";
-            for (int i = 0; i < correctData.Length; i++)
-            {
-                realDataText += $"{i}: " + _data[i].ToString() + " ";
-            }
-
             _data.Should().Equal(correctData);
         }
-
-
-
     }
 }
