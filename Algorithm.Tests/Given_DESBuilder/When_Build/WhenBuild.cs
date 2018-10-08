@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Threading.Tasks;
+using DESAlgorithm.Models;
 using NUnit.Framework;
 using FluentAssertions;
 
@@ -8,9 +9,9 @@ namespace CryptoTests.Given_DESBuilder.When_Build
 {
     public class WhenBuild : GivenDESBuilder
     {
-        private BitArray _data;
+        private DataSet _data;
 
-        public void When_Encrypt(BitArray data)
+        public void When_Encrypt(DataSet data)
         {
             try
             {
@@ -24,17 +25,6 @@ namespace CryptoTests.Given_DESBuilder.When_Build
             {
 
             }
-        }
-
-        [Test]
-        public void And_Permutation()
-        {
-            With_EncryptPermutation();
-
-            BitArray data = new BitArray(new byte[] {0b_1000_0000});
-            When_Encrypt(data);
-
-            Then_EncryptedShouldBe(new BitArray(new byte[] { 0b_0111_1111 }));
         }
 
         [Test]
@@ -54,7 +44,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                 true, false, false, true,  true, false, true, true
             });
 
-            When_Encrypt(data);
+            When_Encrypt(new DataSet(){Right = data});
 
             //    0b_1101_0000,
             //    0b_1011_1101,
@@ -63,7 +53,9 @@ namespace CryptoTests.Given_DESBuilder.When_Build
             //    0b_1101_0100,
             //    0b_1111_0111,
             Then_EncryptedShouldBe(
-                new BitArray( new bool[]
+                new DataSet()
+                {
+                    Right = new BitArray(new bool[]
                     {
                         true, true, false, true,  false, false, false, false,
                         true, false, true, true,  true, true, false, true,
@@ -71,12 +63,13 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                         false, false, true, true,  false, false, false, false,
                         true, true, false, true,  false, true, false, false,
                         true, true, true, true,  false, true, true, true
-                    }));
+                    })
+                });
         }
 
-        public void Then_EncryptedShouldBe(BitArray correctData)
+        public void Then_EncryptedShouldBe(DataSet correctData)
         {
-            _data.Should().Equal(correctData);
+            _data.Should().Equals(correctData);
         }
     }
 }

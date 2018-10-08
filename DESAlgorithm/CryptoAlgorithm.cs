@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using DESAlgorithm.Models;
 
 namespace DES
 {
@@ -16,7 +17,7 @@ namespace DES
             _decryptSteps = decryptSteps;
         }
 
-        public BitArray Decrypt(BitArray data)
+        public DataSet Decrypt(DataSet data)
         {
             foreach (IDataTransformation transformation in _decryptSteps)
             {
@@ -26,7 +27,7 @@ namespace DES
             return data;
         }
 
-        public BitArray Encrypt(BitArray data)
+        public DataSet Encrypt(DataSet data)
         {
             foreach (IDataTransformation transformation in _encryptSteps)
             {

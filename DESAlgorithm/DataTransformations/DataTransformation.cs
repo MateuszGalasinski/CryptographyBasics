@@ -2,19 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using DESAlgorithm.Models;
 
 namespace DES.DataTransformations
 {
     public class DataTransformation : IDataTransformation
     {
-        public Func<BitArray, BitArray> Transformation { get; }
+        public Func<DataSet, DataSet> Transformation { get; }
 
-        public DataTransformation(Func<BitArray, BitArray> transformation)
+        public DataTransformation(Func<DataSet, DataSet> transformation)
         {
             Transformation = transformation;
         }
 
-        public BitArray Transform(BitArray data)
+        public DataSet Transform(DataSet data)
         {
             return Transformation(data);
         }

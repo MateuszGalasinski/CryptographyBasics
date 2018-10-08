@@ -8,6 +8,7 @@ using System.Text;
 using System.Xml.Schema;
 using DES.Constants;
 using DESAlgorithm.Exceptions;
+using DESAlgorithm.Extensions;
 
 namespace DES.AlgorithmBuilders
 {
@@ -21,24 +22,47 @@ namespace DES.AlgorithmBuilders
             return new CryptoAlgorithm(_encryptSteps, _decryptSteps);
         }
 
-        public void AddWholeDES()
+        public void AddWholeDES(BitArray key)
         {
-            AddEncryptPermutation();
-        }
-
-        //1st step
-        public void AddEncryptPermutation()
-        {
-            _encryptSteps.Add(new DataTransformation(p =>
+            if (key.Length != 64)
             {
-                return p.Not();
-            }));
+                throw new ValidationException("Starting key has to 64 bits long.");
+            }
+
+            BitArray reducedKey = RemoveParityBits(key);
+
+            for (int cycleNumber = 0; cycleNumber < 16; cycleNumber++)
+            {
+                //prepare key
+                reducedKey = GenerateLongKeyForCycle(reducedKey, cycleNumber);
+                BitArray shortKey = GenerateShortKeyfromLongKey(reducedKey);
+
+                AddExtendingPermutation();
+                _encryptSteps.Add(new DataTransformation(dataSet =>
+                {
+                    dataSet.Right = SumModuloTwo(shortKey, dataSet.Right);
+                    return dataSet;
+                }));
+
+                //addSBlocks
+                //add last permutation
+
+                //merge 'halfs'
+                _encryptSteps.Add(new DataTransformation(dataSet =>
+                {
+                    BitArray oldLeft = dataSet.Left;
+                    dataSet.Left = SumModuloTwo(dataSet.Right, dataSet.Left);
+                    dataSet.Right = oldLeft;
+                    return dataSet;
+                }));
+            }
         }
 
         public void AddExtendingPermutation()
         {
-            _encryptSteps.Add(new DataTransformation(data =>
+            _encryptSteps.Add(new DataTransformation(dataSet =>
             {
+                BitArray data = dataSet.Right;
                 if (data.Length != 32)
                 {
                     throw new ValidationException("Only 32 bits array is accepted to be extended to 48 bits.");
@@ -53,7 +77,9 @@ namespace DES.AlgorithmBuilders
                 };
 
                 BitArray extendedData = Shuffle(data, permutationTable);
-                return extendedData;
+
+                dataSet.Right = extendedData;
+                return dataSet;
             }));
         }
 
@@ -224,6 +250,31 @@ namespace DES.AlgorithmBuilders
             }
 
             return result;
+        }
+
+        internal BitArray RemoveParityBits(BitArray key)
+        {
+            BitArray resultKey = new BitArray(56);
+            int currentBitsSum = 0;
+            for (int i = 1; i <= key.Length; i++)
+            {
+                if (i % 8 != 0)
+                {
+                    resultKey[i - 1] = key[i - 1];
+                    currentBitsSum.SumModuloTwo(key[i - 1].ToInt());
+                }
+                else
+                {
+                    if (currentBitsSum != key[i - 1].ToInt())
+                    {
+                        throw new ValidationException("Key is broken: parity bits does not match key value.");
+                    }
+
+                    i++; // skip parity bit
+                }
+            }
+
+            return resultKey;
         }
     }
 }

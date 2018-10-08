@@ -2,12 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using DESAlgorithm.Models;
 
 namespace DES
 {
     interface ICryptoAlgorithm
     {
-        BitArray Encrypt(BitArray data);
-        BitArray Decrypt(BitArray data);
+        DataSet Encrypt(DataSet data);
+        DataSet Decrypt(DataSet data);
     }
 }
