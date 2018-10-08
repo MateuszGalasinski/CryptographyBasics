@@ -58,6 +58,8 @@
   <ItemGroup>
     <Compile Include="Given_DESBuilder\GivenDESBuilder.cs" />
     <Compile Include="Given_DESBuilder\When_Build\WhenBuild.cs" />
+    <Compile Include="Given_DESBuilder\When_Generate_Key\WhenGenerateCompressedKey.cs" />
+    <Compile Include="Given_DESBuilder\When_Generate_Key\WhenGenerateLongKey.cs" />
     <Compile Include="Given_DESBuilder\When_Shift\WhenShiftBits.cs" />
     <Compile Include="Given_DESBuilder\When_Shuffle\WhenShuffle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
