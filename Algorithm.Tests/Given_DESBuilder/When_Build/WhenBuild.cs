@@ -73,6 +73,38 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                         true, true, true, true,  false, true, true, true
                     }));
         }
+        [Test]
+        public void And_Sblocks()
+        {
+            With_Sblocks();
+            BitArray data = new BitArray(new bool[]
+           {
+                true, true, false, true,  false, false, false, false,
+                true, false, true, true,  true, true, false, true,
+                true, true, true, true,  false, true, false, false,
+                false, false, true, true,  false, false, false, false,
+                true, true, false, true,  false, true, false, false,
+                true, true, true, true,  false, true, true, true
+           });
+
+            BitArray result = new BitArray(new bool[]
+            {
+                true, false, false, true,
+                false, false, true, false,
+                false, false, true, true,
+                false, false, true, true,
+                true, false, true, true,
+                true, false, false, true,
+                false, false, true, true,
+                false, false, false, false
+            });
+
+            When_Encrypt(data);
+
+            
+            Then_EncryptedShouldBe(result);
+        }
+
 
         [Test]
         public void And_PblockPermutation()
