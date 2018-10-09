@@ -390,22 +390,26 @@ namespace DES.AlgorithmBuilders
         public BitArray RemoveParityBits(BitArray key)
         {
             BitArray resultKey = new BitArray(56);
-            int currentBitsSum = 0;
-            for (int i = 1; i <= key.Length; i++)
+            int currentBitsSum = 0, resultKeyIndex = 0, bitsCounter = 1;
+            for (int i = 0; i < key.Length; i++)
             {
-                if (i % 8 != 0)
+                if (bitsCounter % 8 != 0)
                 {
-                    resultKey[i - 1] = key[i - 1];
-                    currentBitsSum.SumModuloTwo(key[i - 1].ToInt());
+                    resultKey[resultKeyIndex] = key[i];
+                    resultKeyIndex++;
+
+                    currentBitsSum = currentBitsSum.SumModuloTwo(key[i].ToInt());
+                    bitsCounter++;
                 }
                 else
                 {
-                    if (currentBitsSum != key[i - 1].ToInt())
+                    if (currentBitsSum != key[i].ToInt())
                     {
                         throw new ValidationException("Key is broken: parity bits does not match key value.");
                     }
 
-                    i++; // skip parity bit
+                    currentBitsSum = 0; //clear current sum
+                    bitsCounter = 1;
                 }
             }
 

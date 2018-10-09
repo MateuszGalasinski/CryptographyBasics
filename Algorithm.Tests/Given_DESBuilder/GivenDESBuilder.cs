@@ -29,11 +29,14 @@ namespace CryptoTests.Given_DESBuilder
             context.AddSBlocks();
         }
 
-
         public void With_PblockPermutation()
         {
             context.AddPblockPermutation();
         }
 
+        public void With_WholeDES(BitArray key)
+        {
+            context.AddWholeDES(key);
+        }
     }
 }

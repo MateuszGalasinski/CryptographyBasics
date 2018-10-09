@@ -104,7 +104,6 @@ namespace CryptoTests.Given_DESBuilder.When_Build
             Then_EncryptedShouldBe(result);
         }
 
-
         [Test]
         public void And_PblockPermutation()
         {
@@ -137,7 +136,44 @@ namespace CryptoTests.Given_DESBuilder.When_Build
             Then_EncryptedShouldBe(result);
         }
 
+        [Test]
+        public void And_WholeDES()
+        {
+            BitArray key = new BitArray(new bool[] //random values, not correct
+            {
+                true, true, false, true, false, false, false, false,
+                true, false, true, true, true, true, false, true,
+                true, true, true, true, false, true, false, false,
+                false, false, true, true, false, false, false, false,
+                true, true, false, true, false, true, false, false,
+                true, true, true, true, false, true, true, true,
+                true, false, true, false, true, false, true, false
+            });
 
+            DataSet data = new DataSet() //random values, not correct
+            {
+                Right = new BitArray(new bool[]
+                {
+                    true, false, true, false,  false, true, false, true,
+                    true, false, true, true,  true, false, true, false,
+                    false, true, true, false,  false, true, true, false,
+                    true, false, false, true,  true, false, true, true
+                })
+            };
+
+            With_WholeDES(key);
+
+            Then_EncryptedShouldBe(new DataSet() //random values, not correct
+            {
+                Right = new BitArray(new bool[]
+                {
+                    true, false, true, false, false, true, false, true,
+                    true, false, true, true, true, false, true, false,
+                    false, true, true, false, false, true, true, false,
+                    true, false, false, true, true, false, true, true
+                })
+            });
+        }
 
         public void Then_EncryptedShouldBe(DataSet correctData)
         {

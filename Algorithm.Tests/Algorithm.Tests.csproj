@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtensionsTests\BoolExtensionsTests.cs" />
     <Compile Include="Given_DESBuilder\GivenDESBuilder.cs" />
     <Compile Include="Given_DESBuilder\When_Build\WhenBuild.cs" />
     <Compile Include="Given_DESBuilder\When_Generate_Key\WhenGenerateCompressedKey.cs" />
@@ -63,6 +64,8 @@
     <Compile Include="Given_DESBuilder\When_RemoveParityBits\WhenRemoveParityBits.cs" />
     <Compile Include="Given_DESBuilder\When_Shift\WhenShiftBits.cs" />
     <Compile Include="Given_DESBuilder\When_Shuffle\WhenShuffle.cs" />
+    <Compile Include="Given_PaddingStrategy\GivenPaddingStrategy.cs" />
+    <Compile Include="Given_PaddingStrategy\When_Padding\WhenPadding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
