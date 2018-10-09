@@ -258,7 +258,7 @@ namespace DES.AlgorithmBuilders
             int result = new int();
             for (int i = 0; i < binaryNumber.Length; i++)
             {
-                result += (int)Math.Pow(2,binaryNumber.Length - i) * binaryNumber[i];
+                result += (int)Math.Pow(2,binaryNumber.Length - 1 - i)  * binaryNumber[i];
                 
             }
             return result;
