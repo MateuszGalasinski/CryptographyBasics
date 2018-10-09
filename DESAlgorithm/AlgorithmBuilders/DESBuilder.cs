@@ -244,10 +244,10 @@ namespace DES.AlgorithmBuilders
 
                 rowDecNumber = BinaryToDecimal(rowBinNumber);
                 columnDecNumber = BinaryToDecimal(columnBinNumber);
-                OneBlockOutputData = new BitArray(new int[] {blocks[rowDecNumber + i * 4, columnDecNumber] }); // ???
+                OneBlockOutputData = new BitArray(new int[] {blocks[rowDecNumber + i * 4, columnDecNumber] }); 
                 for (int j = 0; j < 4; j++)
                 {
-                    result[j + 4 * i] = OneBlockOutputData[j];
+                    result[j + 4 * i] = OneBlockOutputData[3 - j];
                 }
             }
             return result;
