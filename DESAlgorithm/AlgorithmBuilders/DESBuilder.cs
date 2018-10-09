@@ -80,42 +80,6 @@ namespace DES.AlgorithmBuilders
             }));
         }
 
-        public BitArray GenerateLongKeyForCycle(BitArray previousKey, int cycle)
-        {
-            Int16[] shiftInCycle = {0,1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
-
-            if (previousKey.Length != 56)
-            {
-                throw new ValidationException("Previous key must have 56 bits");
-            }
-
-            BitArray[] keyInHalfs = SplitBitArrayInHalf(previousKey);
-
-            keyInHalfs[0] = ShiftBits(keyInHalfs[0], shiftInCycle[cycle - 1], Direction.Left);
-            keyInHalfs[1] = ShiftBits(keyInHalfs[1], shiftInCycle[cycle - 1], Direction.Left);
-
-            return JoinBitArraysFromHalfs(keyInHalfs);
-
-        }
-
-        public BitArray GenerateShortKeyfromLongKey(BitArray key)
-        {
-            if (key.Length != 56)
-            {
-                throw new ValidationException("Long key must have 56 bits");
-            }
-
-            int[] permutationTable =
-            {
-                14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10,
-                23, 19, 12, 4, 26, 8, 16, 7, 27, 20, 13, 2,
-                41, 52, 31, 37, 47, 55, 30, 40, 51, 45, 33, 48,
-                44, 49, 39, 56, 34, 53, 46, 42, 50, 36, 29, 32
-            };
-
-            return Shuffle(key, permutationTable);
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -176,28 +140,6 @@ namespace DES.AlgorithmBuilders
             return result;
         }
 
-        public void AddExtendingPermutation()
-        {
-            _encryptSteps.Add(new DataTransformation(data =>
-            {
-                if (data.Length != 32)
-                {
-                    throw new ValidationException("Only 32 bits array is accepted to be extended to 48 bits.");
-                }
-
-                int[] permutationTable = new int[]
-                {
-                    32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9,
-                    8, 9, 10, 11, 12, 13, 12, 13, 14, 15, 16, 17,
-                    16, 17, 18, 19, 20, 21, 20, 21, 22, 23, 24, 25,
-                    24, 25, 26, 27, 28, 29, 28, 29, 30, 31, 32, 1
-                };
-
-                BitArray extendedData = Shuffle(data, permutationTable);
-                return extendedData;
-            }));
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -231,8 +173,10 @@ namespace DES.AlgorithmBuilders
 
         public void AddSBlocks()
         {
-            _encryptSteps.Add(new DataTransformation(data =>
+            _encryptSteps.Add(new DataTransformation(dataSet =>
             {
+                BitArray data = dataSet.Right;
+
                 BitArray result = new BitArray(32);
                 BitArray OneBlockOutputData = new BitArray(4);
 
@@ -309,7 +253,9 @@ namespace DES.AlgorithmBuilders
                         result[j + 4 * i] = OneBlockOutputData[3 - j];
                     }
                 }
-                return result;
+
+                dataSet.Right = result;
+                return dataSet;
             }));
 
             
@@ -421,8 +367,9 @@ namespace DES.AlgorithmBuilders
 
         public void AddPblockPermutation()
         {
-            _encryptSteps.Add(new DataTransformation(data =>
+            _encryptSteps.Add(new DataTransformation(dataSet =>
             {
+                BitArray data = dataSet.Right;
                 if (data.Length != 32)
                 {
                     throw new ValidationException("Only 32 bits array is accepted form P block permutation.");
@@ -435,7 +382,8 @@ namespace DES.AlgorithmBuilders
                 };
 
                 BitArray extendedData = Shuffle(data, permutationTable);
-                return extendedData;
+                dataSet.Right = extendedData;
+                return dataSet;
             }));
         }
 
