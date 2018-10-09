@@ -260,7 +260,6 @@ namespace DES.AlgorithmBuilders
             return result;
         }
 
-        internal BitArray blockCopy(BitArray data, int destOffSet, int offSet, int count, int arrayLength )
         public BitArray GenerateLongKeyForCycle(BitArray previousKey, int cycle)
         {
             Int16[] shiftInCycle = {0,1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
