@@ -176,13 +176,16 @@ namespace DES.AlgorithmBuilders
         {
             BitArray result = new BitArray(32);
             BitArray resultOneBlockOutData = new BitArray(4);
-            int[] oneBlockInData = new int[6];
+
+            int[] oneBlockInputData = new int[6];
             int[] rowBinNumber = new int[2];
+
             int rowDecNumber = new int();
             int[] columnBinNumber = new int[4];
             int columnDecNumber = new int();
             int numberInBlock = new int();
-            byte[,] blocks = {{ 14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7 },
+
+            int[,] blocks = {{ 14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7 },
                              { 0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8 },
                              { 4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0 },
                              { 15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13 },      //S1
@@ -227,20 +230,21 @@ namespace DES.AlgorithmBuilders
             {
                 for (int j = 0; j < 6; j++)
                 {
-                    oneBlockInData[j] = BoolExtensions.ToInt(data[j + 6 * i]);
+                    oneBlockInputData[j] = BoolExtensions.ToInt(data[j + 6 * i]);
                 }
 
-                rowBinNumber[0] = oneBlockInData.First();
-                rowBinNumber[1] = oneBlockInData.Last();
+                rowBinNumber[0] = oneBlockInputData.First();
+                rowBinNumber[1] = oneBlockInputData.Last();
 
                 for (int j = 1; j <= 4; j++)
                 {
-                    columnBinNumber[j - 1] = oneBlockInData[j];
+                    columnBinNumber[j - 1] = oneBlockInputData[j];
                 }
+                
 
                 rowDecNumber = BinaryToDecimal(rowBinNumber);
                 columnDecNumber = BinaryToDecimal(columnBinNumber);
-                resultOneBlockOutData = new BitArray(new []{ blocks[rowDecNumber + i * 4, columnDecNumber]}); // ???
+                resultOneBlockOutData = new BitArray(new int[] {blocks[rowDecNumber + i * 4, columnDecNumber] }); // ???
                 for (int j = 0; j < 4; j++)
                 {
                     result[j + 4 * i] = resultOneBlockOutData[j];
@@ -254,7 +258,8 @@ namespace DES.AlgorithmBuilders
             int result = new int();
             for (int i = 0; i < binaryNumber.Length; i++)
             {
-                result += 2 * binaryNumber[i];
+                result += (int)Math.Pow(2,binaryNumber.Length - i) * binaryNumber[i];
+                
             }
             return result;
         }
