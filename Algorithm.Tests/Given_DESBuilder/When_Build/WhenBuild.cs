@@ -70,7 +70,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
         [Test]
         public void And_Sblocks()
         {
-            With_Sblocks();
+            With_SBlocks();
             DataSet data = new DataSet()
             {
                 Right = new BitArray(new bool[]
@@ -129,7 +129,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                 })
             };
 
-            With_PblockPermutation();
+            With_PBlockPermutation();
 
             When_Encrypt(data);
 

@@ -12,7 +12,7 @@ namespace DESAlgorithm.PaddingStrategies
         {
             if (message.Length % 8 != 0)
             {
-                throw new ValidationException($"Message does not represent bytes. {message.Length} is not divisible by 8. ");
+                throw new ValidationException($"Message does not represent bytes. {message.Length} is not divisible by 8.");
             }
             if (message.Length % 64 == 0)
             {
@@ -26,14 +26,16 @@ namespace DESAlgorithm.PaddingStrategies
             }
             else
             {
-                int remainderBits = message.Length % 64;
+                int remainderBits = 64 - (message.Length % 64);
                 int remainderBytesNumber = (remainderBits) / 8;
-                bool[] paddedMessage = new bool[message.Length + remainderBits];
-                for (int i = message.Length; i < remainderBits; i += 8)
+                var binaryRepresentation = new BitArray(new byte[] {(byte)remainderBytesNumber});
+                BitArray paddedMessage = new BitArray(new bool[message.Length + remainderBits]);
+                message.CopyTo(paddedMessage, 0);
+                for (int i = message.Length; i < message.Length + remainderBits; i += 8)
                 {
-                    paddedMessage[i + remainderBytesNumber] = true;
+                    binaryRepresentation.CopyTo(paddedMessage, i);
                 }
-                return  new BitArray(paddedMessage);
+                return new BitArray(paddedMessage);
             }
         }
 
