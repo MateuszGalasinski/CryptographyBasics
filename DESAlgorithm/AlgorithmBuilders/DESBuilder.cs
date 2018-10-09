@@ -175,7 +175,7 @@ namespace DES.AlgorithmBuilders
         public BitArray SBlocks(BitArray data)
         {
             BitArray result = new BitArray(32);
-            BitArray resultOneBlockOutData = new BitArray(4);
+            BitArray OneBlockOutputData = new BitArray(4);
 
             int[] oneBlockInputData = new int[6];
             int[] rowBinNumber = new int[2];
@@ -244,10 +244,10 @@ namespace DES.AlgorithmBuilders
 
                 rowDecNumber = BinaryToDecimal(rowBinNumber);
                 columnDecNumber = BinaryToDecimal(columnBinNumber);
-                resultOneBlockOutData = new BitArray(new int[] {blocks[rowDecNumber + i * 4, columnDecNumber] }); // ???
+                OneBlockOutputData = new BitArray(new int[] {blocks[rowDecNumber + i * 4, columnDecNumber] }); // ???
                 for (int j = 0; j < 4; j++)
                 {
-                    result[j + 4 * i] = resultOneBlockOutData[j];
+                    result[j + 4 * i] = OneBlockOutputData[j];
                 }
             }
             return result;
