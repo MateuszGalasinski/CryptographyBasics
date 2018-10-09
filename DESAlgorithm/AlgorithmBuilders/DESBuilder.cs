@@ -387,7 +387,7 @@ namespace DES.AlgorithmBuilders
             }));
         }
 
-        internal BitArray RemoveParityBits(BitArray key)
+        public BitArray RemoveParityBits(BitArray key)
         {
             BitArray resultKey = new BitArray(56);
             int currentBitsSum = 0;
