@@ -60,15 +60,15 @@ namespace CryptoApplicationWPF
 
             BitArray messageWithoutPadding = padding.RemovePadding(messageWithPadding);//.RevertEveryByte();
 
-            string dupa = "";
+            string testString = "";
 
 
             for (int i = 0; i < messageWithoutPadding.Length; i++)
             {
-               dupa += messageWithoutPadding[i].ToInt().ToString();
+                testString += messageWithoutPadding[i].ToInt().ToString();
             }
-
-            EncryptedTextBox.Text = dupa;
+            
+            EncryptedTextBox.Text = testString;
 
 
         }
