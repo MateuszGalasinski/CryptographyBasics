@@ -57,8 +57,8 @@ namespace DESAlgorithm.PaddingStrategies
             int byteValue = lastByte.GetByteValue();
 
             //remove correct number of bytes (just dont copy them)
-            BitArray messageWithoutPadding = new BitArray(message.Length - byteValue * 8);
-            for (int i =0; i < messageWithoutPadding.Length; i++)
+            BitArray messageWithoutPadding = new BitArray(message.Length - (byteValue ) * 8);
+            for (int i = 0; i < messageWithoutPadding.Length; i++)
             {
                 messageWithoutPadding[i] = message[i];
             }

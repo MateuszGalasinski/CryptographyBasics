@@ -162,9 +162,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                 })
             };
 
-            With_WholeDES(key);
-
-            Then_EncryptedShouldBe(new DataSet() //random values, not correct
+            DataSet result = new DataSet()
             {
                 Right = new BitArray(new bool[]
                 {
@@ -173,7 +171,14 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                     false, true, true, false, false, true, true, false,
                     true, false, false, true, true, false, true, true
                 })
-            });
+            };
+
+            With_WholeDES(key);
+
+            When_Encrypt(data);
+
+            Then_EncryptedShouldBe(result); //random values, not correct
+
         }
 
         public void Then_EncryptedShouldBe(DataSet correctData)

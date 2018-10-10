@@ -6,7 +6,7 @@ using DESAlgorithm.Models;
 
 namespace DES
 {
-    interface ICryptoAlgorithm
+    public interface ICryptoAlgorithm
     {
         DataSet Encrypt(DataSet data);
         DataSet Decrypt(DataSet data);
