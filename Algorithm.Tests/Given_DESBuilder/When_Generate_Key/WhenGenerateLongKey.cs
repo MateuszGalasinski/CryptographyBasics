@@ -40,7 +40,7 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Generate_Key
                 true, true, true, true, false, true, true, true, 
                 true, false, true, false, true, false, true, false
             });
-            int cycle = 2;
+            int cycle = 1;
 
             When_Generate_Long_Key(key, cycle);
 
