@@ -25,5 +25,16 @@ namespace Algorithm.Tests.ExtensionsTests
                 true, false, true, true, false, true, false, false
             }));
         }
+
+        [Test]
+        public void GetByteValue()
+        {
+            BitArray array = new BitArray(new bool[]
+            {
+                true, false, true, false, true, true, false, true
+            });
+
+            array.GetByteValue().Should().Be(173);
+        }
     }
 }

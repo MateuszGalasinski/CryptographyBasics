@@ -42,7 +42,7 @@ namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
             When_Action(dataForPadding,
                 () => { _resultData = context.AddPadding(dataForPadding); });
 
-            Then_ShuffledShouldBe(new BitArray(
+            Then_MessageShouldBe(new BitArray(
                 new bool[]
                 {
                     false, false, false, true, false, true, true, true,
@@ -57,7 +57,36 @@ namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
                 }));
         }
 
-        public void Then_ShuffledShouldBe(BitArray correctData)
+        [Test]
+        public void And_RemovePadding()
+        {
+            With_CMSPaddingStrategy();
+
+            BitArray dataForPadding = new BitArray(
+                new bool[]
+                {
+                    false, false, false, true, false, true, true, true,
+
+                    false, false, false, false, false, true, true, true,
+                    false, false, false, false, false, true, true, true,
+                    false, false, false, false, false, true, true, true,
+                    false, false, false, false, false, true, true, true,
+                    false, false, false, false, false, true, true, true,
+                    false, false, false, false, false, true, true, true,
+                    false, false, false, false, false, true, true, true
+                });
+
+            When_Action(dataForPadding,
+                () => { _resultData = context.RemovePadding(dataForPadding); });
+
+            Then_MessageShouldBe(new BitArray(
+                new bool[]
+                {
+                    false, false, false, true, false, true, true, true
+                }));
+        }
+
+        public void Then_MessageShouldBe(BitArray correctData)
         {
             _resultData.Should().Equal(correctData);
         }
