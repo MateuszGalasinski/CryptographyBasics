@@ -24,12 +24,12 @@ namespace CryptoTests.Given_DESBuilder
             context.AddExtendingPermutation();
         }
 
-        public void With_Sblocks()
+        public void With_SBlocks()
         {
             context.AddSBlocks();
         }
 
-        public void With_PblockPermutation()
+        public void With_PBlockPermutation()
         {
             context.AddPblockPermutation();
         }
