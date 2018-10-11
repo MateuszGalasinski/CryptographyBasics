@@ -70,7 +70,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
         [Test]
         public void And_Sblocks()
         {
-            With_Sblocks();
+            With_SBlocks();
             DataSet data = new DataSet()
             {
                 Right = new BitArray(new bool[]
@@ -129,7 +129,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                 })
             };
 
-            With_PblockPermutation();
+            With_PBlockPermutation();
 
             When_Encrypt(data);
 
@@ -141,13 +141,14 @@ namespace CryptoTests.Given_DESBuilder.When_Build
         {
             BitArray key = new BitArray(new bool[] //random values, not correct
             {
-                true, true, false, true, false, false, false, false,
-                true, false, true, true, true, true, false, true,
-                true, true, true, true, false, true, false, false,
-                false, false, true, true, false, false, false, false,
-                true, true, false, true, false, true, false, false,
-                true, true, true, true, false, true, true, true,
-                true, false, true, false, true, false, true, false
+                false, false, false, true, false, true, true,  true,
+                false, false, true, true, true, true, true,  true,
+                false, false, false, true, false, true, false,  false,
+                true, true, true, true, true, true, true,  true,
+                false, false, false, false, false, false, false,  false,
+                false, true, false, true, false, true, false,  true,
+                false, false, false, true, true, true, true,  false,
+                false, false, false, true, false, true, false,  false
             });
 
             DataSet data = new DataSet() //random values, not correct
