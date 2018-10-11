@@ -6,6 +6,7 @@ using DES.Constants;
 using DES.DataTransformations;
 using DESAlgorithm.Exceptions;
 using DESAlgorithm.Extensions;
+using DESAlgorithm.PaddingStrategies;
 
 namespace DES.AlgorithmBuilders
 {
@@ -16,7 +17,7 @@ namespace DES.AlgorithmBuilders
 
         public CryptoAlgorithm Build()
         {
-            return new CryptoAlgorithm(_encryptSteps, _decryptSteps);
+            return new CryptoAlgorithm(_encryptSteps, _decryptSteps, new CMSPaddingStrategy());
         }
 
         public void AddWholeDES(BitArray key)

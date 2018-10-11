@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using DESAlgorithm.Models;
 using DESAlgorithm.PaddingStrategies;
 
@@ -23,12 +22,12 @@ namespace DES
             _paddingStrategy = paddingStrategy;
         }
 
-        public DataSet Decrypt(DataSet data)
+        public bool[] Decrypt(bool[] data)
         {
-            foreach (IDataTransformation transformation in _decryptSteps)
-            {
-                data = transformation.Transform(data);
-            }
+            //foreach (IDataTransformation transformation in _decryptSteps)
+            //{
+            //    bitData = transformation.Transform(bitData);
+            //}
 
             return data;
         }

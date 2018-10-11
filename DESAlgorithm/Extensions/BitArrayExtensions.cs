@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using DESAlgorithm.Exceptions;
+﻿using System.Collections;
 
 namespace DESAlgorithm.Extensions
 {
@@ -17,22 +13,6 @@ namespace DESAlgorithm.Extensions
             }
 
             return revertedArray;
-        }
-
-        public static int GetByteValue(this BitArray singleByteArray)
-        {
-            if (singleByteArray.Length != 8)
-            {
-                throw new ValidationException("BitArray representing byte needs to has length == 8");
-            }
-
-            int value = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                value += (int)Math.Pow(singleByteArray[7 - i].ToInt() * 2, i);
-            }
-
-            return value;
         }
     }
 }

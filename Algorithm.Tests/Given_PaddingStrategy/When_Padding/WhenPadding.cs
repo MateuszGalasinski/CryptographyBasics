@@ -1,22 +1,17 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Algorithm.Tests.Given_IPaddingStrategy;
 using FluentAssertions;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
 {
     [TestFixture()]
     public class WhenPadding : GivenPaddingStrategy
     {
-        private BitArray _resultData;
+        private bool[] _resultData;
 
-        public void When_Action(BitArray data, Action actionToRun)
+        public void When_Action(bool[] data, Action actionToRun)
         {
             try
             {
@@ -33,17 +28,15 @@ namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
         {
             With_CMSPaddingStrategy();
 
-            BitArray dataForPadding = new BitArray(
-                new bool[]
+            bool[] dataForPadding = new bool[]
                 {
                     false, false, false, true, false, true, true, true
-                });
+                };
 
             When_Action(dataForPadding,
                 () => { _resultData = context.AddPadding(dataForPadding); });
 
-            Then_MessageShouldBe(new BitArray(
-                new bool[]
+            Then_MessageShouldBe(new bool[]
                 {
                     false, false, false, true, false, true, true, true,
 
@@ -54,7 +47,7 @@ namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
                     false, false, false, false, false, true, true, true,
                     false, false, false, false, false, true, true, true,
                     false, false, false, false, false, true, true, true,
-                }));
+                });
         }
 
         [Test]
@@ -62,8 +55,7 @@ namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
         {
             With_CMSPaddingStrategy();
 
-            BitArray dataForPadding = new BitArray(
-                new bool[]
+            bool[] dataForPadding = new bool[]
                 {
                     false, false, false, true, false, true, true, true,
 
@@ -74,19 +66,18 @@ namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
                     false, false, false, false, false, true, true, true,
                     false, false, false, false, false, true, true, true,
                     false, false, false, false, false, true, true, true
-                });
+                };
 
             When_Action(dataForPadding,
                 () => { _resultData = context.RemovePadding(dataForPadding); });
 
-            Then_MessageShouldBe(new BitArray(
-                new bool[]
+            Then_MessageShouldBe(new bool[]
                 {
                     false, false, false, true, false, true, true, true
-                }));
+                });
         }
 
-        public void Then_MessageShouldBe(BitArray correctData)
+        public void Then_MessageShouldBe(bool[] correctData)
         {
             _resultData.Should().Equal(correctData);
         }
