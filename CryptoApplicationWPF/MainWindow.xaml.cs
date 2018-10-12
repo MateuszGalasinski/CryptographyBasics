@@ -18,6 +18,7 @@ using DES.AlgorithmBuilders;
 using DESAlgorithm.Extensions;
 using DESAlgorithm.PaddingStrategies;
 using Microsoft.Win32;
+using System.IO;
 
 
 namespace CryptoApplicationWPF
@@ -27,7 +28,7 @@ namespace CryptoApplicationWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private string filePath;
+        private string filePath = string.Empty;
 
         public MainWindow()
         {
@@ -37,14 +38,20 @@ namespace CryptoApplicationWPF
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
             IPaddingStrategy padding = new CMSPaddingStrategy();
-            
 
-            byte[] textToEncodeBytes = Encoding.ASCII.GetBytes(TextToEncryptTextBox.Text);
+            byte[] textToEncodeBytes;
+
+            if(filePath == string.Empty)
+            {
+                textToEncodeBytes = Encoding.ASCII.GetBytes(TextToEncryptTextBox.Text);
+            }
+            else
+            {
+                textToEncodeBytes = File.ReadAllBytes(filePath);
+            }
 
             byte[] encryptionKeyBytes = Encoding.ASCII.GetBytes(EncryptionKeyTextBox.Text);
 
-             
-                
             BitArray bitArrayToEncode = new BitArray(textToEncodeBytes).RevertEveryByte();
 
             bool[] bitsToEncode = new bool[bitArrayToEncode.Count];
@@ -53,26 +60,12 @@ namespace CryptoApplicationWPF
             bool[] messageWithPadding = padding.AddPadding(bitsToEncode);
             
 
-            //DESBuilder desBuilder = new DESBuilder();
-
-            //desBuilder.AddWholeDES(new BitArray(encryptionKeyBytes).Revert());
-            //CryptoAlgorithm cryptoAlgorithm = desBuilder.Build();
-
-            //cryptoAlgorithm.Encrypt();
-
-
             bool[] messageWithoutPadding = padding.RemovePadding(messageWithPadding);//.RevertEveryByte();
 
-            string testString = "";
 
+            byte[] returnMessage = messageWithoutPadding.ToByteArray();
 
-            for (int i = 0; i < messageWithoutPadding.Length; i++)
-            {
-                testString += messageWithoutPadding[i].ToInt().ToString();
-            }
-            
-            EncryptedTextBox.Text = testString;
-
+            File.WriteAllBytes(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "decrypted.bmp"), returnMessage);
 
         }
 

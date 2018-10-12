@@ -25,5 +25,35 @@ namespace DESAlgorithm.Extensions
 
             return value;
         }
+
+        public static byte[] ToByteArray(this bool[] boolArray)
+        {
+            if (boolArray.Length % 8 != 0)
+            {
+                throw new ValidationException("Bool array must be divisble by 8.");
+            }
+
+
+            byte[] result = new byte[boolArray.Length / 8];
+            for (int i = 0, j=7, k=0 ; i< boolArray.Length; i += 8, j += 8, k++)
+            {
+                result[k] = boolArray.GetByteValue(i, j);
+            }
+            return result;
+        }
+
+        public static byte GetByteValue(this bool[] source, int startIndex, int endIndex)
+        {
+            byte result = 0;
+
+            for (int i = startIndex, j = 0 ; i <= endIndex; i++, j++)
+            {
+                if(source[i])
+                    result |= (byte)(1 << (7 - j));
+            }
+
+            return result;
+           
+        }
     }
 }

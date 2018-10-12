@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using DESAlgorithm.Exceptions;
 using DESAlgorithm.Extensions;
 
@@ -54,10 +55,12 @@ namespace DESAlgorithm.PaddingStrategies
 
             //remove correct number of bytes (just dont copy them)
             bool[] messageWithoutPadding = new bool[message.Length - byteValue * 8];
-            for (int i = 0; i < messageWithoutPadding.Length; i++)
-            {
-                messageWithoutPadding[i] = message[i];
-            }
+            Array.Copy(message, 0, messageWithoutPadding, 0, messageWithoutPadding.Length);
+
+            //for (int i = 0; i < messageWithoutPadding.Length; i++)
+            //{
+            //    messageWithoutPadding[i] = message[i];
+            //}
 
             return messageWithoutPadding;
         }
