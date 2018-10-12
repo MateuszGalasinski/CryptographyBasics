@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using DESAlgorithm.Extensions;
 using FluentAssertions;
 using NUnit.Framework;
@@ -24,17 +19,6 @@ namespace Algorithm.Tests.ExtensionsTests
             {
                 true, false, true, true, false, true, false, false
             }));
-        }
-
-        [Test]
-        public void GetByteValue()
-        {
-            BitArray array = new BitArray(new bool[]
-            {
-                true, false, true, false, true, true, false, true
-            });
-
-            array.GetByteValue().Should().Be(173);
         }
     }
 }
