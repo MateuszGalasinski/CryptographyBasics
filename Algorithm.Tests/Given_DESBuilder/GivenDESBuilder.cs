@@ -19,17 +19,17 @@ namespace CryptoTests.Given_DESBuilder
 
         public void With_ExtendingPermutation()
         {
-            functionToInvoke = context.AddExtendingPermutation;
+            functionToInvoke = context.ExtendingPermutation;
         }
 
         public void With_SBlocks()
         {
-            functionToInvoke = context.AddSBlocks;
+            functionToInvoke = context.SBlocks;
         }
 
         public void With_PBlockPermutation()
         {
-            functionToInvoke = context.AddPblockPermutation;
+            functionToInvoke = context.PblockPermutation;
         }
     }
 }

@@ -65,6 +65,8 @@
     <Compile Include="Given_DESBuilder\When_RemoveParityBits\WhenRemoveParityBits.cs" />
     <Compile Include="Given_DESBuilder\When_Shift\WhenShiftBits.cs" />
     <Compile Include="Given_DESBuilder\When_Shuffle\WhenShuffle.cs" />
+    <Compile Include="Given_DES\GivenDes.cs" />
+    <Compile Include="Given_DES\When_EncryptDecrypt\WhenEncryptDecrypt.cs" />
     <Compile Include="Given_PaddingStrategy\GivenPaddingStrategy.cs" />
     <Compile Include="Given_PaddingStrategy\When_Padding\WhenPadding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

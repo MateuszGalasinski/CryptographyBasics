@@ -24,27 +24,34 @@ namespace DES
 
         public bool[] Decrypt(bool[] data)
         {
-            //foreach (IDataTransformation transformation in _decryptSteps)
-            //{
-            //    bitData = transformation.Transform(bitData);
-            //}
+            bool[] decryptedData = TrasformateWithBlockSeparation(_decryptSteps, data);
 
-            return data;
+            return _paddingStrategy.RemovePadding(decryptedData);
         }
 
         public bool[] Encrypt(bool[] data)
         {
-            List<DataSet> encryptedBlocks = new List<DataSet>();
-
             bool[] paddedData = _paddingStrategy.AddPadding(data);
 
-            for (int i = 0; i < paddedData.Length / 64; i++)
+            return TrasformateWithBlockSeparation(_encryptSteps, paddedData);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transformations"></param>
+        /// <param name="data">Padded data</param>
+        /// <returns></returns>
+        private bool[] TrasformateWithBlockSeparation(List<IDataTransformation> transformations, bool[] data)
+        {
+            List<DataSet> transformedBlocks = new List<DataSet>();
+            for (int i = 0; i < data.Length / 64; i++)
             {
                 bool[] leftHalfBlock = new bool[32];
-                Array.Copy(paddedData, i * 64, leftHalfBlock, 0, 32);
+                Array.Copy(data, i * 64, leftHalfBlock, 0, 32);
                 bool[] rightHalfBlock = new bool[32];
-                Array.Copy(paddedData, i * 64 + 32, leftHalfBlock, 0, 32);
-                
+                Array.Copy(data, i * 64 + 32, rightHalfBlock, 0, 32);
+
                 DataSet dataSet = new DataSet()
                 {
                     Left = new BitArray(leftHalfBlock),
@@ -52,22 +59,23 @@ namespace DES
                 };
 
                 //encrypt
-                foreach (IDataTransformation transformation in _encryptSteps)
+                foreach (IDataTransformation transformation in transformations)
                 {
                     dataSet = transformation.Transform(dataSet);
                 }
-                encryptedBlocks.Add(dataSet);
+                transformedBlocks.Add(dataSet);
             }
 
-            bool[] encryptedData = new bool[encryptedBlocks.Count*64];
+            bool[] transformedData = new bool[transformedBlocks.Count * 64];
             int blocksCounter = 0;
-            foreach (DataSet encryptedBlock in encryptedBlocks)
+            foreach (DataSet transformedBlock in transformedBlocks)
             {
-                encryptedBlock.Left.CopyTo(encryptedData, blocksCounter * 64);
-                encryptedBlock.Right.CopyTo(encryptedData, blocksCounter * 64 + 32);
+                transformedBlock.Left.CopyTo(transformedData, blocksCounter * 64);
+                transformedBlock.Right.CopyTo(transformedData, blocksCounter * 64 + 32);
+                blocksCounter++;
             }
 
-            return encryptedData;
+            return transformedData;
         }
     }
 }
