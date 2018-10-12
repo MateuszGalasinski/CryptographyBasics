@@ -16,14 +16,14 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
             {
                 Task.Run(() => { _data = functionToInvoke(data); }).Wait();
             }
-            catch (AggregateException)
+            catch (AggregateException ex)
             {
 
             }
         }
 
         [Test]
-        public void AndAllFalse_KeyZero()
+        public void AndAllFalse_BlockPart_KeyZero()
         {
             With_WholeDES(new BitArray(new byte[]
             {
@@ -47,7 +47,6 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
                 false, false, false, false, false, false, false, false,
                 false, false, false, false, false, false, false, false,
                 false, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false,
                 false, false, false, false, false, false, false, false
             };
 
@@ -57,7 +56,7 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
         }
 
         [Test]
-        public void AndAllTrue_KeyZero()
+        public void AndAllTrue_BlockPart_KeyZero()
         {
             With_WholeDES(new BitArray(new byte[]
             {

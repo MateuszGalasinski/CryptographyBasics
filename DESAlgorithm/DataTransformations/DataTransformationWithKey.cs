@@ -12,7 +12,7 @@ namespace DES.DataTransformations
         public DataTransformationWithKey(Func<DataSet, BitArray, DataSet> transformation, BitArray key)
         {
             Transformation = transformation;
-            Key = key;
+            Key = new BitArray(key);
         }
 
         public DataSet Transform(DataSet data)

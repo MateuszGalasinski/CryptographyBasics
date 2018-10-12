@@ -37,7 +37,7 @@ namespace DES.AlgorithmBuilders
             {
                 reducedKey = GenerateLongKeyForCycle(reducedKey, cycleNumber);
                 BitArray shortKey = GenerateShortKeyfromLongKey(reducedKey);
-                keys[cycleNumber] = shortKey;
+                keys[cycleNumber] = new BitArray(shortKey);
             }
 
             //add steps
