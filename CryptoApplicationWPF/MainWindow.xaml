@@ -19,6 +19,7 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
         <TextBlock TextAlignment="Center" Text="Encrypt your text:" FontSize="20" Margin="5, 35, 5, 30"></TextBlock>
@@ -37,6 +38,8 @@
 
         <Button Name="FileButton" Grid.Column="0" Grid.Row="3" Margin="5,30,5,30" FontSize="20" Click="ChooseFileButton_Click">File to encrypt</Button>
         <Button Name="EncryptButton" Grid.Column="3" Grid.Row="3" Margin="5,30,5,30" FontSize="20" Click="EncryptButton_Click">Encrypt</Button>
+
+        <TextBox Name="DecryptedTextBox" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" Margin="5,30,5,30"></TextBox>
 
     </Grid>
 </Window>

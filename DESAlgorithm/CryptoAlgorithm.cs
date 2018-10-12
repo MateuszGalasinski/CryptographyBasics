@@ -59,15 +59,9 @@ namespace DES
                 };
 
                 //encrypt
-                int transformationCounter = 0;
                 foreach (IDataTransformation transformation in transformations)
                 {
                     dataSet = transformation.Transform(dataSet);
-                    transformationCounter++;
-                    if (transformationCounter == 92)
-                    {
-                        int asd = 123;
-                    }
                 }
                 transformedBlocks.Add(dataSet);
             }

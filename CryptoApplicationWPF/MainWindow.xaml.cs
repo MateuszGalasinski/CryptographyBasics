@@ -1,24 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DES;
 using DES.AlgorithmBuilders;
 using DESAlgorithm.Extensions;
-using DESAlgorithm.PaddingStrategies;
 using Microsoft.Win32;
-using System.IO;
 
 
 namespace CryptoApplicationWPF
@@ -37,8 +24,6 @@ namespace CryptoApplicationWPF
 
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
-            IPaddingStrategy padding = new CMSPaddingStrategy();
-
             byte[] textToEncodeBytes;
 
             if(filePath == string.Empty)
@@ -50,23 +35,26 @@ namespace CryptoApplicationWPF
                 textToEncodeBytes = File.ReadAllBytes(filePath);
             }
 
-            byte[] encryptionKeyBytes = Encoding.ASCII.GetBytes(EncryptionKeyTextBox.Text);
+            BitArray encryptionKey = new BitArray(Encoding.ASCII.GetBytes(EncryptionKeyTextBox.Text));
 
             BitArray bitArrayToEncode = new BitArray(textToEncodeBytes).RevertEveryByte();
 
             bool[] bitsToEncode = new bool[bitArrayToEncode.Count];
             bitArrayToEncode.CopyTo(bitsToEncode, 0);
 
-            bool[] messageWithPadding = padding.AddPadding(bitsToEncode);
-            
+            DESBuilder builder = new DESBuilder();
+            builder.AddWholeDES(encryptionKey);
+            CryptoAlgorithm des = builder.Build();
 
-            bool[] messageWithoutPadding = padding.RemovePadding(messageWithPadding);//.RevertEveryByte();
+            bool[] encrypted = des.Encrypt(bitsToEncode);
+            var encryptedBytes = encrypted.ToByteArray();
 
+            EncryptedTextBox.Text = Encoding.ASCII.GetString(encryptedBytes);
 
-            byte[] returnMessage = messageWithoutPadding.ToByteArray();
+            DecryptedTextBox.Text = Encoding.ASCII.GetString(des.Decrypt(encrypted).ToByteArray());
+            //byte[] returnMessage = messageWithoutPadding.ToByteArray();
 
-            File.WriteAllBytes(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "decrypted.bmp"), returnMessage);
-
+            //File.WriteAllBytes(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "decrypted.bmp"), returnMessage
         }
 
         private void ChooseFileButton_Click(object sender, RoutedEventArgs e)
