@@ -45,9 +45,12 @@ namespace CryptoApplicationWPF
 
              
                 
-            BitArray bitsToEncode = new BitArray(textToEncodeBytes).RevertEveryByte();
+            BitArray bitArrayToEncode = new BitArray(textToEncodeBytes).RevertEveryByte();
 
-            BitArray messageWithPadding = padding.AddPadding(bitsToEncode);
+            bool[] bitsToEncode = new bool[bitArrayToEncode.Count];
+            bitArrayToEncode.CopyTo(bitsToEncode, 0);
+
+            bool[] messageWithPadding = padding.AddPadding(bitsToEncode);
             
 
             //DESBuilder desBuilder = new DESBuilder();
@@ -58,7 +61,7 @@ namespace CryptoApplicationWPF
             //cryptoAlgorithm.Encrypt();
 
 
-            BitArray messageWithoutPadding = padding.RemovePadding(messageWithPadding);//.RevertEveryByte();
+            bool[] messageWithoutPadding = padding.RemovePadding(messageWithPadding);//.RevertEveryByte();
 
             string testString = "";
 
