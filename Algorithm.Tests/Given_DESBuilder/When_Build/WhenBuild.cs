@@ -134,7 +134,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
 
         public void Then_EncryptedShouldBe(DataSet correctData)
         {
-            _data.Should().Equals(correctData);
+            _data.Should().BeEquivalentTo(correctData);
         }
     }
 }
