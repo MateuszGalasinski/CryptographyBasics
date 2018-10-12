@@ -92,66 +92,38 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
         [Test]
         public void AndSomeText_KeyZero()
         {
-            With_WholeDES(new BitArray(
-                new byte[]
-                {
-                    0x01,
-                    0x03,
+            BitArray array = new BitArray(64);
+            var values = new int[]
+            {
+                0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0,
+                0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1,
+                1, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0,
+                1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1
+            };
 
-                    0x03,
-                    0x04,
+            for (int i = 0; i < 64; i++)
+            {
+                array[i] = values[i] == 1 ? true : false;
+            }
 
-                    0x05,
-                    0x07,
-
-                    0x07,
-                    0x09,
-
-                    0x09,
-                    0x0B,
-
-                    0x0B,
-                    0x0C,
-
-                    0x0D,
-                    0x0F,
-
-                    0x0F,
-                    0x01
-                }));
+            With_WholeDES(array);
 
             With_EncryptDecrypt();
 
-            BitArray dataArray = new BitArray(new BitArray(
-                new byte[]
-                {
-                    0x00,
-                    0x01,
+            var message = new int[]
+            {
+                0,0,0,0, 0,0,0,1, 0,0,1,0, 0,0,1,1,
+                0,1,0,0, 0,1,0,1, 0,1,1,0, 0,1,1,1,
+                1,0,0,0, 1,0,0,1, 1,0,1,0, 1,0,1,1,
+                1,1,0,0, 1,1,0,1, 1,1,1,0, 1,1,1,1
+            };
 
-                    0x02,
-                    0x03,
+            bool[] data = new bool[64];
 
-                    0x04,
-                    0x05,
-
-                    0x06,
-                    0x07,
-
-                    0x08,
-                    0x09,
-
-                    0x0A,
-                    0x0B,
-
-                    0x0C,
-                    0x0D,
-
-                    0x0E,
-                    0x0F
-                }));
-
-            bool[] data = new bool[dataArray.Length];
-            dataArray.CopyTo(data, 0);
+            for (int i = 0; i < 64; i++)
+            {
+                data[i] = message[i] == 1 ? true : false;
+            }
 
             When_Func(data);
 
