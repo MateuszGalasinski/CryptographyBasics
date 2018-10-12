@@ -132,6 +132,11 @@ namespace CryptoTests.Given_DESBuilder.When_Build
             Then_EncryptedShouldBe(result);
         }
 
+        public void And_WholeDES()
+        {
+
+        }
+
         public void Then_EncryptedShouldBe(DataSet correctData)
         {
             _data.Should().BeEquivalentTo(correctData);
