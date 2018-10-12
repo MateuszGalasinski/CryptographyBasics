@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections;
 
 namespace DESAlgorithm.Models
 {
@@ -9,5 +6,6 @@ namespace DESAlgorithm.Models
     {
         public BitArray Left { get; set; }
         public BitArray Right { get; set; }
+        public BitArray OldRight { get; set; }
     }
 }

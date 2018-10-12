@@ -53,6 +53,10 @@ namespace DESAlgorithm.PaddingStrategies
             //gain its value
             int byteValue = lastByte.GetByteValue();
 
+            if (byteValue * 8 > message.Length)
+            {
+                throw new ValidationException("Message is shorter than padding length taken from last byte.");
+            }
             //remove correct number of bytes (just dont copy them)
             bool[] messageWithoutPadding = new bool[message.Length - byteValue * 8];
             Array.Copy(message, 0, messageWithoutPadding, 0, messageWithoutPadding.Length);
