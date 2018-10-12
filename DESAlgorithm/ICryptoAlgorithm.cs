@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
-using DESAlgorithm.Models;
-
-namespace DES
+﻿namespace DES
 {
     interface ICryptoAlgorithm
     {
-        DataSet Encrypt(DataSet data);
-        DataSet Decrypt(DataSet data);
+        bool[] Encrypt(bool[] data);
+        bool[] Decrypt(bool[] data);
     }
 }

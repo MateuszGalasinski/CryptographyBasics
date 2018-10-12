@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Text;
 using DES.AlgorithmBuilders;
-using DES.Constants;
+using DESAlgorithm.Models;
 using NUnit.Framework;
 
 namespace CryptoTests.Given_DESBuilder
@@ -12,7 +9,8 @@ namespace CryptoTests.Given_DESBuilder
     public class GivenDESBuilder
     {
         protected DESBuilder context;
-        
+        protected Func<DataSet, DataSet> functionToInvoke;
+
         [SetUp]
         public void Given()
         {
@@ -21,22 +19,17 @@ namespace CryptoTests.Given_DESBuilder
 
         public void With_ExtendingPermutation()
         {
-            context.AddExtendingPermutation();
+            functionToInvoke = context.AddExtendingPermutation;
         }
 
         public void With_SBlocks()
         {
-            context.AddSBlocks();
+            functionToInvoke = context.AddSBlocks;
         }
 
         public void With_PBlockPermutation()
         {
-            context.AddPblockPermutation();
-        }
-
-        public void With_WholeDES(BitArray key)
-        {
-            context.AddWholeDES(key);
+            functionToInvoke = context.AddPblockPermutation;
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections;
 using DESAlgorithm.Exceptions;
 using DESAlgorithm.Extensions;
 
@@ -10,7 +6,7 @@ namespace DESAlgorithm.PaddingStrategies
 {
     public class CMSPaddingStrategy : IPaddingStrategy
     {
-        public BitArray AddPadding(BitArray message)
+        public bool[] AddPadding(bool[] message)
         {
             if (message.Length % 8 != 0)
             {
@@ -24,7 +20,7 @@ namespace DESAlgorithm.PaddingStrategies
                 {
                     paddedMessage[i + 4] = true; // set 5th bit in byte to true, so the byte value will equals 8
                 }
-                return new BitArray(paddedMessage);
+                return paddedMessage;
             }
             else
             {
@@ -41,14 +37,14 @@ namespace DESAlgorithm.PaddingStrategies
                     binaryRepresentation.CopyTo(paddedMessage, i);
                 }
 
-                return new BitArray(paddedMessage);
+                return paddedMessage;
             }
         }
 
-        public BitArray RemovePadding(BitArray message)
+        public bool[] RemovePadding(bool[] message)
         {
             //find last byte
-            BitArray lastByte = new BitArray(8);
+            bool[] lastByte = new bool[8];
             for (int j = 0, i = message.Length - 8; i < message.Length; i++, j++)
             {
                 lastByte[j] = message[i];
@@ -57,8 +53,8 @@ namespace DESAlgorithm.PaddingStrategies
             int byteValue = lastByte.GetByteValue();
 
             //remove correct number of bytes (just dont copy them)
-            BitArray messageWithoutPadding = new BitArray(message.Length - byteValue * 8);
-            for (int i =0; i < messageWithoutPadding.Length; i++)
+            bool[] messageWithoutPadding = new bool[message.Length - byteValue * 8];
+            for (int i = 0; i < messageWithoutPadding.Length; i++)
             {
                 messageWithoutPadding[i] = message[i];
             }
