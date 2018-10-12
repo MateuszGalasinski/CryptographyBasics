@@ -89,6 +89,76 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
             Then_ResultShouldBe(data);
         }
 
+        [Test]
+        public void AndSomeText_KeyZero()
+        {
+            With_WholeDES(new BitArray(
+                new byte[]
+                {
+                    0x01,
+                    0x03,
+
+                    0x03,
+                    0x04,
+
+                    0x05,
+                    0x07,
+
+                    0x07,
+                    0x09,
+
+                    0x09,
+                    0x0B,
+
+                    0x0B,
+                    0x0C,
+
+                    0x0D,
+                    0x0F,
+
+                    0x0F,
+                    0x01
+                }));
+
+            With_EncryptDecrypt();
+
+            BitArray dataArray = new BitArray(new BitArray(
+                new byte[]
+                {
+                    0x00,
+                    0x01,
+
+                    0x02,
+                    0x03,
+
+                    0x04,
+                    0x05,
+
+                    0x06,
+                    0x07,
+
+                    0x08,
+                    0x09,
+
+                    0x0A,
+                    0x0B,
+
+                    0x0C,
+                    0x0D,
+
+                    0x0E,
+                    0x0F
+                }));
+
+            bool[] data = new bool[dataArray.Length];
+            dataArray.CopyTo(data, 0);
+
+            When_Func(data);
+
+            Then_ResultShouldBe(data);
+        }
+
+
         public void Then_ResultShouldBe(bool[] correctData)
         {
             _data.Should().BeEquivalentTo(correctData);

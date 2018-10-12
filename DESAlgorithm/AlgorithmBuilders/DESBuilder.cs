@@ -23,26 +23,31 @@ namespace DES.AlgorithmBuilders
 
         public void AddWholeDES(BitArray key)
         {
-            if (key.Length != 64)
+            if (key.Length != 56)
             {
                 throw new ValidationException("Starting key has to 64 bits long.");
             }
 
-            BitArray reducedKey = RemoveParityBits(key);
+            //BitArray reducedKey = RemoveParityBits(key);
 
             BitArray[] keys = new BitArray[16];
 
             //generate keys
             for (int cycleNumber = 0; cycleNumber < 16; cycleNumber++)
             {
-                reducedKey = GenerateLongKeyForCycle(reducedKey, cycleNumber);
-                BitArray shortKey = GenerateShortKeyfromLongKey(reducedKey);
+                key = GenerateLongKeyForCycle(key, cycleNumber);
+                BitArray shortKey = GenerateShortKeyfromLongKey(key);
                 keys[cycleNumber] = new BitArray(shortKey);
             }
 
             //add steps
             for (int cycleNumber = 0; cycleNumber < 16; cycleNumber++)
             {
+                DataTransformation saveOldRight = new DataTransformation(SaveOldRight);
+
+                _encryptSteps.Add(saveOldRight);
+                _decryptSteps.Add(saveOldRight);
+
                 DataTransformation extendingPermutationTransformation = new DataTransformation(ExtendingPermutation);
 
                 _encryptSteps.Add(extendingPermutationTransformation);
@@ -85,9 +90,14 @@ namespace DES.AlgorithmBuilders
 
         private DataSet ChangeHalfWithSum(DataSet dataSet)
         {
-            BitArray oldLeft = dataSet.Left;
-            dataSet.Left = SumModuloTwo(dataSet.Right, dataSet.Left);
-            dataSet.Right = oldLeft;
+            dataSet.Right = SumModuloTwo(dataSet.Right, dataSet.Left);
+            dataSet.Left = dataSet.OldRight;
+            return dataSet;
+        }
+
+        private DataSet SaveOldRight(DataSet dataSet)
+        {
+            dataSet.OldRight = new BitArray(dataSet.Right);
             return dataSet;
         }
 
