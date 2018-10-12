@@ -11,15 +11,11 @@ namespace CryptoTests.Given_DESBuilder.When_Build
     {
         private DataSet _data;
 
-        public void When_Encrypt(DataSet data)
+        public void When_Func(DataSet data)
         {
             try
             {
-                Task.Run(() =>
-                {
-                    var algorithm = context.Build();
-                    _data = algorithm.Encrypt(data);
-                }).Wait();
+                Task.Run(() => { _data = functionToInvoke(data); }).Wait();
             }
             catch (AggregateException)
             {
@@ -44,7 +40,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                 true, false, false, true,  true, false, true, true
             });
 
-            When_Encrypt(new DataSet(){Right = data});
+            When_Func(new DataSet(){Right = data});
 
             //    0b_1101_0000,
             //    0b_1011_1101,
@@ -99,7 +95,7 @@ namespace CryptoTests.Given_DESBuilder.When_Build
                })
             };
 
-            When_Encrypt(data);
+            When_Func(data);
 
             Then_EncryptedShouldBe(result);
         }
@@ -131,49 +127,9 @@ namespace CryptoTests.Given_DESBuilder.When_Build
 
             With_PBlockPermutation();
 
-            When_Encrypt(data);
+            When_Func(data);
 
             Then_EncryptedShouldBe(result);
-        }
-
-        [Test]
-        public void And_WholeDES()
-        {
-            BitArray key = new BitArray(new bool[] //random values, not correct
-            {
-                false, false, false, true, false, true, true,  true,
-                false, false, true, true, true, true, true,  true,
-                false, false, false, true, false, true, false,  false,
-                true, true, true, true, true, true, true,  true,
-                false, false, false, false, false, false, false,  false,
-                false, true, false, true, false, true, false,  true,
-                false, false, false, true, true, true, true,  false,
-                false, false, false, true, false, true, false,  false
-            });
-
-            DataSet data = new DataSet() //random values, not correct
-            {
-                Right = new BitArray(new bool[]
-                {
-                    true, false, true, false,  false, true, false, true,
-                    true, false, true, true,  true, false, true, false,
-                    false, true, true, false,  false, true, true, false,
-                    true, false, false, true,  true, false, true, true
-                })
-            };
-
-            With_WholeDES(key);
-
-            Then_EncryptedShouldBe(new DataSet() //random values, not correct
-            {
-                Right = new BitArray(new bool[]
-                {
-                    true, false, true, false, false, true, false, true,
-                    true, false, true, true, true, false, true, false,
-                    false, true, true, false, false, true, true, false,
-                    true, false, false, true, true, false, true, true
-                })
-            });
         }
 
         public void Then_EncryptedShouldBe(DataSet correctData)

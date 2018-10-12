@@ -6,6 +6,7 @@ using DES.Constants;
 using DES.DataTransformations;
 using DESAlgorithm.Exceptions;
 using DESAlgorithm.Extensions;
+using DESAlgorithm.Models;
 using DESAlgorithm.PaddingStrategies;
 
 namespace DES.AlgorithmBuilders
@@ -35,7 +36,10 @@ namespace DES.AlgorithmBuilders
                 reducedKey = GenerateLongKeyForCycle(reducedKey, cycleNumber);
                 BitArray shortKey = GenerateShortKeyfromLongKey(reducedKey);
 
-                AddExtendingPermutation();
+                _encryptSteps.Add(new DataTransformation(dataSet =>
+                {
+                    return AddExtendingPermutation(dataSet);
+                }));
                 _encryptSteps.Add(new DataTransformation(dataSet =>
                 {
                     dataSet.Right = SumModuloTwo(shortKey, dataSet.Right);
@@ -43,6 +47,10 @@ namespace DES.AlgorithmBuilders
                 }));
 
                 //addSBlocks
+                _encryptSteps.Add(new DataTransformation(dataSet =>
+                {
+                    return AddSBlocks(dataSet);
+                }));
                 //add last permutation
 
                 //merge 'halfs'
@@ -56,29 +64,26 @@ namespace DES.AlgorithmBuilders
             }
         }
 
-        public void AddExtendingPermutation()
+        public DataSet AddExtendingPermutation(DataSet dataSet)
         {
-            _encryptSteps.Add(new DataTransformation(dataSet =>
+            BitArray data = dataSet.Right;
+            if (data.Length != 32)
             {
-                BitArray data = dataSet.Right;
-                if (data.Length != 32)
-                {
-                    throw new ValidationException("Only 32 bits array is accepted to be extended to 48 bits.");
-                }
+                throw new ValidationException("Only 32 bits array is accepted to be extended to 48 bits.");
+            }
 
-                int[] permutationTable = new int[]
-                {
-                    32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9,
-                    8, 9, 10, 11, 12, 13, 12, 13, 14, 15, 16, 17,
-                    16, 17, 18, 19, 20, 21, 20, 21, 22, 23, 24, 25,
-                    24, 25, 26, 27, 28, 29, 28, 29, 30, 31, 32, 1
-                };
+            int[] permutationTable = new int[]
+            {
+                32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9,
+                8, 9, 10, 11, 12, 13, 12, 13, 14, 15, 16, 17,
+                16, 17, 18, 19, 20, 21, 20, 21, 22, 23, 24, 25,
+                24, 25, 26, 27, 28, 29, 28, 29, 30, 31, 32, 1
+            };
 
-                BitArray extendedData = Shuffle(data, permutationTable);
+            BitArray extendedData = Shuffle(data, permutationTable);
 
-                dataSet.Right = extendedData;
-                return dataSet;
-            }));
+            dataSet.Right = extendedData;
+            return dataSet;
         }
 
         /// <summary>
@@ -172,24 +177,22 @@ namespace DES.AlgorithmBuilders
         }
 
 
-        public void AddSBlocks()
+        public DataSet AddSBlocks(DataSet dataSet)
         {
-            _encryptSteps.Add(new DataTransformation(dataSet =>
-            {
-                BitArray data = dataSet.Right;
+            BitArray data = dataSet.Right;
 
-                BitArray result = new BitArray(32);
-                BitArray OneBlockOutputData = new BitArray(4);
+            BitArray result = new BitArray(32);
+            BitArray OneBlockOutputData = new BitArray(4);
 
-                int[] oneBlockInputData = new int[6];
-                int[] rowBinNumber = new int[2];
+            int[] oneBlockInputData = new int[6];
+            int[] rowBinNumber = new int[2];
 
-                int rowDecNumber = new int();
-                int[] columnBinNumber = new int[4];
-                int columnDecNumber = new int();
-                int numberInBlock = new int();
+            int rowDecNumber = new int();
+            int[] columnBinNumber = new int[4];
+            int columnDecNumber = new int();
+            int numberInBlock = new int();
 
-                int[,] blocks = {{ 14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7 },
+            int[,] blocks = {{ 14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7 },
                              { 0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8 },
                              { 4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0 },
                              { 15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13 },      //S1
@@ -230,36 +233,35 @@ namespace DES.AlgorithmBuilders
                              { 2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11 }       //S8
             };
 
-                for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 6; j++)
                 {
-                    for (int j = 0; j < 6; j++)
-                    {
-                        oneBlockInputData[j] = BoolExtensions.ToInt(data[j + 6 * i]);
-                    }
-
-                    rowBinNumber[0] = oneBlockInputData.First();
-                    rowBinNumber[1] = oneBlockInputData.Last();
-
-                    for (int j = 1; j <= 4; j++)
-                    {
-                        columnBinNumber[j - 1] = oneBlockInputData[j];
-                    }
-
-
-                    rowDecNumber = BinaryToDecimal(rowBinNumber);
-                    columnDecNumber = BinaryToDecimal(columnBinNumber);
-                    OneBlockOutputData = new BitArray(new int[] { blocks[rowDecNumber + i * 4, columnDecNumber] });
-                    for (int j = 0; j < 4; j++)
-                    {
-                        result[j + 4 * i] = OneBlockOutputData[3 - j];
-                    }
+                    oneBlockInputData[j] = BoolExtensions.ToInt(data[j + 6 * i]);
                 }
 
-                dataSet.Right = result;
-                return dataSet;
-            }));
+                rowBinNumber[0] = oneBlockInputData.First();
+                rowBinNumber[1] = oneBlockInputData.Last();
 
-            
+                for (int j = 1; j <= 4; j++)
+                {
+                    columnBinNumber[j - 1] = oneBlockInputData[j];
+                }
+
+
+                rowDecNumber = BinaryToDecimal(rowBinNumber);
+                columnDecNumber = BinaryToDecimal(columnBinNumber);
+                OneBlockOutputData = new BitArray(new int[] { blocks[rowDecNumber + i * 4, columnDecNumber] });
+                for (int j = 0; j < 4; j++)
+                {
+                    result[j + 4 * i] = OneBlockOutputData[3 - j];
+                }
+            }
+
+            dataSet.Right = result;
+            return dataSet;
+
+
         }
 
         internal int BinaryToDecimal(int[] binaryNumber)
@@ -366,26 +368,23 @@ namespace DES.AlgorithmBuilders
             return key.Xor(key2);
         }
 
-        public void AddPblockPermutation()
+        public DataSet AddPblockPermutation(DataSet dataSet)
         {
-            _encryptSteps.Add(new DataTransformation(dataSet =>
+            BitArray data = dataSet.Right;
+            if (data.Length != 32)
             {
-                BitArray data = dataSet.Right;
-                if (data.Length != 32)
-                {
-                    throw new ValidationException("Only 32 bits array is accepted form P block permutation.");
-                }
+                throw new ValidationException("Only 32 bits array is accepted form P block permutation.");
+            }
 
-                int[] permutationTable = new int[]
-                {
-                    16, 7, 20, 21, 29, 12, 28, 17, 1, 15, 23, 26, 5, 18, 31, 10,
-                    2, 8, 24, 14, 32, 27, 3, 9, 19, 13, 30, 6, 22, 11, 4, 25
-                };
+            int[] permutationTable = new int[]
+            {
+                16, 7, 20, 21, 29, 12, 28, 17, 1, 15, 23, 26, 5, 18, 31, 10,
+                2, 8, 24, 14, 32, 27, 3, 9, 19, 13, 30, 6, 22, 11, 4, 25
+            };
 
-                BitArray extendedData = Shuffle(data, permutationTable);
-                dataSet.Right = extendedData;
-                return dataSet;
-            }));
+            BitArray extendedData = Shuffle(data, permutationTable);
+            dataSet.Right = extendedData;
+            return dataSet;
         }
 
         public BitArray RemoveParityBits(BitArray key)
