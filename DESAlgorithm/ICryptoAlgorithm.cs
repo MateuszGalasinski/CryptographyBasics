@@ -1,6 +1,6 @@
 ﻿namespace DES
 {
-    interface ICryptoAlgorithm
+    public interface ICryptoAlgorithm
     {
         bool[] Encrypt(bool[] data);
         bool[] Decrypt(bool[] data);

@@ -20,7 +20,7 @@ namespace DESAlgorithm.Extensions
             int value = 0;
             for (int i = 0; i < 8; i++)
             {
-                value += (int)Math.Pow(singleByteArray[7 - i].ToInt() * 2, i);
+                value += (int)Math.Pow(2, i) * singleByteArray[7 - i].ToInt();
             }
 
             return value;

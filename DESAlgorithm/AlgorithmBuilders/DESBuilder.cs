@@ -335,7 +335,7 @@ namespace DES.AlgorithmBuilders
 
         public BitArray GenerateLongKeyForCycle(BitArray previousKey, int cycle)
         {
-            Int16[] shiftInCycle = {0,1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
+            Int16[] shiftInCycle = {1,1,2,2,2,2,2,2,1,2,2,2,2,2,2,1};
 
             if (previousKey.Length != 56)
             {
@@ -344,8 +344,8 @@ namespace DES.AlgorithmBuilders
 
             BitArray[] keyInHalfs = SplitBitArrayInHalf(previousKey);
 
-            keyInHalfs[0] = ShiftBits(keyInHalfs[0], shiftInCycle[cycle - 1], Direction.Left);
-            keyInHalfs[1] = ShiftBits(keyInHalfs[1], shiftInCycle[cycle - 1], Direction.Left);
+            keyInHalfs[0] = ShiftBits(keyInHalfs[0], shiftInCycle[cycle], Direction.Left);
+            keyInHalfs[1] = ShiftBits(keyInHalfs[1], shiftInCycle[cycle], Direction.Left);
 
             return JoinBitArraysFromHalfs(keyInHalfs);
 
