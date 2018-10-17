@@ -40,7 +40,15 @@ namespace RSAAlgoithm
             {
                 int tmpResult;
                 if (flag == 1)
+                {
                     result[i] += 1;
+                    tmpResult = 1;
+                }
+                else
+                {
+                    tmpResult = 0;
+                }
+                    
 
                 if (j < second.Length)
                     tmpResult = first[i] + second[j];
@@ -49,7 +57,7 @@ namespace RSAAlgoithm
                     tmpResult = first[i];
                 }
 
-                if (tmpResult >= 9) //&& flag == 0)
+                if (tmpResult > 9) //&& flag == 0)
                 {
                     flag = 1;
                     result[i] += tmpResult - 10;
@@ -102,7 +110,12 @@ namespace RSAAlgoithm
                 if (tmpResult < 0) //&& flag == 0)
                 {
                     flag = -1;
-                    result[i] += first[i] + 10 - second[j];
+                    if (j < second.Length)
+                        result[i] += 9 - Math.Abs(tmpResult); //first[i] + 10 - second[j];
+                    if (result[i] < 0)
+                        flag += -1;
+
+
                 }
                 else  //if(tmpResult > 9 && flag == 1)
                 {
@@ -111,12 +124,32 @@ namespace RSAAlgoithm
                 }
                 j++;
             }
-            if (flag == 1)
+
+            int zeros = 0;
+             j = result.Length - 1;
+            while (result[j] == 0)
             {
-                result[result.Length - 1] = 1;
+                j--;
+                zeros++;
             }
 
-            return result;
+            if (zeros != 0)
+            {
+                int newLength = result.Length - zeros;
+                int[] newResult = new int[result.Length - zeros];
+
+                for (int k = 0; k < newLength; k++)
+                {
+                    newResult[k] = result[k];
+                }
+
+                return newResult;
+
+            }
+            else
+            {
+                return result;
+            }
 
         }
 
@@ -147,10 +180,6 @@ namespace RSAAlgoithm
 
         }
 
-        //public static int[][] DivideWithRemainder(int[] first, int[] second)
-        //{
-        //    //if (first.Length < second.Length)
-        //    //    return new int[] { -1 };
         public static int[] Mod(int[] first, int[] second)
         {
             if (first.Length < second.Length)
