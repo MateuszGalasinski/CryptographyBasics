@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BigIntTest
+namespace RSAAlgoithm
 {
     class BigInt
     {
@@ -125,25 +125,53 @@ namespace BigIntTest
 
         }
 
-        //public static int[][] DivideWithRemainder(int[] first, int[] second)
-        //{
-        //    //if (first.Length < second.Length)
-        //    //    return new int[] { -1 };
+        public static int[] Mod(int[] first, int[] second)
+        {
+            if (first.Length < second.Length)
+                return new int[] { -1 };
 
-        //    int[] result = new int[first.Length];
-        //    int[] previousStep;
+            int[] previousStep = new int[first.Length];
+            Array.Copy(first, previousStep, first.Length);
 
-        //    do
-        //    {
-        //        int[] step = Subtract(first, second);
-        //        if (step[0] == -1)
-        //            break;
+            int comparison;
+
+            while ((comparison = Compare(previousStep, second)) != -1)
+            {
+                if(comparison == 0)
+                    return new int[] { 0 };
+                if (comparison == 1)
+                {
+                    previousStep = Subtract(previousStep, second);
+                }
+            }
+            return previousStep;
+        }
+
+        public static int Compare(int[] first, int[] second)
+        {
+            if (first.Length > second.Length)
+                return 1;
+            else if (first.Length < second.Length)
+                return -1;
+            else
+            {
+                int i = first.Length;
+                do
+                {
+                    i--;
+                    if (first[i] > second[i])
+                        return 1;
+                    else if (first[i] < second[i])
+                        return -1;
+                    
+                }while(i != 0);
+
+                return 0;
+
+            }
+        }
 
 
 
-
-        //    } while (true);
-
-        //}
     }
 }
