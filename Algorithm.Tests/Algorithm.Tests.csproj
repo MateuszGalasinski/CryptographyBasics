@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigInt_Test\Multiply_Test.cs" />
     <Compile Include="ExtensionsTests\BitArrayExtensionsTests.cs" />
     <Compile Include="ExtensionsTests\BoolExtensionsTests.cs" />
     <Compile Include="Given_DESBuilder\GivenDESBuilder.cs" />
@@ -78,6 +79,10 @@
     <ProjectReference Include="..\DESAlgorithm\DESAlgorithm.csproj">
       <Project>{741656eb-bfce-496f-863b-3acabc5b2244}</Project>
       <Name>DESAlgorithm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RSAAlgoithm\RSAAlgoithm.csproj">
+      <Project>{3310788d-4fb8-481b-811d-415f0ba92747}</Project>
+      <Name>RSAAlgoithm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
