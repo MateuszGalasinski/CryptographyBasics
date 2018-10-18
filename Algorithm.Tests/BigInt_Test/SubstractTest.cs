@@ -11,12 +11,12 @@ namespace Algorithm.Tests.BigInt_Test
         {
             //BigInt first = new BigInt(new int[] { 9, 9, 9 });
             //BigInt second = new BigInt(new int[] { 9, 9, 9 });
-            int[] first = new int[] {9, 9, 9};
-            int[] second = new int[] { 9, 9, 9 };
+            int[] first = {9, 9, 9};
+            int[] second = {9, 9, 9};
 
             int[] result = BigInt.Substract(first, second);
 
-            result.Should().BeEquivalentTo(new int[] {0});
+            result.Should().BeEquivalentTo(new[] {0});
         }
 
         [Test]
@@ -24,12 +24,12 @@ namespace Algorithm.Tests.BigInt_Test
         {
             //BigInt first = new BigInt(new int[] { 9, 9, 9 });
             //BigInt second = new BigInt(new int[] { 9, 9, 9 });
-            int[] first = new int[] { 7, 5, 3 };
-            int[] second = new int[] { 6, 3, 1 };
+            int[] first = {7, 5, 3};
+            int[] second = {6, 3, 1};
 
             int[] result = BigInt.Substract(first, second);
 
-            result.Should().BeEquivalentTo(new int[] { 1, 2, 2 });
+            result.Should().BeEquivalentTo(new[] {1, 2, 2});
         }
 
         [Test]
@@ -37,12 +37,12 @@ namespace Algorithm.Tests.BigInt_Test
         {
             //BigInt first = new BigInt(new int[] { 9, 9, 9 });
             //BigInt second = new BigInt(new int[] { 9, 9, 9 });
-            int[] first = new int[] { 7, 5, 3 };
-            int[] second = new int[] { 7, 3, 1 };
+            int[] first = {7, 5, 3};
+            int[] second = {7, 3, 1};
 
             int[] result = BigInt.Substract(first, second);
 
-            result.Should().BeEquivalentTo(new int[] { 2, 2 });
+            result.Should().BeEquivalentTo(new[] {2, 2});
         }
 
         [Test]
@@ -50,12 +50,12 @@ namespace Algorithm.Tests.BigInt_Test
         {
             //BigInt first = new BigInt(new int[] { 9, 9, 9 });
             //BigInt second = new BigInt(new int[] { 9, 9, 9 });
-            int[] first = new int[] { 7, 5, 3 };
-            int[] second = new int[] { 6, 6, 1 };
+            int[] first = {7, 5, 3};
+            int[] second = {6, 6, 1};
 
             int[] result = BigInt.Substract(first, second);
 
-            result.Should().BeEquivalentTo(new int[] { 9, 2 });
+            result.Should().BeEquivalentTo(new[] {9, 2});
         }
 
         [Test]
@@ -63,12 +63,12 @@ namespace Algorithm.Tests.BigInt_Test
         {
             //BigInt first = new BigInt(new int[] { 9, 9, 9 });
             //BigInt second = new BigInt(new int[] { 9, 9, 9 });
-            int[] first = new int[] { 7, 5, 3 };
-            int[] second = new int[] { 4, 1 };
+            int[] first = {7, 5, 3};
+            int[] second = {4, 1};
 
             int[] result = BigInt.Substract(first, second);
 
-            result.Should().BeEquivalentTo(new int[] { 7, 1, 2 });
+            result.Should().BeEquivalentTo(new[] {7, 1, 2});
         }
 
         [Test]
@@ -76,12 +76,12 @@ namespace Algorithm.Tests.BigInt_Test
         {
             //BigInt first = new BigInt(new int[] { 9, 9, 9 });
             //BigInt second = new BigInt(new int[] { 9, 9, 9 });
-            int[] first = new int[] { 7, 5, 3 };
-            int[] second = new int[] { 6, 1 };
+            int[] first = {7, 5, 3};
+            int[] second = {6, 1};
 
             int[] result = BigInt.Substract(first, second);
 
-            result.Should().BeEquivalentTo(new int[] { 6, 9, 2 });
+            result.Should().BeEquivalentTo(new[] {6, 9, 2});
         }
     }
 }

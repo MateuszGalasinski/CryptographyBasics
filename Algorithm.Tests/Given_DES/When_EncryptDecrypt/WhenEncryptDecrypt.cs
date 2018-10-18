@@ -18,8 +18,13 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
             }
             catch (AggregateException ex)
             {
-
             }
+        }
+
+
+        public void Then_ResultShouldBe(bool[] correctData)
+        {
+            _data.Should().BeEquivalentTo(correctData);
         }
 
         [Test]
@@ -39,7 +44,7 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
 
             With_EncryptDecrypt();
 
-            bool[] data = new bool[]
+            bool[] data =
             {
                 false, false, false, false, false, false, false, false,
                 false, false, false, false, false, false, false, false,
@@ -72,7 +77,7 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
 
             With_EncryptDecrypt();
 
-            bool[] data = new bool[]
+            bool[] data =
             {
                 true, true, true, true, true, true, true, true,
                 true, true, true, true, true, true, true, true,
@@ -93,7 +98,7 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
         public void AndSomeText_KeyZero()
         {
             BitArray array = new BitArray(64);
-            var values = new int[]
+            var values = new[]
             {
                 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0,
                 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1,
@@ -110,12 +115,12 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
 
             With_EncryptDecrypt();
 
-            var message = new int[]
+            var message = new[]
             {
-                0,0,0,0, 0,0,0,1, 0,0,1,0, 0,0,1,1,
-                0,1,0,0, 0,1,0,1, 0,1,1,0, 0,1,1,1,
-                1,0,0,0, 1,0,0,1, 1,0,1,0, 1,0,1,1,
-                1,1,0,0, 1,1,0,1, 1,1,1,0, 1,1,1,1
+                0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 1,
+                0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1,
+                1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1,
+                1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1
             };
 
             bool[] data = new bool[64];
@@ -128,12 +133,6 @@ namespace Algorithm.Tests.Given_DES.When_EncryptDecrypt
             When_Func(data);
 
             Then_ResultShouldBe(data);
-        }
-
-
-        public void Then_ResultShouldBe(bool[] correctData)
-        {
-            _data.Should().BeEquivalentTo(correctData);
         }
     }
 }

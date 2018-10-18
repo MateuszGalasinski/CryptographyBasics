@@ -11,8 +11,10 @@ namespace DESAlgorithm.PaddingStrategies
         {
             if (message.Length % 8 != 0)
             {
-                throw new ValidationException($"Message does not represent bytes. {message.Length} is not divisible by 8.");
+                throw new ValidationException(
+                    $"Message does not represent bytes. {message.Length} is not divisible by 8.");
             }
+
             if (message.Length % 64 == 0)
             {
                 bool[] paddedMessage = new bool[message.Length + 64];
@@ -21,18 +23,19 @@ namespace DESAlgorithm.PaddingStrategies
                 {
                     paddedMessage[i + 4] = true; // set 5th bit in byte to true, so the byte value will equals 8
                 }
+
                 return paddedMessage;
             }
             else
             {
-                int remainderBits = 64 - (message.Length % 64);
-                int remainderBytesNumber = (remainderBits) / 8;
+                int remainderBits = 64 - message.Length % 64;
+                int remainderBytesNumber = remainderBits / 8;
                 bool[] paddedMessage = new bool[message.Length + remainderBits];
 
                 message.CopyTo(paddedMessage, 0); //copy message content
 
                 //add padding bytes
-                var binaryRepresentation = new BitArray(new byte[] {(byte)remainderBytesNumber}).Revert();
+                var binaryRepresentation = new BitArray(new[] {(byte) remainderBytesNumber}).Revert();
                 for (int i = message.Length; i < message.Length + remainderBits; i += 8)
                 {
                     binaryRepresentation.CopyTo(paddedMessage, i);
@@ -50,6 +53,7 @@ namespace DESAlgorithm.PaddingStrategies
             {
                 lastByte[j] = message[i];
             }
+
             //gain its value
             int byteValue = lastByte.GetByteValue();
 
@@ -57,6 +61,7 @@ namespace DESAlgorithm.PaddingStrategies
             {
                 throw new ValidationException("Message is shorter than padding length taken from last byte.");
             }
+
             //remove correct number of bytes (just dont copy them)
             bool[] messageWithoutPadding = new bool[message.Length - byteValue * 8];
             Array.Copy(message, 0, messageWithoutPadding, 0, messageWithoutPadding.Length);

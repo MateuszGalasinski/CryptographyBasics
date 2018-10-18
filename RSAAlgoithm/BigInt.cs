@@ -6,7 +6,6 @@ namespace RSAAlgoithm
 {
     public class BigInt
     {
-        public int[] Value { get => value; }
         private int[] value;
 
         public BigInt(int[] value)
@@ -14,12 +13,16 @@ namespace RSAAlgoithm
             Array.Copy(value, this.value, value.Length);
         }
 
+        public int[] Value
+        {
+            get => value;
+        }
+
         //lower index lower power
         public static int[] Add(int[] first, int[] second)
         {
-
             if (first.Length < second.Length)
-                return new int[] { -1 };
+                return new[] {-1};
             int flag = 0;
             int[] result;
             if (first[second.Length - 1] + second[second.Length - 1] < 9)
@@ -48,7 +51,7 @@ namespace RSAAlgoithm
                 {
                     tmpResult = 0;
                 }
-                    
+
 
                 if (j < second.Length)
                     tmpResult = first[i] + second[j];
@@ -62,11 +65,12 @@ namespace RSAAlgoithm
                     flag = 1;
                     result[i] += tmpResult - 10;
                 }
-                else  //if(tmpResult > 9 && flag == 1)
+                else //if(tmpResult > 9 && flag == 1)
                 {
                     flag = 0;
                     result[i] += tmpResult;
                 }
+
                 j++;
             }
 
@@ -83,7 +87,6 @@ namespace RSAAlgoithm
             }
 
             return result;
-
         }
 
         public static int[] Substract(int[] greater, int[] smaller)
@@ -96,7 +99,7 @@ namespace RSAAlgoithm
             // subtract shorter part
             while (reverseIndex <= smaller.Length)
             {
-                currentDigit = greater[greater.Length - reverseIndex] - (smaller[smaller.Length - reverseIndex]) - carry;
+                currentDigit = greater[greater.Length - reverseIndex] - smaller[smaller.Length - reverseIndex] - carry;
                 carry = currentDigit < 0 ? 1 : 0;
                 currentDigit = currentDigit + (carry == 1 ? 10 : 0);
                 result[greater.Length - reverseIndex] = currentDigit;
@@ -119,8 +122,8 @@ namespace RSAAlgoithm
             {
                 i++;
             }
-            
-            int[] trimmedResult = new int[result.Length - i]; 
+
+            int[] trimmedResult = new int[result.Length - i];
             Array.Copy(result, i, trimmedResult, 0, trimmedResult.Length);
             return trimmedResult;
         }
@@ -213,16 +216,15 @@ namespace RSAAlgoithm
                 }
 
                 resultList = Add(tmpList.ToArray(), resultList.ToArray()).ToList();
-
             }
-            return resultList.ToArray();
 
+            return resultList.ToArray();
         }
 
         public static int[] Mod(int[] first, int[] second)
         {
             if (first.Length < second.Length)
-                return new int[] { -1 };
+                return new[] {-1};
 
             int[] previousStep = new int[first.Length];
             Array.Copy(first, previousStep, first.Length);
@@ -231,13 +233,14 @@ namespace RSAAlgoithm
 
             while ((comparison = Compare(previousStep, second)) != -1)
             {
-                if(comparison == 0)
-                    return new int[] { 0 };
+                if (comparison == 0)
+                    return new[] {0};
                 if (comparison == 1)
                 {
                     previousStep = Substract(previousStep, second);
                 }
             }
+
             return previousStep;
         }
 
@@ -245,27 +248,19 @@ namespace RSAAlgoithm
         {
             if (first.Length > second.Length)
                 return 1;
-            else if (first.Length < second.Length)
+            if (first.Length < second.Length)
                 return -1;
-            else
+            int i = first.Length;
+            do
             {
-                int i = first.Length;
-                do
-                {
-                    i--;
-                    if (first[i] > second[i])
-                        return 1;
-                    else if (first[i] < second[i])
-                        return -1;
-                    
-                }while(i != 0);
+                i--;
+                if (first[i] > second[i])
+                    return 1;
+                if (first[i] < second[i])
+                    return -1;
+            } while (i != 0);
 
-                return 0;
-
-            }
+            return 0;
         }
-
-
-
     }
 }

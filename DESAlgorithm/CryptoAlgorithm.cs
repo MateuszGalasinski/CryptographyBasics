@@ -8,10 +8,6 @@ namespace DES
 {
     public class CryptoAlgorithm : ICryptoAlgorithm
     {
-        private List<IDataTransformation> _encryptSteps { get; }
-        private List<IDataTransformation> _decryptSteps { get; }
-        private IPaddingStrategy _paddingStrategy { get; }
-
         public CryptoAlgorithm(
             List<IDataTransformation> encryptSteps,
             List<IDataTransformation> decryptSteps,
@@ -21,6 +17,10 @@ namespace DES
             _decryptSteps = decryptSteps;
             _paddingStrategy = paddingStrategy;
         }
+
+        private List<IDataTransformation> _encryptSteps { get; }
+        private List<IDataTransformation> _decryptSteps { get; }
+        private IPaddingStrategy _paddingStrategy { get; }
 
         public bool[] Decrypt(bool[] data)
         {
@@ -37,7 +37,6 @@ namespace DES
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="transformations"></param>
         /// <param name="data">Padded data</param>
@@ -52,7 +51,7 @@ namespace DES
                 bool[] rightHalfBlock = new bool[32];
                 Array.Copy(data, i * 64 + 32, rightHalfBlock, 0, 32);
 
-                DataSet dataSet = new DataSet()
+                DataSet dataSet = new DataSet
                 {
                     Left = new BitArray(leftHalfBlock),
                     Right = new BitArray(rightHalfBlock)
@@ -63,6 +62,7 @@ namespace DES
                 {
                     dataSet = transformation.Transform(dataSet);
                 }
+
                 transformedBlocks.Add(dataSet);
             }
 

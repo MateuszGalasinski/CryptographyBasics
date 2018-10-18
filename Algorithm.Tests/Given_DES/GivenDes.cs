@@ -11,14 +11,14 @@ namespace Algorithm.Tests.Given_DES
         [TestFixture]
         public class GivenDES
         {
-            protected DESBuilder context;
-            protected Func<bool[], bool[]> functionToInvoke;
-
             [SetUp]
             public void Given()
             {
                 context = new DESBuilder();
             }
+
+            protected DESBuilder context;
+            protected Func<bool[], bool[]> functionToInvoke;
 
             public void With_WholeDES(BitArray key)
             {
@@ -28,7 +28,7 @@ namespace Algorithm.Tests.Given_DES
             public void With_EncryptDecrypt()
             {
                 CryptoAlgorithm algorithm = context.Build();
-                functionToInvoke = (data) =>
+                functionToInvoke = data =>
                 {
                     var encrypted = algorithm.Encrypt(data);
                     return algorithm.Decrypt(encrypted);

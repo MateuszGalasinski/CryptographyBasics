@@ -8,14 +8,14 @@ namespace CryptoTests.Given_DESBuilder
     [TestFixture]
     public class GivenDESBuilder
     {
-        protected DESBuilder context;
-        protected Func<DataSet, DataSet> functionToInvoke;
-
         [SetUp]
         public void Given()
         {
             context = new DESBuilder();
         }
+
+        protected DESBuilder context;
+        protected Func<DataSet, DataSet> functionToInvoke;
 
         public void With_ExtendingPermutation()
         {

@@ -15,31 +15,32 @@ namespace Algorithm.Tests.Given_DESBuilder.When_RemoveParityBits
         {
             try
             {
-                Task.Run(() =>
-                {
-                    _resultKey = context.RemoveParityBits(keyToReduce);
-                }).Wait();
+                Task.Run(() => { _resultKey = context.RemoveParityBits(keyToReduce); }).Wait();
             }
             catch (AggregateException)
             {
-
             }
+        }
+
+        public void Then_KeyShouldBe(BitArray correctData)
+        {
+            _resultKey.Should().Equal(correctData);
         }
 
         [Test]
         public void And_KeyToReduce()
         {
             BitArray keyToReduce = new BitArray(
-                new bool[]
+                new[]
                 {
-                    false, false, false, true, false, true, true,  true,
-                    false, false, true, true, true, true, true,  true,
-                    false, false, false, true, false, true, false,  false,
-                    true, true, true, true, true, true, true,  true,
-                    false, false, false, false, false, false, false,  false,
-                    false, true, false, true, false, true, false,  true,
-                    false, false, false, true, true, true, true,  false,
-                    false, false, false, true, false, true, false,  false
+                    false, false, false, true, false, true, true, true,
+                    false, false, true, true, true, true, true, true,
+                    false, false, false, true, false, true, false, false,
+                    true, true, true, true, true, true, true, true,
+                    false, false, false, false, false, false, false, false,
+                    false, true, false, true, false, true, false, true,
+                    false, false, false, true, true, true, true, false,
+                    false, false, false, true, false, true, false, false
                 });
 
             When_RemoveParityBits(keyToReduce);
@@ -48,7 +49,7 @@ namespace Algorithm.Tests.Given_DESBuilder.When_RemoveParityBits
             (
                 new BitArray
                 (
-                    new bool[]
+                    new[]
                     {
                         false, false, false, true, false, true, true,
                         false, false, true, true, true, true, true,
@@ -61,11 +62,6 @@ namespace Algorithm.Tests.Given_DESBuilder.When_RemoveParityBits
                     }
                 )
             );
-        }
-
-        public void Then_KeyShouldBe(BitArray correctData)
-        {
-            _resultKey.Should().Equal(correctData);
         }
     }
 }

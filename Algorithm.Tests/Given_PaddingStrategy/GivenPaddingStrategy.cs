@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace Algorithm.Tests.Given_IPaddingStrategy
 {
-    [TestFixture()]
+    [TestFixture]
     public class GivenPaddingStrategy
     {
         protected IPaddingStrategy context;

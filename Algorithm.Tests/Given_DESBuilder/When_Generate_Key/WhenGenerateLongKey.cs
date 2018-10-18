@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CryptoTests.Given_DESBuilder;
-using DES.Constants;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -15,7 +11,7 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Generate_Key
     {
         private BitArray _resultData;
 
-        public void When_Generate_Long_Key(BitArray key, int cycle )
+        public void When_Generate_Long_Key(BitArray key, int cycle)
         {
             try
             {
@@ -23,33 +19,37 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Generate_Key
             }
             catch (AggregateException)
             {
-
             }
+        }
+
+        public void Then_KeyShouldBe(BitArray correctData)
+        {
+            _resultData.Should().Equal(correctData);
         }
 
         [Test]
         public void And_KeyToGenerate()
         {
-            BitArray key = new BitArray(new bool[]
+            BitArray key = new BitArray(new[]
             {
                 true, true, false, true, false, false, false, false,
                 true, false, true, true, true, true, false, true,
                 true, true, true, true, false, true, false, false,
                 false, false, true, true, false, false, false, false,
                 true, true, false, true, false, true, false, false,
-                true, true, true, true, false, true, true, true, 
+                true, true, true, true, false, true, true, true,
                 true, false, true, false, true, false, true, false
             });
             int cycle = 1;
 
             When_Generate_Long_Key(key, cycle);
 
-            BitArray result_long = new BitArray(new bool[]
+            BitArray result_long = new BitArray(new[]
             {
                 true, false, true, false, false, false, false, true,
                 false, true, true, true, true, false, true, true,
                 true, true, true, false, true, false, false, false,
-                false, true, true, true , false, false, false, true,
+                false, true, true, true, false, false, false, true,
                 true, false, true, false, true, false, false, true,
                 true, true, true, false, true, true, true, true,
                 false, true, false, true, false, true, false, false
@@ -57,11 +57,5 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Generate_Key
 
             Then_KeyShouldBe(result_long);
         }
-
-        public void Then_KeyShouldBe(BitArray correctData)
-        {
-            _resultData.Should().Equal(correctData);
-        }
     }
 }
-    

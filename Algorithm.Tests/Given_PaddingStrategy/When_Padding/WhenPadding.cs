@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
 {
-    [TestFixture()]
+    [TestFixture]
     public class WhenPadding : GivenPaddingStrategy
     {
         private bool[] _resultData;
@@ -19,8 +19,12 @@ namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
             }
             catch (AggregateException)
             {
-
             }
+        }
+
+        public void Then_MessageShouldBe(bool[] correctData)
+        {
+            _resultData.Should().Equal(correctData);
         }
 
         [Test]
@@ -28,26 +32,26 @@ namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
         {
             With_CMSPaddingStrategy();
 
-            bool[] dataForPadding = new bool[]
-                {
-                    false, false, false, true, false, true, true, true
-                };
+            bool[] dataForPadding =
+            {
+                false, false, false, true, false, true, true, true
+            };
 
             When_Action(dataForPadding,
                 () => { _resultData = context.AddPadding(dataForPadding); });
 
-            Then_MessageShouldBe(new bool[]
-                {
-                    false, false, false, true, false, true, true, true,
+            Then_MessageShouldBe(new[]
+            {
+                false, false, false, true, false, true, true, true,
 
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                });
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true
+            });
         }
 
         [Test]
@@ -55,31 +59,26 @@ namespace Algorithm.Tests.Given_PaddingStrategy.When_Padding
         {
             With_CMSPaddingStrategy();
 
-            bool[] dataForPadding = new bool[]
-                {
-                    false, false, false, true, false, true, true, true,
+            bool[] dataForPadding =
+            {
+                false, false, false, true, false, true, true, true,
 
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true,
-                    false, false, false, false, false, true, true, true
-                };
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true,
+                false, false, false, false, false, true, true, true
+            };
 
             When_Action(dataForPadding,
                 () => { _resultData = context.RemovePadding(dataForPadding); });
 
-            Then_MessageShouldBe(new bool[]
-                {
-                    false, false, false, true, false, true, true, true
-                });
-        }
-
-        public void Then_MessageShouldBe(bool[] correctData)
-        {
-            _resultData.Should().Equal(correctData);
+            Then_MessageShouldBe(new[]
+            {
+                false, false, false, true, false, true, true, true
+            });
         }
     }
 }
