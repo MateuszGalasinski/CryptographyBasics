@@ -7,7 +7,7 @@ namespace Algorithm.Tests.BigInt_Test
     class Multiply_Test
     {
         [Test]
-        public void MultiplyTest()
+        public void Multiply_VeryBigNumberTest_ShouldBeEqual()
         {
             int[] first =
             {
@@ -44,6 +44,43 @@ namespace Algorithm.Tests.BigInt_Test
             };
 
             BigInt.Multiply(first, second).Should().BeEquivalentTo(expected);
+
         }
+
+        [Test]
+        public void Multiply_NumberMultipiledBy1_ShouldBeSameNumber()
+        {
+            int[] first = {1, 2, 3};
+            int[] second = {1};
+            int[] expected = {1, 2, 3};
+            BigInt.Multiply(first, second).Should().BeEquivalentTo(expected);
+        }
+
+        [Test]
+        public void Multiply_SameNumber_ShouldBeEqual()
+        {
+            int[] first = {1, 2, 3};
+            int[] second = {1, 2, 3};
+            int[] expected = {1, 4, 0, 3, 0, 1};
+            BigInt.Multiply(first, second).Should().BeEquivalentTo(expected);
+        }
+
+        [Test]
+        public void Multiply_SameLength_ShouldBeEqual()
+        {
+            int[] first = {0, 0, 0, 0, 1};
+            int[] second = {0, 0, 0, 0, 1};
+            int[] expected = {0, 0, 0, 0, 0, 0, 0, 0, 1};
+            BigInt.Multiply(first, second).Should().BeEquivalentTo(expected);
+        }
+
+        //[Test]
+        //public void Multiply_MultipliedByZero_ShouldBeEqual()
+        //{
+        //    int[] first = {1, 2, 3, 4, 5, 6, 7};
+        //    int[] second = {0};
+        //    int[] expected = {0};
+        //    BigInt.Multiply(first, second).Should().BeEquivalentTo(expected);
+        //}
     }
 }
