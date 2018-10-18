@@ -50,7 +50,6 @@
     <Compile Include="ICryptoAlgorithm.cs" />
     <Compile Include="PaddingStrategies\CMSPaddingStrategy.cs" />
     <Compile Include="PaddingStrategies\IPaddingStrategy.cs" />
-    <Compile Include="BigInt.cs" />
     <Compile Include="EuclideanAlgorithm.cs" />
     <Compile Include="MillerRabinPrimality.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
