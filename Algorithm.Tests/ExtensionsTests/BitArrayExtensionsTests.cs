@@ -10,12 +10,12 @@ namespace Algorithm.Tests.ExtensionsTests
         [Test]
         public void RevertSingleByteArray()
         {
-            BitArray array = new BitArray(new bool[]
+            BitArray array = new BitArray(new[]
             {
                 false, false, true, false, true, true, false, true
             });
 
-            array.Revert().Should().BeEquivalentTo(new BitArray(new bool[]
+            array.Revert().Should().BeEquivalentTo(new BitArray(new[]
             {
                 true, false, true, true, false, true, false, false
             }));

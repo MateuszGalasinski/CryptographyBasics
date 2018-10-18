@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DESAlgorithm.Extensions
+﻿namespace DESAlgorithm.Extensions
 {
     public static class IntExtensions
     {

@@ -19,20 +19,23 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Generate_Key
             }
             catch (AggregateException)
             {
-
             }
+        }
+
+        public void Then_KeyShouldBe(BitArray correctData)
+        {
+            _resultData.Should().Equal(correctData);
         }
 
         [Test]
         public void And_KeyToGenerate()
         {
-
-            BitArray key = new BitArray(new bool[]
+            BitArray key = new BitArray(new[]
             {
                 true, false, true, false, false, false, false, true,
                 false, true, true, true, true, false, true, true,
                 true, true, true, false, true, false, false, false,
-                false, true, true, true , false, false, false, true,
+                false, true, true, true, false, false, false, true,
                 true, false, true, false, true, false, false, true,
                 true, true, true, false, true, true, true, true,
                 false, true, false, true, false, true, false, false
@@ -40,21 +43,15 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Generate_Key
 
             When_Generate_Short_Key(key);
 
-            BitArray result_short = new BitArray(new bool[]
+            BitArray result_short = new BitArray(new[]
             {
                 false, true, true, false, true, false, true, true, true, false, true, true,
                 false, true, true, false, true, true, true, false, true, false, true, false,
                 true, true, false, true, true, false, false, true, false, true, true, true,
-                false, false, false, false, false, false,true, true, true, false, false, true
+                false, false, false, false, false, false, true, true, true, false, false, true
             });
 
             Then_KeyShouldBe(result_short);
         }
-
-        public void Then_KeyShouldBe(BitArray correctData)
-        {
-            _resultData.Should().Equal(correctData);
-        }
     }
 }
-

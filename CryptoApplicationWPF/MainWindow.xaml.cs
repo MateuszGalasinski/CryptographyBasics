@@ -7,11 +7,10 @@ using DES.AlgorithmBuilders;
 using DESAlgorithm.Extensions;
 using Microsoft.Win32;
 
-
 namespace CryptoApplicationWPF
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -26,7 +25,7 @@ namespace CryptoApplicationWPF
         {
             byte[] textToEncodeBytes;
 
-            if(filePath == string.Empty)
+            if (filePath == string.Empty)
             {
                 textToEncodeBytes = Encoding.ASCII.GetBytes(TextToEncryptTextBox.Text);
             }

@@ -17,7 +17,7 @@ namespace Algorithm.Tests.ExtensionsTests
         [Test]
         public void GetByteValue()
         {
-            bool[] array = new bool[]
+            bool[] array =
             {
                 true, false, true, false, true, true, false, true
             };

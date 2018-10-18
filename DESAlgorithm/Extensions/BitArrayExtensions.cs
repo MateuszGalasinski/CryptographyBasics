@@ -7,7 +7,7 @@ namespace DESAlgorithm.Extensions
         public static BitArray Revert(this BitArray array)
         {
             BitArray revertedArray = new BitArray(array.Length);
-            for (int i = array.Length - 1, r = 0; i >=0; i--, r++)
+            for (int i = array.Length - 1, r = 0; i >= 0; i--, r++)
             {
                 revertedArray[r] = array[i];
             }

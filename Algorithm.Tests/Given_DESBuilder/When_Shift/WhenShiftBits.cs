@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CryptoTests.Given_DESBuilder;
 using DES.Constants;
@@ -24,25 +20,24 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Shift
             }
             catch (AggregateException)
             {
-
             }
-        }
-
-        [Test]
-        public void And_DataToShift()
-        {
-            BitArray dataToShift = new BitArray(new bool[] {false, false, false, true , false, true , true, true });
-            int translation = 2;
-            Direction direction = Direction.Left;
-
-            When_ShiftBits( dataToShift,  translation,  direction);
-
-            Then_ShiftShouldBe(new BitArray(new bool[] {  false, true, false, true, true, true, false, false }));
         }
 
         public void Then_ShiftShouldBe(BitArray correctData)
         {
             _resultData.Should().Equal(correctData);
+        }
+
+        [Test]
+        public void And_DataToShift()
+        {
+            BitArray dataToShift = new BitArray(new[] {false, false, false, true, false, true, true, true});
+            int translation = 2;
+            Direction direction = Direction.Left;
+
+            When_ShiftBits(dataToShift, translation, direction);
+
+            Then_ShiftShouldBe(new BitArray(new[] {false, true, false, true, true, true, false, false}));
         }
     }
 }

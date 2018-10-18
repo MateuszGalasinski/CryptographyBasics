@@ -19,27 +19,26 @@ namespace Algorithm.Tests.Given_DESBuilder.When_Shuffle
             }
             catch (AggregateException)
             {
-
             }
-        }
-
-        [Test]
-        public void And_Shuffle()
-        {
-            BitArray data = new BitArray(new byte[] { 0b_1111_1111, 0b_0000_0000 });
-            int[] permutationTable = new int[]
-            {
-                1, 9, 1, 9,  1, 9, 1, 9
-            };
-
-            When_Shuffle(data, permutationTable);
-            
-            Then_ShuffledShouldBe(new BitArray(new byte[] { 0b_0101_0101 }));
         }
 
         public void Then_ShuffledShouldBe(BitArray correctData)
         {
             _resultData.Should().Equal(correctData);
+        }
+
+        [Test]
+        public void And_Shuffle()
+        {
+            BitArray data = new BitArray(new byte[] {0b_1111_1111, 0b_0000_0000});
+            int[] permutationTable =
+            {
+                1, 9, 1, 9, 1, 9, 1, 9
+            };
+
+            When_Shuffle(data, permutationTable);
+
+            Then_ShuffledShouldBe(new BitArray(new byte[] {0b_0101_0101}));
         }
     }
 }
