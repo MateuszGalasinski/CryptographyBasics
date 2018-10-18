@@ -40,10 +40,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\ValidationException.cs" />
+    <Compile Include="Models\DataSet.cs" />
+    <Compile Include="Types\BigInt.cs" />
+    <Compile Include="CryptoAlgorithm.cs" />
+    <Compile Include="DataTransformations\DataTransformation.cs" />
+    <Compile Include="DataTransformations\DataTransformationWithKey.cs" />
+    <Compile Include="DataTransformations\IDataTransformation.cs" />
+    <Compile Include="ICryptoAlgorithm.cs" />
+    <Compile Include="PaddingStrategies\CMSPaddingStrategy.cs" />
+    <Compile Include="PaddingStrategies\IPaddingStrategy.cs" />
     <Compile Include="BigInt.cs" />
     <Compile Include="EuclideanAlgorithm.cs" />
     <Compile Include="MillerRabinPrimality.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Builders\RSABuilder.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
