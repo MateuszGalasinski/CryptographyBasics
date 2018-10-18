@@ -86,72 +86,111 @@ namespace RSAAlgoithm
 
         }
 
-        public static int[] Subtract(int[] first, int[] second)
+        public static int[] Substract(int[] greater, int[] smaller)
         {
-            if (first.Length < second.Length)
-                return new int[] { -1 };
+            int[] result = new int[greater.Length];
+            int reverseIndex = 1;
+            int carry = 0;
+            int currentDigit;
 
-            int flag = 0;
-            int[] result = new int[first.Length];
-
-            int j = 0;
-
-            for (int i = 0; i < first.Length; i++)
+            // subtract shorter part
+            while (reverseIndex <= smaller.Length)
             {
-                if (flag == -1)
-                    result[i] -= 1;
-
-                int tmpResult;
-                if (j < second.Length)
-                    tmpResult = first[i] - second[j];
-                else
-                    tmpResult = first[i];
-
-                if (tmpResult < 0) //&& flag == 0)
-                {
-                    flag = -1;
-                    if (j < second.Length)
-                        result[i] += 9 - Math.Abs(tmpResult); //first[i] + 10 - second[j];
-                    if (result[i] < 0)
-                        flag += -1;
-
-
-                }
-                else  //if(tmpResult > 9 && flag == 1)
-                {
-                    flag = 0;
-                    result[i] += tmpResult;
-                }
-                j++;
+                currentDigit = greater[greater.Length - reverseIndex] - (smaller[smaller.Length - reverseIndex]) - carry;
+                carry = currentDigit < 0 ? 1 : 0;
+                currentDigit = currentDigit + (carry == 1 ? 10 : 0);
+                result[greater.Length - reverseIndex] = currentDigit;
+                reverseIndex++;
             }
 
-            int zeros = 0;
-             j = result.Length - 1;
-            while (result[j] == 0)
+            // carry rippling
+            while (reverseIndex <= greater.Length)
             {
-                j--;
-                zeros++;
+                currentDigit = greater[greater.Length - reverseIndex] - carry;
+                carry = currentDigit < 0 ? 1 : 0;
+                currentDigit = currentDigit + (carry == 1 ? 10 : 0);
+                result[greater.Length - reverseIndex] = currentDigit;
+                reverseIndex++;
             }
 
-            if (zeros != 0)
+            // 3. //find index of first non-zero digit
+            int i;
+            for (i = 0; i < result.Length - 1 && result[i] == 0;)
             {
-                int newLength = result.Length - zeros;
-                int[] newResult = new int[result.Length - zeros];
-
-                for (int k = 0; k < newLength; k++)
-                {
-                    newResult[k] = result[k];
-                }
-
-                return newResult;
-
+                i++;
             }
-            else
-            {
-                return result;
-            }
-
+            
+            int[] trimmedResult = new int[result.Length - i]; 
+            Array.Copy(result, i, trimmedResult, 0, trimmedResult.Length);
+            return trimmedResult;
         }
+
+        //public static int[] Subtract(int[] first, int[] second)
+        //{
+        //    if (first.Length < second.Length)
+        //        return new int[] { -1 };
+
+        //    int flag = 0;
+        //    int[] result = new int[first.Length];
+
+        //    int j = 0;
+
+        //    for (int i = 0; i < first.Length; i++)
+        //    {
+        //        if (flag == -1)
+        //            result[i] -= 1;
+
+        //        int tmpResult;
+        //        if (j < second.Length)
+        //            tmpResult = first[i] - second[j];
+        //        else
+        //            tmpResult = first[i];
+
+        //        if (tmpResult < 0) //&& flag == 0)
+        //        {
+        //            flag = -1;
+        //            if (j < second.Length)
+        //                result[i] += 9 - Math.Abs(tmpResult); //first[i] + 10 - second[j];
+        //            if (result[i] < 0)
+        //                flag += -1;
+
+
+        //        }
+        //        else  //if(tmpResult > 9 && flag == 1)
+        //        {
+        //            flag = 0;
+        //            result[i] += tmpResult;
+        //        }
+        //        j++;
+        //    }
+
+        //    int zeros = 0;
+        //     j = result.Length - 1;
+        //    while (result[j] == 0)
+        //    {
+        //        j--;
+        //        zeros++;
+        //    }
+
+        //    if (zeros != 0)
+        //    {
+        //        int newLength = result.Length - zeros;
+        //        int[] newResult = new int[result.Length - zeros];
+
+        //        for (int k = 0; k < newLength; k++)
+        //        {
+        //            newResult[k] = result[k];
+        //        }
+
+        //        return newResult;
+
+        //    }
+        //    else
+        //    {
+        //        return result;
+        //    }
+
+        //}
 
         public static int[] Multiply(int[] first, int[] second)
         {
@@ -196,7 +235,7 @@ namespace RSAAlgoithm
                     return new int[] { 0 };
                 if (comparison == 1)
                 {
-                    previousStep = Subtract(previousStep, second);
+                    previousStep = Substract(previousStep, second);
                 }
             }
             return previousStep;
