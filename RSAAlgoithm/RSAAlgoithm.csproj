@@ -41,7 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BigInt.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="EuclideanAlgorithm.cs" />
+    <Compile Include="MillerRabinPrimality.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

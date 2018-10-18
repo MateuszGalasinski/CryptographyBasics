@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BigInt_Test\AddTest.cs" />
+    <Compile Include="BigInt_Test\EuclideanTest.cs" />
     <Compile Include="BigInt_Test\ModTest.cs" />
     <Compile Include="BigInt_Test\Multiply_Test.cs" />
     <Compile Include="BigInt_Test\SubstractTest.cs" />

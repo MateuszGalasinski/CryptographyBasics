@@ -97,6 +97,9 @@ namespace RSAAlgoithm
 
         public static int[] Substract(int[] greater, int[] smaller)
         {
+            greater = greater.Reverse().ToArray();
+            smaller = smaller.Reverse().ToArray();
+
             int[] result = new int[greater.Length];
             int reverseIndex = 1;
             int carry = 0;
@@ -131,7 +134,7 @@ namespace RSAAlgoithm
 
             int[] trimmedResult = new int[result.Length - i];
             Array.Copy(result, i, trimmedResult, 0, trimmedResult.Length);
-            return trimmedResult;
+            return trimmedResult.Reverse().ToArray();
         }
 
         public static int[] Multiply(int[] first, int[] second)
