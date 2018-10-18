@@ -128,6 +128,52 @@ namespace RSAAlgoithm
             return trimmedResult;
         }
 
+        public static int[] Multiply(int[] first, int[] second)
+        {
+            int flag = 0;
+            int tmpNumber = 0;
+            List<int> firstList = first.ToList();
+            List<int> secondList = second.ToList();
+            List<int> tmpList = new List<int>();
+            List<int> resultList = new List<int>();
+            resultList.Add(0);
+
+            for (int i = 0; i < firstList.Count; i++)
+            {
+                flag = 0;
+                for (int j = 0; j < i; j++)
+                {
+                    tmpList.Add(0);
+                }
+
+                for (int j = 0; j < secondList.Count; j++)
+                {
+                    tmpNumber = firstList[i] * secondList[j] + flag;
+                    flag = tmpNumber / 10;
+                    tmpNumber = tmpNumber % 10;
+                    tmpList.Add(tmpNumber);
+
+                }
+
+                if (flag != 0)
+                {
+                    tmpList.Add(flag);
+                }
+
+                if (tmpList.Count > resultList.Count)
+                {
+                    resultList = Add(tmpList.ToArray(), resultList.ToArray()).ToList();
+                }
+                else
+                {
+                    resultList = Add(resultList.ToArray(), tmpList.ToArray()).ToList();
+                }
+                tmpList.Clear();
+
+            }
+            return resultList.ToArray();
+
+        }
         //public static int[] Subtract(int[] first, int[] second)
         //{
         //    if (first.Length < second.Length)
@@ -195,31 +241,7 @@ namespace RSAAlgoithm
 
         //}
 
-        public static int[] Multiply(int[] first, int[] second)
-        {
-            int flag = 0;
-            int tmpNumber = 0;
-            List<int> firstList = first.ToList();
-            List<int> secondList = second.ToList();
-            List<int> tmpList = new List<int>();
-            List<int> resultList = new List<int>();
-            resultList.Add(0);
-
-            for (int i = 0; i < firstList.Count; i++)
-            {
-                for (int j = 0; j < secondList.Count; j++)
-                {
-                    tmpNumber = firstList[i] * secondList[j] + flag;
-                    flag = tmpNumber / 10;
-                    tmpNumber = tmpNumber % 10;
-                    tmpList.Add(tmpNumber);
-                }
-
-                resultList = Add(tmpList.ToArray(), resultList.ToArray()).ToList();
-            }
-
-            return resultList.ToArray();
-        }
+       
 
         public static int[] Mod(int[] first, int[] second)
         {
