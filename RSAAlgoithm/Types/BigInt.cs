@@ -11,13 +11,11 @@ namespace RSAAlgoithm
 
         public BigInt(int[] value)
         {
+            this.value = new int[value.Length];
             Array.Copy(value, this.value, value.Length);
         }
 
-        public int[] Value
-        {
-            get => value;
-        }
+        public int[] Value { get => value; private set => this.value = value; }
 
         //lower index lower power
         public static int[] Add(int[] firstArg, int[] secondArg)
@@ -96,6 +94,7 @@ namespace RSAAlgoithm
             }
         }
 
+        [Obsolete]
         public static int[] Substract(int[] greater, int[] smaller)
         {
             greater = greater.Reverse().ToArray();
@@ -259,6 +258,60 @@ namespace RSAAlgoithm
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Substraction in place, using this number array.
+        /// More optimised than int[] version
+        /// </summary>
+        /// <param name="smallerValue">Number that has to be smaller than this number</param>
+        public void Substract(BigInt smaller)
+        {
+            int[] greaterValue = this.Value;
+            int[] smallerValue = smaller.Value;
+            int reverseIndex = 0;
+            int carry = 0;
+            int currentDigit;
+
+            // subtract shorter part
+            while (reverseIndex < smallerValue.Length)
+            {
+                currentDigit = greaterValue[reverseIndex] - smallerValue[reverseIndex] - carry;
+                carry = currentDigit < 0 ? 1 : 0;
+                currentDigit = currentDigit + (carry == 1 ? 10 : 0);
+                greaterValue[reverseIndex] = currentDigit;
+                reverseIndex++;
+            }
+
+            // carry rippling
+            while (reverseIndex < greaterValue.Length)
+            {
+                currentDigit = greaterValue[reverseIndex] - carry;
+                carry = currentDigit < 0 ? 1 : 0;
+                currentDigit = currentDigit + (carry == 1 ? 10 : 0);
+                greaterValue[reverseIndex] = currentDigit;
+                reverseIndex++;
+            }
+
+            // 3. //find index of first non-zero digit
+            int i, j = 0;
+            for (i = greaterValue.Length - 1; i >= 0 && greaterValue[i] == 0;)
+            {
+                i--;
+                j++;
+            }
+
+            if (j != greaterValue.Length)
+            {
+                int[] trimmedResult = new int[greaterValue.Length - j];
+                Array.Copy(greaterValue, 0, trimmedResult, 0, trimmedResult.Length);
+                this.Value = trimmedResult;
+            }
+            else
+            {
+                this.Value = new int[]{0};
+            }
+
         }
     }
 }
