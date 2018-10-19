@@ -11,6 +11,10 @@ namespace RSAAlgoithm
 
         public BigInt(int[] value)
         {
+            if (value == null)
+            {
+                throw new ValidationException("BigInt cannot be null");
+            }
             this.value = new int[value.Length];
             Array.Copy(value, this.value, value.Length);
         }
@@ -207,6 +211,29 @@ namespace RSAAlgoithm
             return previousStep;
         }
 
+        public BigInt Mod(BigInt second)
+        {
+            if (Value.Length < second.Value.Length)
+                return this;
+
+            int[] previousStep = new int[Value.Length];
+            Array.Copy(Value, previousStep, Value.Length);
+
+            int comparison;
+
+            while ((comparison = Compare(previousStep, second.Value)) != -1)
+            {
+                if (comparison == 0)
+                    return new BigInt(new[] { 0 });
+                if (comparison == 1)
+                {
+                    previousStep = Substract(previousStep, second.Value);
+                }
+            }
+
+            return new BigInt(previousStep);
+        }
+
         public static int Compare(int[] first, int[] second)
         {
             if (first.Length > second.Length)
@@ -235,6 +262,8 @@ namespace RSAAlgoithm
             return Array.ConvertAll<byte, int>(bytesToRandozize, input => { return (int) input % 10; });
         }
 
+        #region Operators
+        #region in/equality
         public static bool operator ==(BigInt first, int[] second)
         {
             return first.Value?.Equals(second) == true;
@@ -245,20 +274,188 @@ namespace RSAAlgoithm
             return first.Value?.Equals(second) == false;
         }
 
-        public static bool operator==(BigInt first, BigInt second)
+        public static bool operator ==(BigInt first, BigInt second)
         {
-            return first.Value?.Equals(second) == true;
+            return first.Value.SequenceEqual(second.Value);
         }
 
         public static bool operator !=(BigInt first, BigInt second)
         {
-            if (first.Value?.Equals(second.Value) == true)
+            return !first.Value.SequenceEqual(second.Value);
+        }
+
+        public static bool operator >(BigInt first, BigInt second)
+        {
+            if (first.Value.Length > second.Value.Length)
+            {
+                return true;
+            }
+
+            if (second.Value.Length > first.Value.Length)
             {
                 return false;
             }
 
-            return true;
+            for (int i = first.Value.Length-1; i >= 0; i--) //lengths equal
+            {
+                if (first.Value[i] != second.Value[i])
+                {
+                    if (first.Value[i] > second.Value[i])
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return false; //equal
         }
+
+        public static bool operator >=(BigInt first, BigInt second)
+        {
+            if (first.Value.Length > second.Value.Length)
+            {
+                return true;
+            }
+
+            if (second.Value.Length > first.Value.Length)
+            {
+                return false;
+            }
+
+            for (int i = first.Value.Length - 1; i >= 0; i--) //lengths equal
+            {
+                if (first.Value[i] != second.Value[i])
+                {
+                    if (first.Value[i] > second.Value[i])
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true; //equal
+        }
+
+        public static bool operator <=(BigInt first, BigInt second)
+        {
+            if (first.Value.Length < second.Value.Length)
+            {
+                return true;
+            }
+
+            if (first.Value.Length > second.Value.Length)
+            {
+                return false;
+            }
+
+            for (int i = first.Value.Length - 1; i >= 0; i--) //lengths equal
+            {
+                if (first.Value[i] != second.Value[i])
+                {
+                    if (first.Value[i] < second.Value[i])
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true; //equal
+        }
+
+        public static bool operator <(BigInt first, BigInt second)
+        {
+            if (first.Value.Length < second.Value.Length)
+            {
+                return true;
+            }
+
+            if (first.Value.Length > second.Value.Length)
+            {
+                return false;
+            }
+
+            for (int i = first.Value.Length - 1; i >= 0; i--) //lengths equal
+            {
+                if (first.Value[i] != second.Value[i])
+                {
+                    if (first.Value[i] < second.Value[i])
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return false; //equal
+        }
+        #endregion
+
+        public static BigInt operator -(BigInt greater, BigInt smaller)
+        {
+            BigInt result = greater.Copy();
+            int[] greaterValue = result.Value;
+            int[] smallerValue = smaller.Value;
+            int reverseIndex = 0;
+            int carry = 0;
+            int currentDigit;
+
+            // subtract shorter part
+            while (reverseIndex < smallerValue.Length)
+            {
+                currentDigit = greaterValue[reverseIndex] - smallerValue[reverseIndex] - carry;
+                carry = currentDigit < 0 ? 1 : 0;
+                currentDigit = currentDigit + (carry == 1 ? 10 : 0);
+                greaterValue[reverseIndex] = currentDigit;
+                reverseIndex++;
+            }
+
+            // carry rippling
+            while (reverseIndex < greaterValue.Length)
+            {
+                currentDigit = greaterValue[reverseIndex] - carry;
+                carry = currentDigit < 0 ? 1 : 0;
+                currentDigit = currentDigit + (carry == 1 ? 10 : 0);
+                greaterValue[reverseIndex] = currentDigit;
+                reverseIndex++;
+            }
+
+            // 3. //find index of first non-zero digit
+            int i, j = 0;
+            for (i = greaterValue.Length - 1; i >= 0 && greaterValue[i] == 0;)
+            {
+                i--;
+                j++;
+            }
+
+            if (j != greaterValue.Length)
+            {
+                int[] trimmedResult = new int[greaterValue.Length - j];
+                Array.Copy(greaterValue, 0, trimmedResult, 0, trimmedResult.Length);
+                result.Value = trimmedResult;
+            }
+            else
+            {
+                result.Value = new int[] { 0 };
+            }
+
+            return result;
+        }
+        #endregion
 
         /// <summary>
         /// Substraction in place, using this number array.
@@ -312,6 +509,13 @@ namespace RSAAlgoithm
                 this.Value = new int[]{0};
             }
 
+        }
+
+        public BigInt Copy()
+        {
+            int[] value = new int[Value.Length];
+            Value.CopyTo(value, Value.Length);
+            return new BigInt(value);
         }
     }
 }

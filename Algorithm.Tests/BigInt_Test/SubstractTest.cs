@@ -6,16 +6,16 @@ namespace Algorithm.Tests.BigInt_Test
 {
     public class SubstractTest
     {
-        [Test]
-        public void SubstractExactlySameNumbers_ShouldZero()
-        {
-            int[] first = {9, 9, 9};
-            int[] second = {9, 9, 9};
+        //[Test]
+        //public void SubstractExactlySameNumbers_ShouldZero()
+        //{
+        //    int[] first = {9, 9, 9};
+        //    int[] second = {9, 9, 9};
 
-            int[] result = BigInt.Substract(first, second);
+        //    int[] result = BigInt.Substract(first, second);
 
-            result.Should().Equal(new[] {0});
-        }
+        //    result.Should().Equal(new[] {0});
+        //}
 
         [Test]
         public void SubstractExactlySameBigInts_ShouldZero()
@@ -23,27 +23,31 @@ namespace Algorithm.Tests.BigInt_Test
             BigInt first = new BigInt( new int[] { 9, 9, 9 });
             BigInt second = new BigInt(new int[] { 9, 9, 9 });
 
+            (first - second).Value.Should().Equal(new[] { 0 });
+
             first.Substract(second);
 
             first.Value.Should().Equal(new[] { 0 });
         }
 
-        [Test]
-        public void SubstractSameLengthNumbers_WithNoCarry()
-        {
-            int[] first = {7, 5, 3};
-            int[] second = {6, 3, 1};
+        //[Test]
+        //public void SubstractSameLengthNumbers_WithNoCarry()
+        //{
+        //    int[] first = {7, 5, 3};
+        //    int[] second = {6, 3, 1};
 
-            int[] result = BigInt.Substract(first, second);
+        //    int[] result = BigInt.Substract(first, second);
 
-            result.Should().Equal(new[] {1, 2, 2});
-        }
+        //    result.Should().Equal(new[] {1, 2, 2});
+        //}
 
         [Test]
         public void SubstractSameLengthBigInts_WithNoCarry()
         {
             BigInt first = new BigInt(new int[] { 3, 5, 7 }); // 753
             BigInt second = new BigInt(new int[] { 1, 3, 6 }); // 631
+
+            (first - second).Value.Should().Equal(new[] { 2, 2, 1 });
 
             first.Substract(second);
 

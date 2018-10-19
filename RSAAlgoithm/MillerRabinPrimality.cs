@@ -1,55 +1,68 @@
-﻿namespace RSAAlgoithm
-{
-    public static class MillerRabinPrimality
-    {
-        //public static bool IsProbablePrime(this BigInt source, int certainty)
-        //{
-        //    if (source?.Value == null || source.Value.Length == 0)
-        //    {
-        //        throw new ValidationException("Number to test primality cannot be null or zero");
-        //    }
+﻿//namespace RSAAlgoithm
+//{
+//    public static class MillerRabinPrimality
+//    {
+//        private static BigInt _zero = new BigInt(new int[] { 0 });
+//        private static BigInt _one = new BigInt(new int[] { 1 });
+//        private static BigInt _two = new BigInt(new int[] { 2 });
+//        private static BigInt _three = new BigInt(new int[] { 3 });
 
-        //    if (source == new[]{2} || source == new[] {3})
-        //        return true;
-        //    if (source.Value[0] < 2 || BigInt.Mod(source.Value, new [] {2}) == new []{0})
-        //        return false;
+//        public static bool IsProbablePrime(this BigInt source, int certainty)
+//        {
+//            //helper variables (ups!)
+//            BigInt sourceMinusOne = source.Copy();
+//            sourceMinusOne.Substract(_one);
+//            BigInt sourceMinusTwo = source.Copy();
+//            sourceMinusOne.Substract(_two);
+//            //
 
-        //    BigInt d = source - 1;
-        //    int s = 0;
+//            if (source?.Value == null || source.Value.Length == 0)
+//            {
+//                throw new ValidationException("Number to test primality cannot be null or zero");
+//            }
 
-        //    while (d % 2 == 0)
-        //    {
-        //        d /= 2;
-        //        s += 1;
-        //    }
+//            if (source == _two || source == _three)
+//                return true;
+//            if (source.Value[0] < 2 || BigInt.Mod(source.Value, new[] { 2 }) == new[] { 0 })
+//                return false;
 
-        //    BigInt a;
-        //    for (int i = 0; i < certainty; i++)
-        //    {
-        //        do
-        //        {
-        //            a = new BigInt(BigInt.GenerateRandom(source.Value.Length));
-        //        }
-        //        while (a < 2 || a >= source - 2);
+//            BigInt d = source.Copy();
+//            d.Substract(_one); //d-=1
+//            int s = 0;
 
-        //        BigInt x = BigInt.ModPow(a, d, source);
-        //        if (x == 1 || x == source - 1)
-        //            continue;
+//            while (d.Mod(_two) == _zero)
+//            {
+//                d /= _two;
+//                s += 1;
+//            }
 
-        //        for (int r = 1; r < s; r++)
-        //        {
-        //            x = BigInt.ModPow(x, 2, source);
-        //            if (x == 1)
-        //                return false;
-        //            if (x == source - 1)
-        //                break;
-        //        }
+//            BigInt a;
+//            for (int i = 0; i < certainty; i++)
+//            {
+//                do
+//                {
+//                    a = new BigInt(BigInt.GenerateRandom(source.Value.Length));
+//                }
+//                while (a < _two || a >= sourceMinusTwo);
 
-        //        if (x != source - 1)
-        //            return false;
-        //    }
+//                BigInt x = BigInt.ModPow(a, d, source);
+//                if (x == _one || x == sourceMinusOne)
+//                    continue;
 
-        //    return true;
-        //}
-    }
-}
+//                for (int r = 1; r < s; r++)
+//                {
+//                    x = BigInt.ModPow(x, 2, source);
+//                    if (x == _one)
+//                        return false;
+//                    if (x == sourceMinusOne)
+//                        break;
+//                }
+
+//                if (x != sourceMinusOne)
+//                    return false;
+//            }
+
+//            return true;
+//        }
+//    }
+//}
