@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace RSAAlgoithm
 {
@@ -224,6 +225,40 @@ namespace RSAAlgoithm
             } while (i != 0);
 
             return 0;
+        }
+
+        public static int[] GenerateRandom(int size)
+        {
+            RandomNumberGenerator randomizer = RandomNumberGenerator.Create();
+            byte[] bytesToRandozize = new byte[size];
+            randomizer.GetBytes(bytesToRandozize);
+            int[] randomDigits = new int[size];
+            return Array.ConvertAll<byte, int>(bytesToRandozize, input => { return (int) input % 10; });
+        }
+
+        public static bool operator ==(BigInt first, int[] second)
+        {
+            return first.Value?.Equals(second) == true;
+        }
+
+        public static bool operator !=(BigInt first, int[] second)
+        {
+            return first.Value?.Equals(second) == false;
+        }
+
+        public static bool operator==(BigInt first, BigInt second)
+        {
+            return first.Value?.Equals(second) == true;
+        }
+
+        public static bool operator !=(BigInt first, BigInt second)
+        {
+            if (first.Value?.Equals(second.Value) == true)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
