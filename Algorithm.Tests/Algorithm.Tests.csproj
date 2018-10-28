@@ -56,13 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BigInt_Test\AddTest.cs" />
-    <Compile Include="BigInt_Test\EuclideanTest.cs" />
-    <Compile Include="BigInt_Test\ModTest.cs" />
-    <Compile Include="BigInt_Test\Multiply_Test.cs" />
-    <Compile Include="BigInt_Test\OperatorTest.cs" />
-    <Compile Include="BigInt_Test\OperatorTests\GreaterOperatorTests.cs" />
-    <Compile Include="BigInt_Test\SubstractTest.cs" />
     <Compile Include="ExtensionsTests\BitArrayExtensionsTests.cs" />
     <Compile Include="ExtensionsTests\BoolExtensionsTests.cs" />
     <Compile Include="Given_DESBuilder\GivenDESBuilder.cs" />
