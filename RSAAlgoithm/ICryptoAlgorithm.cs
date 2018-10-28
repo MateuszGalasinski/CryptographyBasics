@@ -2,7 +2,7 @@
 {
     public interface ICryptoAlgorithm
     {
-        bool[] Encrypt(bool[] data);
-        bool[] Decrypt(bool[] data);
+        byte[] Encrypt(byte[] data);
+        byte[] Decrypt(byte[] data);
     }
 }

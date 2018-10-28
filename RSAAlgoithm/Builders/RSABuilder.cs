@@ -46,7 +46,7 @@ namespace RSAAlgorithm
                     key)
             );
 
-            return new CryptoAlgorithm(_encryptSteps, _decryptSteps, new CMSPaddingStrategy());
+            return new CryptoAlgorithm(_encryptSteps, _decryptSteps, null);
         }
     }
 }

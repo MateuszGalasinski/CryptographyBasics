@@ -2,7 +2,7 @@
 {
     public interface IPaddingStrategy
     {
-        bool[] AddPadding(bool[] message);
-        bool[] RemovePadding(bool[] message);
+        byte[] AddPadding(byte[] message);
+        byte[] RemovePadding(byte[] message);
     }
 }
