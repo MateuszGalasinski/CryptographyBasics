@@ -1,11 +1,9 @@
-﻿using System.Collections;
+﻿using System.Numerics;
 
-namespace RSAAlgoithm
+namespace RSAAlgoithm.Models
 {
     public class DataSet
     {
-        public BitArray Left { get; set; }
-        public BitArray Right { get; set; }
-        public BitArray OldRight { get; set; }
+        public BigInteger Message { get; set; }
     }
 }

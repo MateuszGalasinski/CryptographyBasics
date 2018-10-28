@@ -1,4 +1,4 @@
-﻿namespace RSAAlgoithm
+﻿namespace RSAAlgorithm
 {
     public interface ICryptoAlgorithm
     {

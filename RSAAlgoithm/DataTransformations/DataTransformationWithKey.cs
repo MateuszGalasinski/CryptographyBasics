@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections;
+﻿using RSAAlgoithm.Models;
+using System;
+using System.Numerics;
 
 
-namespace RSAAlgoithm
+namespace RSAAlgorithm
 {
     public class DataTransformationWithKey : IDataTransformation
     {
-        public DataTransformationWithKey(Func<DataSet, BitArray, DataSet> transformation, BitArray key)
+        public DataTransformationWithKey(Func<DataSet, BigInteger, DataSet> transformation, BigInteger key)
         {
             Transformation = transformation;
-            Key = new BitArray(key);
+            Key = key;
         }
 
-        public Func<DataSet, BitArray, DataSet> Transformation { get; }
-        public BitArray Key { get; }
+        public Func<DataSet, BigInteger, DataSet> Transformation { get; }
+        public BigInteger Key { get; }
 
         public DataSet Transform(DataSet data)
         {

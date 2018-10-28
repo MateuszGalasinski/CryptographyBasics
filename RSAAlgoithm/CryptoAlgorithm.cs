@@ -1,8 +1,9 @@
-﻿using System;
+﻿using RSAAlgoithm.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace RSAAlgoithm
+namespace RSAAlgorithm
 {
     public class CryptoAlgorithm : ICryptoAlgorithm
     {

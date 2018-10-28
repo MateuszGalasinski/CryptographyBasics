@@ -1,20 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using RSAAlgoithm.Models;
+using System.Collections.Generic;
 
-namespace RSAAlgoithm
+namespace RSAAlgorithm
 {
     public class RSABuilder
     {
-        readonly List<IDataTransformation> _decryptSteps = new List<IDataTransformation>();
-        readonly List<IDataTransformation> _encryptSteps = new List<IDataTransformation>();
+        private readonly List<IDataTransformation> _decryptSteps = new List<IDataTransformation>();
+        private readonly List<IDataTransformation> _encryptSteps = new List<IDataTransformation>();
 
-        public CryptoAlgorithm Build()
+        public CryptoAlgorithm Build(Key key)
         {
+
+
             return new CryptoAlgorithm(_encryptSteps, _decryptSteps, new CMSPaddingStrategy());
-        }
-
-        public void AddWholeRSA()
-        {
-
         }
     }
 }

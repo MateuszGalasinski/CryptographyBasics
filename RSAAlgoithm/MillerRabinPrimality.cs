@@ -1,13 +1,11 @@
-﻿namespace RSAAlgoithm
+﻿using System.Numerics;
+using System.Security.Cryptography;
+
+namespace RSAAlgorithm
 {
     public static class MillerRabinPrimality
     {
-        private static BigInt _zero = new BigInt(new int[] { 0 });
-        private static BigInt _one = new BigInt(new int[] { 1 });
-        private static BigInt _two = new BigInt(new int[] { 2 });
-        private static BigInt _three = new BigInt(new int[] { 3 });
-
-        public static bool IsProbablePrime(this BigInt source, int certainty)
+        public static bool IsProbablePrime(this BigInteger source, int certainty)
         {
             if (source == 2 || source == 3)
                 return true;

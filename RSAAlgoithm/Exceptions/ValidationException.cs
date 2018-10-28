@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RSAAlgoithm
+namespace RSAAlgoithm.Exceptions
 {
     public class ValidationException : Exception
     {

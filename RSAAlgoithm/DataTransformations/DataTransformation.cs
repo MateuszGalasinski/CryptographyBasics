@@ -1,7 +1,8 @@
-﻿using System;
+﻿using RSAAlgoithm.Models;
+using System;
 
 
-namespace RSAAlgoithm
+namespace RSAAlgorithm
 {
     public class DataTransformation : IDataTransformation
     {

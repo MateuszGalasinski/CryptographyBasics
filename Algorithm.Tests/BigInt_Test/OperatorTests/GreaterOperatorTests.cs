@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using RSAAlgoithm;
+using RSAAlgorithm;
 
 namespace Algorithm.Tests.BigInt_Test.OperatorTests
 {

@@ -1,5 +1,7 @@
 ﻿
-namespace RSAAlgoithm
+using RSAAlgoithm.Models;
+
+namespace RSAAlgorithm
 {
     public interface IDataTransformation
     {
