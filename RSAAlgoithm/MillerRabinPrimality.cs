@@ -9,56 +9,52 @@
 
         public static bool IsProbablePrime(this BigInt source, int certainty)
         {
-            //helper variables (ups!)
-            BigInt sourceMinusOne = source.Copy();
-            sourceMinusOne.Substract(_one);
-            BigInt sourceMinusTwo = source.Copy();
-            sourceMinusOne.Substract(_two);
-            //
-
-            if (source?.Value == null || source.Value.Length == 0)
-            {
-                throw new ValidationException("Number to test primality cannot be null or zero");
-            }
-
-            if (source == _two || source == _three)
+            if (source == 2 || source == 3)
                 return true;
-            if (source.Value[0] < 2 || BigInt.Mod(source.Value, new[] { 2 }) == new[] { 0 })
+            if (source < 2 || source % 2 == 0)
                 return false;
 
-            BigInt d = source.Copy();
-            d.Substract(_one); //d-=1
+            BigInteger d = source - 1;
             int s = 0;
 
-            while (d.Mod(_two) == _zero)
+            while (d % 2 == 0)
             {
-                d /= _two;
+                d /= 2;
                 s += 1;
             }
 
-            BigInt a;
+            // There is no built-in method for generating random BigInteger values.
+            // Instead, random BigIntegers are constructed from randomly generated
+            // byte arrays of the same length as the source.
+            RandomNumberGenerator rng = RandomNumberGenerator.Create();
+            byte[] bytes = new byte[source.ToByteArray().LongLength];
+            BigInteger a;
+
             for (int i = 0; i < certainty; i++)
             {
                 do
                 {
-                    a = new BigInt(BigInt.GenerateRandom(source.Value.Length));
+                    // This may raise an exception in Mono 2.10.8 and earlier.
+                    // http://bugzilla.xamarin.com/show_bug.cgi?id=2761
+                    rng.GetBytes(bytes);
+                    a = new BigInteger(bytes);
                 }
-                while (a < _two || a >= sourceMinusTwo);
+                while (a < 2 || a >= source - 2);
 
-                BigInt x = BigInt.ModPow(a, d, source);
-                if (x == _one || x == sourceMinusOne)
+                BigInteger x = BigInteger.ModPow(a, d, source);
+                if (x == 1 || x == source - 1)
                     continue;
 
                 for (int r = 1; r < s; r++)
                 {
-                    x = BigInt.ModPow(x, 2, source);
-                    if (x == _one)
+                    x = BigInteger.ModPow(x, 2, source);
+                    if (x == 1)
                         return false;
-                    if (x == sourceMinusOne)
+                    if (x == source - 1)
                         break;
                 }
 
-                if (x != sourceMinusOne)
+                if (x != source - 1)
                     return false;
             }
 

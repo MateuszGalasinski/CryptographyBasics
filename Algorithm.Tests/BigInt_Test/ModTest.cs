@@ -60,6 +60,17 @@ namespace Algorithm.Tests.BigInt_Test
             Assert.AreEqual(new int[] { 7,6,5}, result);
         }
 
+        [Test]
+        public void ModTwo_Test()
+        {
+            int[] first = { 7, 6, 5, 4, 3, 2, 1, 2, 1, 1, 1, 1,1 };
+            int[] second = { 2 };
+
+            int[] result = BigInt.Mod(first, second);
+
+            Assert.AreEqual(new int[] { 7, 6, 5 }, result);
+        }
+
 
     }
 }

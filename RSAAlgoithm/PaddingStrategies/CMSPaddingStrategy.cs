@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-
-
-namespace RSAAlgoithm
+﻿namespace RSAAlgoithm
 {
     public class CMSPaddingStrategy : IPaddingStrategy
     {

@@ -196,17 +196,29 @@ namespace RSAAlgoithm
             int[] previousStep = new int[first.Length];
             Array.Copy(first, previousStep, first.Length);
 
-            int comparison;
+            //int comparison;
 
-            while ((comparison = Compare(previousStep, second)) != -1)
+            BigInt prevStepBigInt = new BigInt(previousStep);
+            BigInt secondBigInt = new BigInt(second);
+
+            while (prevStepBigInt > secondBigInt) //((comparison = Compare(previousStep, second)) != -1) 
             {
-                if (comparison == 0)
-                    return new[] {0};
-                if (comparison == 1)
-                {
-                    previousStep = Substract(previousStep, second);
-                }
+                prevStepBigInt = prevStepBigInt - secondBigInt;
+
+                //if (comparison == 0)
+                //    return new[] {0};
+                //if (comparison == 1)
+                //{
+                    //previousStep = previousStep - second; // Substract(previousStep, second);
+                //}
             }
+
+            if (prevStepBigInt == secondBigInt)
+            {
+                return new[] { 0 };
+            }
+
+
 
             return previousStep;
         }
@@ -232,6 +244,54 @@ namespace RSAAlgoithm
             }
 
             return new BigInt(previousStep);
+        }
+
+        public static BigInt Multiply(BigInt firstBigInt, BigInt secondBigInt)
+        {
+            int[] first = firstBigInt.Value;
+            int[] second = secondBigInt.Value;
+            int flag = 0;
+            int tmpNumber = 0;
+            List<int> firstList = first.ToList();
+            List<int> secondList = second.ToList();
+            List<int> tmpList = new List<int>();
+            List<int> resultList = new List<int>();
+            resultList.Add(0);
+
+            for (int i = 0; i < firstList.Count; i++)
+            {
+                flag = 0;
+                for (int j = 0; j < i; j++)
+                {
+                    tmpList.Add(0);
+                }
+
+                for (int j = 0; j < secondList.Count; j++)
+                {
+                    tmpNumber = firstList[i] * secondList[j] + flag;
+                    flag = tmpNumber / 10;
+                    tmpNumber = tmpNumber % 10;
+                    tmpList.Add(tmpNumber);
+
+                }
+
+                if (flag != 0)
+                {
+                    tmpList.Add(flag);
+                }
+
+                if (tmpList.Count > resultList.Count)
+                {
+                    resultList = Add(tmpList.ToArray(), resultList.ToArray()).ToList();
+                }
+                else
+                {
+                    resultList = Add(resultList.ToArray(), tmpList.ToArray()).ToList();
+                }
+                tmpList.Clear();
+
+            }
+            return new BigInt(resultList.ToArray());
         }
 
         public static int Compare(int[] first, int[] second)
@@ -514,7 +574,7 @@ namespace RSAAlgoithm
         public BigInt Copy()
         {
             int[] value = new int[Value.Length];
-            Value.CopyTo(value, Value.Length);
+            Value.CopyTo(value, 0);
             return new BigInt(value);
         }
     }
