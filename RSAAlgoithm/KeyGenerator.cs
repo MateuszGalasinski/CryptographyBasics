@@ -4,10 +4,10 @@ namespace RSAAlgoithm
 {
     public class KeyGenerator
     {
-        public Key Generate()
-        {
+        //public Key Generate()
+        //{
 
 
-        }
+        //}
     }
 }

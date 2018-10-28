@@ -1,4 +1,6 @@
-﻿namespace RSAAlgoithm.Models
+﻿using System.Numerics;
+
+namespace RSAAlgoithm.Models
 {
     public class Key
     {

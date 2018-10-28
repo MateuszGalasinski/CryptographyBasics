@@ -57,12 +57,7 @@ namespace CryptoApplicationWPF
                 textToDecodeBytes = File.ReadAllBytes(filePath);
             }
 
-            if (DecryptionKeyTextBox.Text.Length != 8)
-            {
-                MessageBox.Show("Key must be an 8byte string", "Error!");
-                return;
-            }
-            BitArray encryptionKey = new BitArray(Encoding.ASCII.GetBytes(DecryptionKeyTextBox.Text));
+            //BitArray encryptionKey = new BitArray(Encoding.ASCII.GetBytes(DecryptionKeyTextBox.Text));
 
             if (textToDecodeBytes.Length == 0)
             {
@@ -72,13 +67,6 @@ namespace CryptoApplicationWPF
 
             bool[] bitsToDecode = new bool[bitArrayToDecode.Count];
             bitArrayToDecode.CopyTo(bitsToDecode, 0);
-
-            DESBuilder builder = new DESBuilder();
-            builder.AddWholeDES(encryptionKey);
-            CryptoAlgorithm des = builder.Build();
-
-            bool[] decrypted = des.Decrypt(bitsToDecode);
-            decryptedBytes = decrypted.ToByteArray();
 
             DecryptedTextBox.Text = Encoding.ASCII.GetString(decryptedBytes);
             filePath = string.Empty;

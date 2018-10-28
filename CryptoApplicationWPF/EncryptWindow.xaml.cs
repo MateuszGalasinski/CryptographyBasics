@@ -35,37 +35,19 @@ namespace CryptoApplicationWPF
                 textToEncodeBytes = File.ReadAllBytes(filePath);
             }
 
-            if (EncryptionKeyTextBox.Text.Length != 8)
-            {
-                MessageBox.Show("Key must be an 8byte string", "Error!");
-                return;
-            }
-            BitArray encryptionKey = new BitArray(Encoding.ASCII.GetBytes(EncryptionKeyTextBox.Text));
-
             if (textToEncodeBytes.Length == 0)
             {
                 MessageBox.Show("There is nothing to encode", "Error!");
             }
+
             BitArray bitArrayToEncode = new BitArray(textToEncodeBytes).RevertEveryByte();
 
             bool[] bitsToEncode = new bool[bitArrayToEncode.Count];
             bitArrayToEncode.CopyTo(bitsToEncode, 0);
 
-            DESBuilder builder = new DESBuilder();
-            builder.AddWholeDES(encryptionKey);
-            CryptoAlgorithm des = builder.Build();
-
-            bool[] encrypted = des.Encrypt(bitsToEncode);
-            encryptedBytes = encrypted.ToByteArray();
-
             EncryptedTextBox.Text = Encoding.ASCII.GetString(encryptedBytes);
 
             filePath = string.Empty;
-
-            //DecryptedTextBox.Text = Encoding.ASCII.GetString(des.Decrypt(encrypted).ToByteArray());
-            //byte[] returnMessage = messageWithoutPadding.ToByteArray();
-
-            //File.WriteAllBytes(System.IO.Path.Combine(Directory.GetCurrentDirectory(), "decrypted.bmp"), returnMessage
         }
 
         private void ChooseFileButton_Click(object sender, RoutedEventArgs e)
@@ -95,6 +77,17 @@ namespace CryptoApplicationWPF
             Window choiceWindow = new ChoiceWindow();
             choiceWindow.Show();
             this.Close();
+        }
+
+        private void GenerateKeyButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void ShowKeysButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ShowKeysWindow window = new ShowKeysWindow();
+            window.Show();
         }
     }
 }
