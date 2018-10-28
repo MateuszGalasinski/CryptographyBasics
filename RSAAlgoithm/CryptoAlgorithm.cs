@@ -1,7 +1,8 @@
-﻿using RSAAlgoithm.Models;
+﻿using RSAAlgoithm.Constants;
+using RSAAlgoithm.Models;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 
 namespace RSAAlgorithm
 {
@@ -21,18 +22,23 @@ namespace RSAAlgorithm
         private List<IDataTransformation> _decryptSteps { get; }
         private IPaddingStrategy _paddingStrategy { get; }
 
-        public bool[] Decrypt(bool[] data)
+        public byte[] Decrypt(byte[] data)
         {
-            bool[] decryptedData = TrasformateWithBlockSeparation(_decryptSteps, data);
+            byte[] decryptedData = TransformWithBlockSeparation(_decryptSteps, data);
 
-            return _paddingStrategy.RemovePadding(decryptedData);
+            _paddingStrategy?.RemovePadding(decryptedData);
+
+            return decryptedData;
         }
 
-        public bool[] Encrypt(bool[] data)
+        public byte[] Encrypt(byte[] data)
         {
-            bool[] paddedData = _paddingStrategy.AddPadding(data);
+            if (_paddingStrategy != null)
+            {
+                data = _paddingStrategy.AddPadding(data);
+            }
 
-            return TrasformateWithBlockSeparation(_encryptSteps, paddedData);
+            return TransformWithBlockSeparation(_encryptSteps, data);
         }
 
         /// <summary>
@@ -40,20 +46,19 @@ namespace RSAAlgorithm
         /// <param name="transformations"></param>
         /// <param name="data">Padded data</param>
         /// <returns></returns>
-        private bool[] TrasformateWithBlockSeparation(List<IDataTransformation> transformations, bool[] data)
+        private byte[] TransformWithBlockSeparation(List<IDataTransformation> transformations, byte[] data)
         {
+            const int blockSize = KeyConstants.KeySize;
+
             List<DataSet> transformedBlocks = new List<DataSet>();
-            for (int i = 0; i < data.Length / 64; i++)
+            for (int i = 0; i < data.Length / blockSize; i++)
             {
-                bool[] leftHalfBlock = new bool[32];
-                Array.Copy(data, i * 64, leftHalfBlock, 0, 32);
-                bool[] rightHalfBlock = new bool[32];
-                Array.Copy(data, i * 64 + 32, rightHalfBlock, 0, 32);
+                byte[] message = new byte[blockSize];
+                Array.Copy(data, i * blockSize, message, 0, blockSize);
 
                 DataSet dataSet = new DataSet
                 {
-                    Left = new BitArray(leftHalfBlock),
-                    Right = new BitArray(rightHalfBlock)
+                    Message = new BigInteger(message)
                 };
 
                 //encrypt
@@ -65,12 +70,11 @@ namespace RSAAlgorithm
                 transformedBlocks.Add(dataSet);
             }
 
-            bool[] transformedData = new bool[transformedBlocks.Count * 64];
+            byte[] transformedData = new byte[transformedBlocks.Count * blockSize];
             int blocksCounter = 0;
             foreach (DataSet transformedBlock in transformedBlocks)
             {
-                transformedBlock.Left.CopyTo(transformedData, blocksCounter * 64);
-                transformedBlock.Right.CopyTo(transformedData, blocksCounter * 64 + 32);
+                transformedBlock.Message.ToByteArray().CopyTo(transformedData, blocksCounter * blockSize);
                 blocksCounter++;
             }
 

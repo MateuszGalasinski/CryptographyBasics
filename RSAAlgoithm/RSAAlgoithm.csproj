@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants\KeyConstants.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Extensions\BitArrayExtensions.cs" />
     <Compile Include="Extensions\BoolExtensions.cs" />
