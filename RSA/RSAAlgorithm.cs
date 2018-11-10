@@ -8,6 +8,9 @@ namespace RSA
         public const int NumberOfBits = 64;
         public const int Confidence = 40;
         public static readonly BigInteger BigOne = new BigInteger(1);
+
+        public static int NumberOfBytes => NumberOfBits / 8;
+
         public static BigInteger Encrypt(BigInteger data, BigInteger e, BigInteger n) => data.modPow(e, n);
 
         public static BigInteger Decrypt(BigInteger data, BigInteger d, BigInteger n) => data.modPow(d, n);

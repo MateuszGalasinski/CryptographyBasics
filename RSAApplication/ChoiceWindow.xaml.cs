@@ -9,13 +9,12 @@ namespace RSAApplication
     /// </summary>
     public partial class ChoiceWindow : Window
     {
-        public FullKey Key { get; set; }
+        public static FullKey Key { get; set; }
 
         public ChoiceWindow()
         {
             InitializeComponent();
             DataContext = this;
-            Key = RSAAlgorithm.GenerateKey();
             UpdateKeysTextBoxes();
         }
 
@@ -41,9 +40,9 @@ namespace RSAApplication
 
         private void UpdateKeysTextBoxes()
         {
-            TextBoxKeyN.Text = Key.N.ToString();
-            TextBoxKeyD.Text = Key.D.ToString();
-            TextBoxKeyE.Text = Key.E.ToString();
+            TextBoxKeyN.Text = Key?.N.ToString();
+            TextBoxKeyD.Text = Key?.D.ToString();
+            TextBoxKeyE.Text = Key?.E.ToString();
         }
     }
 }

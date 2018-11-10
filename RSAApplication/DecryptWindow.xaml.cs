@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using RSA;
+using RSA.Extensions;
 using RSA.Models;
-using System;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -15,7 +15,9 @@ namespace RSAApplication
     {
         private readonly FullKey _key;
         private  string filePath = string.Empty;
-        private string decryptedText;
+        private BigInteger decryptedValue;
+        private byte[] decryptedBytes;
+        private uint[] encryptedValues;
 
         public DecryptWindow(FullKey key)
         {
@@ -44,14 +46,15 @@ namespace RSAApplication
             }
             else
             {
-                textToDecodeBytes = File.ReadAllBytes(filePath);
+                encryptedValues = filePath.FromTextLines();
+                BigInteger encryptedBigInteger = new BigInteger();
+                encryptedBigInteger.SetData(encryptedValues);
+                // Working until now
+                decryptedValue = RSAAlgorithm.Decrypt(encryptedBigInteger, _key.D, _key.N);
+                decryptedBytes = RSA.Padding.RemoveTrailingZeros(decryptedValue.GetData());
+
+                DecryptedTextBox.Text = Encoding.ASCII.GetString(decryptedBytes);
             }
-
-            uint[] decoded = new uint[textToDecodeBytes.Length / 4];
-            Buffer.BlockCopy(textToDecodeBytes, 0, decoded, 0, textToDecodeBytes.Length);
-
-            decryptedText = RSAAlgorithm.Decrypt(new BigInteger(decoded), _key.D, _key.N).ToString();
-            DecryptedTextBox.Text = decryptedText;
         }
 
         private void SaveToFileButton_Click(object sender, RoutedEventArgs e)
@@ -61,7 +64,7 @@ namespace RSAApplication
             if (fileDialog.ShowDialog() == true)
             {
                 DecryptedTextBox.Text = fileDialog.FileName;
-                File.WriteAllBytes(fileDialog.FileName, Encoding.ASCII.GetBytes(decryptedText));
+                File.WriteAllText(fileDialog.FileName, Encoding.ASCII.GetString(decryptedBytes));
             }
         }
 

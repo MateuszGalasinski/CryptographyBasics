@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Models\BigInteger.cs" />
     <Compile Include="Models\FullKey.cs" />
     <Compile Include="Padding.cs" />

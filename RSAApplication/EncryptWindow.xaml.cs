@@ -1,9 +1,8 @@
 ﻿using Microsoft.Win32;
 using RSA;
+using RSA.Extensions;
 using RSA.Models;
-using System;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows;
 
@@ -37,6 +36,8 @@ namespace RSAApplication
                 textToEncodeBytes = File.ReadAllBytes(filePath);
             }
 
+            textToEncodeBytes = RSA.Padding.AddPadding(textToEncodeBytes, RSAAlgorithm.NumberOfBytes);
+
             encryptedValue = RSAAlgorithm.Encrypt(new BigInteger(textToEncodeBytes), _key.E, _key.N);
 
             EncryptedTextBox.Text = encryptedValue.ToString();
@@ -59,7 +60,7 @@ namespace RSAApplication
             fileDialog.Title = "Save file to: ";
             if (fileDialog.ShowDialog() == true)
             {
-                File.WriteAllBytes(fileDialog.FileName, encryptedValue.GetData().SelectMany(BitConverter.GetBytes).ToArray());
+                File.WriteAllText(fileDialog.FileName, encryptedValue.GetData().ToTextLines());
                 EncryptedTextBox.Text = fileDialog.FileName;
             }
         }

@@ -41,6 +41,16 @@ public class BigInteger
         return data;
     }
 
+    public uint[] SetData()
+    {
+        return data;
+    }
+
+    public void SetData(uint[] newData)
+    {
+        data = newData;
+    }
+
     //***********************************************************************
     // Constructor (Default value for BigInteger is 0
     //***********************************************************************
