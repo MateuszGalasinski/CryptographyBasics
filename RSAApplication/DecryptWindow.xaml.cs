@@ -53,7 +53,7 @@ namespace RSAApplication
                 decryptedValue = RSAAlgorithm.Decrypt(encryptedBigInteger, _key.D, _key.N);
                 decryptedBytes = RSA.Padding.RemoveTrailingZeros(decryptedValue.GetData());
 
-                DecryptedTextBox.Text = Encoding.ASCII.GetString(decryptedBytes);
+                //DecryptedTextBox.Text = Encoding.ASCII.GetString(decryptedBytes);
             }
         }
 

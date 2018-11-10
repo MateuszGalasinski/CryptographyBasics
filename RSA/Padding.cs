@@ -38,10 +38,10 @@ namespace RSA
 
         public static byte[] RemoveTrailingZeros(uint[] data)
         {
-            // TODO: implement correctly
-            //byte[] resultData = data.Where(p => p != 0).SelectMany(BitConverter.GetBytes).ToArray();
-            //return resultData.Where(p => p != 0).ToArray();
-            return data.SelectMany(BitConverter.GetBytes).ToArray();
+            //TODO: implement correctly
+            byte[] resultData = data.Where(p => p != 0).SelectMany(BitConverter.GetBytes).ToArray();
+            return resultData.Where(p => p != 0).ToArray();
+            //return data.SelectMany(BitConverter.GetBytes).ToArray();
         }
     }
 }

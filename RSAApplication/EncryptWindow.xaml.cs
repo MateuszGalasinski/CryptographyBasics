@@ -37,8 +37,8 @@ namespace RSAApplication
             }
 
             textToEncodeBytes = RSA.Padding.AddPadding(textToEncodeBytes, RSAAlgorithm.NumberOfBytes);
-
-            encryptedValue = RSAAlgorithm.Encrypt(new BigInteger(textToEncodeBytes), _key.E, _key.N);
+            BigInteger toEncodeBigInteger = new BigInteger(textToEncodeBytes);
+            encryptedValue = RSAAlgorithm.Encrypt(toEncodeBigInteger, _key.E, _key.N);
 
             EncryptedTextBox.Text = encryptedValue.ToString();
         }
