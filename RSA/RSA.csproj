@@ -41,10 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataChunker.cs" />
     <Compile Include="Extensions\ArrayExtensions.cs" />
     <Compile Include="Models\BigInteger.cs" />
     <Compile Include="Models\FullKey.cs" />
-    <Compile Include="Padding.cs" />
     <Compile Include="PaddingStrategies\CMSPaddingStrategy.cs" />
     <Compile Include="PaddingStrategies\IPaddingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

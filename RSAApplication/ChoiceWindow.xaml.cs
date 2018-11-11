@@ -20,6 +20,10 @@ namespace RSAApplication
 
         private void EncryptButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Key == null)
+            {
+                return;
+            }
             Window encryptWindow = new EncryptWindow(Key);
             encryptWindow.Show();
             this.Close();
@@ -27,6 +31,10 @@ namespace RSAApplication
 
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Key == null)
+            {
+                return;
+            }
             Window decryptWindow = new DecryptWindow(Key);
             decryptWindow.Show();
             this.Close();

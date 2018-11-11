@@ -49,7 +49,7 @@ namespace RSA.PaddingStrategies
             }
 
             //remove correct number of bytes (just dont copy them)
-            byte[] messageWithoutPadding = new byte[message.Length - keyLength - lastByte];
+            byte[] messageWithoutPadding = new byte[message.Length - lastByte];
 
             Array.Copy(message, 0, messageWithoutPadding, 0, messageWithoutPadding.Length);
 

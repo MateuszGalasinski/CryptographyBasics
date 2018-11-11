@@ -1,7 +1,7 @@
 ﻿using Microsoft.Win32;
 using RSA;
-using RSA.Extensions;
 using RSA.Models;
+using RSA.PaddingStrategies;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -15,9 +15,10 @@ namespace RSAApplication
     {
         private readonly FullKey _key;
         private  string filePath = string.Empty;
-        private BigInteger decryptedValue;
-        private byte[] decryptedBytes;
-        private uint[] encryptedValues;
+        private BigInteger[] dataBlocks;
+        private byte[] encryptedBytes;
+        private DataChunker _dataChunker = new DataChunker();
+        private IPaddingStrategy _paddingStrategy = new CMSPaddingStrategy();
 
         public DecryptWindow(FullKey key)
         {
@@ -46,14 +47,11 @@ namespace RSAApplication
             }
             else
             {
-                encryptedValues = filePath.FromTextLines();
-                BigInteger encryptedBigInteger = new BigInteger();
-                encryptedBigInteger.SetData(encryptedValues);
-                // Working until now
-                decryptedValue = RSAAlgorithm.Decrypt(encryptedBigInteger, _key.D, _key.N);
-                decryptedBytes = RSA.Padding.RemoveTrailingZeros(decryptedValue.GetData());
-
-                //DecryptedTextBox.Text = Encoding.ASCII.GetString(decryptedBytes);
+                dataBlocks = _dataChunker.BytesToBigIntegers(File.ReadAllBytes(filePath), RSAAlgorithm.BlockSize);
+                for (int i = 0; i < dataBlocks.Length; i++)
+                {
+                    dataBlocks[i] = RSAAlgorithm.Decrypt(dataBlocks[i], _key.D, _key.N);
+                }
             }
         }
 
@@ -64,7 +62,10 @@ namespace RSAApplication
             if (fileDialog.ShowDialog() == true)
             {
                 DecryptedTextBox.Text = fileDialog.FileName;
-                File.WriteAllText(fileDialog.FileName, Encoding.ASCII.GetString(decryptedBytes));
+
+                var blocksWithoutPadding = _dataChunker.MergeDataAndRemovePadding(dataBlocks, RSAAlgorithm.BlockSize);
+
+                File.WriteAllText(fileDialog.FileName, Encoding.ASCII.GetString(blocksWithoutPadding));
             }
         }
 

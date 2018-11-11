@@ -1,6 +1,5 @@
 ﻿using Microsoft.Win32;
 using RSA;
-using RSA.Extensions;
 using RSA.Models;
 using System.IO;
 using System.Text;
@@ -15,7 +14,8 @@ namespace RSAApplication
     {
         private readonly FullKey _key;
         private string filePath = string.Empty;
-        private BigInteger encryptedValue;
+        private BigInteger[] blocksToEncode;
+        private DataChunker _dataChunker = new DataChunker();
 
         public EncryptWindow(FullKey key)
         {
@@ -36,12 +36,12 @@ namespace RSAApplication
                 textToEncodeBytes = File.ReadAllBytes(filePath);
             }
 
-            //textToEncodeBytes = RSA.Padding.AddPadding(textToEncodeBytes, RSAAlgorithm.NumberOfBytes);
-            BigInteger toEncodeBigInteger = new BigInteger(textToEncodeBytes);
+            blocksToEncode = _dataChunker.ChunkData(textToEncodeBytes, RSAAlgorithm.BlockSize);
 
-            encryptedValue = RSAAlgorithm.Encrypt(toEncodeBigInteger, _key.E, _key.N);
-
-            EncryptedTextBox.Text = encryptedValue.ToString();
+            for (int i = 0; i < blocksToEncode.Length; i++)
+            {
+                blocksToEncode[i] = RSAAlgorithm.Encrypt(blocksToEncode[i], _key.E, _key.N);
+            }
         }
 
         private void ChooseFileButton_Click(object sender, RoutedEventArgs e)
@@ -61,7 +61,11 @@ namespace RSAApplication
             fileDialog.Title = "Save file to: ";
             if (fileDialog.ShowDialog() == true)
             {
-                File.WriteAllText(fileDialog.FileName, encryptedValue.GetData().ToTextLines());
+                using (var file = new FileStream(fileDialog.FileName, FileMode.Create))
+                {
+                    var data = _dataChunker.MergeData(blocksToEncode, RSAAlgorithm.BlockSize);
+                    file.Write(data, 0, data.Length);
+                }
                 EncryptedTextBox.Text = fileDialog.FileName;
             }
         }

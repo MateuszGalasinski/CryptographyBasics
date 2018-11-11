@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 
 public class BigInteger
@@ -41,9 +42,15 @@ public class BigInteger
         return data;
     }
 
-    public uint[] SetData()
+    public byte[] GetDataAsBytes()
     {
-        return data;
+        return data.Select(p => (byte)p).ToArray();
+    }
+
+    public void SetDataFromBytes(byte[] newData)
+    {
+        data = new uint[maxLength];
+        Array.Copy(newData.Select(p => (uint)p).ToArray(), data, newData.Length);
     }
 
     public void SetData(uint[] newData)

@@ -10,6 +10,7 @@ namespace RSA
         public static readonly BigInteger BigOne = new BigInteger(1);
 
         public static int NumberOfBytes => NumberOfBits / 8;
+        public static int BlockSize => NumberOfBytes - 1;
 
         public static BigInteger Encrypt(BigInteger data, BigInteger e, BigInteger n) => data.modPow(e, n);
 
@@ -18,8 +19,8 @@ namespace RSA
         public static FullKey GenerateKey()
         {
             Random rand = new Random();
-            BigInteger p = BigInteger.genPseudoPrime(NumberOfBits, Confidence, rand);
-            BigInteger q = BigInteger.genPseudoPrime(NumberOfBits, Confidence, rand);
+            BigInteger p = BigInteger.genPseudoPrime(NumberOfBits/2, Confidence, rand);
+            BigInteger q = BigInteger.genPseudoPrime(NumberOfBits/2, Confidence, rand);
             BigInteger modulus = (p - BigOne) * (q - BigOne);
 
             BigInteger e = (modulus).genCoPrime(NumberOfBits, rand);
