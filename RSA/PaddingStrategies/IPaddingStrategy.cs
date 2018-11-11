@@ -2,7 +2,7 @@
 {
     public interface IPaddingStrategy
     {
-        byte[] AddPadding(byte[] message, int keyLength);
-        byte[] RemovePadding(byte[] message, int keyLength);
+        byte[] AddPadding(byte[] message, int blockLength);
+        byte[] RemovePadding(byte[] message, int blockLength);
     }
 }

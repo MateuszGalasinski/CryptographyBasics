@@ -1,40 +1,34 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using RSA;
+using RSA.PaddingStrategies;
 
 namespace RSATests
 {
     public class PaddingTests
     {
-        [TestCase(2,
-            new byte[] { 0x0A },
-            new byte[] { 0x0, 0x0A })]
-        [TestCase(4,
-            new byte[] { 0x0A },
-            new byte[] { 0x0, 0x0, 0x0, 0x0A })]
-        [TestCase(4,
-            new byte[] { 0x0, 0x0A },
-            new byte[] { 0x0, 0x0, 0x0, 0x0A })]
-        [TestCase(4,
-            new byte[] { 0x0, 0xD, 0x0A, 0x0 },
-            new byte[] { 0x0, 0xD, 0x0A, 0x0 })]
-        [TestCase(2,
-            new byte[] { 0x0, 0xD, 0x0A, 0x0 },
-            new byte[] { 0x0, 0xD, 0x0A, 0x0 })]
-        [TestCase(2,
-            new byte[] { 0x0, 0xD, 0x0A, 0x0 },
-            new byte[] { 0x0, 0xD, 0x0A, 0x0 })]
-        [TestCase(3,
-            new byte[] { 0x0, 0xD, 0x0A, 0x0 },
-            new byte[] { 0x0, 0xD, 0x0A, 0x0, 0x0, 0x0 })]
-        [TestCase(3,
-            new byte[] { 0x0, 0xD, 0x0A, 0xC },
-            new byte[] { 0x0, 0xD, 0x0A, 0x0, 0x0, 0xC })]
-        public void PaddingTest(int keyLength, byte[] data, byte[] correctlyPadded)
-        {
-            byte[] padded = Padding.AddPadding(data, keyLength);
+        private IPaddingStrategy _paddingStrategy = new CMSPaddingStrategy();
 
-            padded.Should().BeEquivalentTo(correctlyPadded);
+        [TestCase(new byte[]
+            {
+                0x03, 0x02, 0x05, 0x06
+            },
+            new byte[]
+            {
+                0x03, 0x02, 0x05, 0x06, 0x02, 0x02
+            }, 2)]
+        [TestCase(new byte[]
+            {
+                0x03, 0x02, 0x05,
+            },
+            new byte[]
+            {
+                0x03, 0x02, 0x05, 0x01
+            }, 2)]
+        public void AddPaddingTest(byte[] dataToPadd, byte[] correctData, int blockLength)
+        {
+            byte[] paddedData = _paddingStrategy.AddPadding(dataToPadd, blockLength);
+
+            paddedData.Should().BeEquivalentTo(correctData);
         }
     }
 }
