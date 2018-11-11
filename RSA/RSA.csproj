@@ -45,6 +45,8 @@
     <Compile Include="Models\BigInteger.cs" />
     <Compile Include="Models\FullKey.cs" />
     <Compile Include="Padding.cs" />
+    <Compile Include="PaddingStrategies\CMSPaddingStrategy.cs" />
+    <Compile Include="PaddingStrategies\IPaddingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RSAAlgorithm.cs" />
   </ItemGroup>
