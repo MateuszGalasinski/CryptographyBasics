@@ -31,7 +31,7 @@ namespace RSATests
             var key = RSAAlgorithm.GenerateKey();
             BigInteger encrypted = RSAAlgorithm.Encrypt(testValue, key.E, key.N);
             BigInteger decrypted = RSAAlgorithm.Decrypt(encrypted, key.D, key.N);
-            decrypted.Should().BeEquivalentTo(testValue);
+            decrypted.Should().ShouldBeEquivalentTo(testValue);
         }
 
         [Test]
@@ -57,7 +57,7 @@ namespace RSATests
             BigInteger testValue = new BigInteger(paddedValue);
             BigInteger encrypted = RSAAlgorithm.Encrypt(testValue, key.E, key.N);
             BigInteger decrypted = RSAAlgorithm.Decrypt(encrypted, key.D, key.N);
-            decrypted.Should().BeEquivalentTo(testValue);
+            decrypted.Should().ShouldBeEquivalentTo(testValue);
 
             decrypted.getBytes().Should().BeEquivalentTo(new byte[]
             {
@@ -76,7 +76,7 @@ namespace RSATests
         public void FullEncryptDecryptOperation()
         {
             DataChunker chunker = new DataChunker();
-            int blockSize = RSAAlgorithm.NumberOfBytes - 1;
+            int blockSize = RSAAlgorithm.NumberOfBytes;
             FullKey key = RSAAlgorithm.GenerateKey();
             byte[] byteValues = new byte[]
             {
@@ -91,8 +91,6 @@ namespace RSATests
                 paddedValue[i] = RSAAlgorithm.Encrypt(paddedValue[i], key.E, key.N);
             }
 
-            var bytes1 = paddedValue[0].getBytes();
-            var bytes2 = paddedValue[1].getBytes();
             var savedData = chunker.MergeData(paddedValue, blockSize);
 
             var loadedData = chunker.BytesToBigIntegers(savedData, blockSize);

@@ -41,18 +41,18 @@ namespace RSAApplication
         {
             byte[] textToDecodeBytes;
 
-            if (filePath == string.Empty)
-            {
-                textToDecodeBytes = Encoding.ASCII.GetBytes(TextToDecryptTextBox.Text);
-            }
-            else
-            {
+            //if (filePath == string.Empty)
+            //{
+            //    textToDecodeBytes = Encoding.ASCII.GetBytes(TextToDecryptTextBox.Text);
+            //}
+            //else
+            //{
                 dataBlocks = _dataChunker.BytesToBigIntegers(File.ReadAllBytes(filePath), RSAAlgorithm.BlockSize);
                 for (int i = 0; i < dataBlocks.Length; i++)
                 {
                     dataBlocks[i] = RSAAlgorithm.Decrypt(dataBlocks[i], _key.D, _key.N);
                 }
-            }
+            //}
         }
 
         private void SaveToFileButton_Click(object sender, RoutedEventArgs e)

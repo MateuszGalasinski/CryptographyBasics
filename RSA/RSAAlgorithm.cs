@@ -5,12 +5,12 @@ namespace RSA
 {
     public static class RSAAlgorithm
     {
-        public const int NumberOfBits = 64;
+        public const int NumberOfBits = 1024;
         public const int Confidence = 40;
         public static readonly BigInteger BigOne = new BigInteger(1);
 
         public static int NumberOfBytes => NumberOfBits / 8;
-        public static int BlockSize => NumberOfBytes - 1;
+        public static int BlockSize => NumberOfBytes;
 
         public static BigInteger Encrypt(BigInteger data, BigInteger e, BigInteger n) => data.modPow(e, n);
 

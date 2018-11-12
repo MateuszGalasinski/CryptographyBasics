@@ -25,12 +25,16 @@ namespace RSA
 
         public BigInteger[] BytesToBigIntegers(byte[] encryptedBytes, int blockSize)
         {
+            if (encryptedBytes.Length % blockSize != 0)
+                throw new Exception("Encrypted bytes should be divisible by block size");
+
             BigInteger[] blocks = new BigInteger[encryptedBytes.Length / blockSize];
 
             for (int i = 0; i < encryptedBytes.Length / blockSize; i++)
             {
                 byte[] block = new byte[blockSize];
                 Array.Copy(encryptedBytes, i * blockSize, block, 0, blockSize);
+               
                 blocks[i] = new BigInteger(block);
             }
 
@@ -39,28 +43,32 @@ namespace RSA
 
         public byte[] MergeDataAndRemovePadding(BigInteger[] decryptedValues, int blockSize)
         {
-            List<byte> decryptedBytes = new List<byte>();
+            byte[] result = new byte[decryptedValues.Length * blockSize];
 
-            foreach (BigInteger decryptedValue in decryptedValues)
+            for (int i = 0; i < decryptedValues.Length; i++)
             {
-                var valueBytes = decryptedValue.getBytes();
-                decryptedBytes.AddRange(valueBytes);
+                byte[] padded =
+                    AddPadding(decryptedValues[i].getBytes(), blockSize);
+                padded.CopyTo(result, i * blockSize);
             }
 
-            return _paddingStrategy.RemovePadding(decryptedBytes.ToArray(), blockSize);
+            result = _paddingStrategy.RemovePadding(result,blockSize);
+            return result;
         }
 
         public byte[] MergeData(BigInteger[] decryptedValues, int blockSize)
         {
-            List<byte> decryptedBytes = new List<byte>();
+            byte[] result = new byte[decryptedValues.Length * blockSize];
 
-            foreach (BigInteger decryptedValue in decryptedValues)
+            for (int i = 0; i < decryptedValues.Length; i++)
             {
-                var valueBytes = decryptedValue.getBytes();
-                decryptedBytes.AddRange(valueBytes);
+                byte[] padded =
+                    AddPadding(decryptedValues[i].getBytes(), blockSize);
+                padded.CopyTo(result, i * blockSize);
             }
 
-            return decryptedBytes.ToArray();
+            //result = _paddingStrategy.RemovePadding(result,blockSize);
+            return result;
         }
 
         public BigInteger[] ChunkBytesData(byte[] decryptedValues, int blockSize)
@@ -75,6 +83,15 @@ namespace RSA
             }
 
             return encryptedValues.ToArray();
+        }
+
+        private byte[] AddPadding(byte[] data, int bytesInBlock)
+        {
+            int diff = data.Length % bytesInBlock;
+            int bytesToPadd = diff == 0 ? 0 : bytesInBlock - diff;
+            byte[] paddedData = new byte[data.Length + bytesToPadd];
+            data.CopyTo(paddedData, bytesToPadd);
+            return paddedData;
         }
     }
 }
