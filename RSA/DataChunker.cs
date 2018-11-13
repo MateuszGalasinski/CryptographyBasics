@@ -48,7 +48,7 @@ namespace RSA
             for (int i = 0; i < decryptedValues.Length; i++)
             {
                 byte[] padded =
-                    AddPadding(decryptedValues[i].getBytes(), blockSize);
+                    AddPadding(decryptedValues[i].MyGetBytes(), blockSize);
                 padded.CopyTo(result, i * blockSize);
             }
 
@@ -63,7 +63,7 @@ namespace RSA
             for (int i = 0; i < decryptedValues.Length; i++)
             {
                 byte[] padded =
-                    AddPadding(decryptedValues[i].getBytes(), blockSize);
+                    AddPadding(decryptedValues[i].MyGetBytes(), blockSize);
                 padded.CopyTo(result, i * blockSize);
             }
 
