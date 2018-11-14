@@ -29,15 +29,17 @@ namespace SchnorDigitalSign
         /// <param name="L">The desired length of the prime p</param>
         /// <param name="seedlen">The desired length of the domain parameter seed</param>
         /// <returns></returns>
-        public KeyPair GenerateKeysProbablePrimes(int N, int L, int seedlen)
+        public KeyPair GenerateKeysProbablePrimes_Book(int N, int L, int seedlen)
         {
             //N and L have to be acceptable
 
             if (seedlen < N)
                 throw new ArgumentException("Seedlen cannot be less then N");
-            
+
             //Bit length of the output block of choosen hash function, shall be equal to or greater than N
             int outlen = 160;
+            BigInteger outlenPow = BigInteger.Pow(2, seedlen);
+
 
             int n = (int)Math.Ceiling((double)L / outlen) - 1;
 
@@ -56,150 +58,158 @@ namespace SchnorDigitalSign
 
             BigInteger q;
 
-            while(true)
+            bool backToStep1 = true;
+            bool backToStep7 = true;
+
+            do
             {
                 do
                 {
-                    rndProvider.GetBytes(domain_parameter_seed);
-
-                    if (remainingBits > 0)
-                    {
-                        byte mask = 0;
-                        for (int i = 0; i < remainingBits; i++)
-                        {
-                            mask |= (byte)(1 << i);
-                        }
-
-                        domain_parameter_seed[domain_parameter_seed.Length - 1] &= mask;
-                    }
-
-                    domain_parameter_seed[domain_parameter_seed.Length - 1] |= (byte)(1 << (remainingBits > 0 ? remainingBits : 8));
-
-                    //set last bit of domain parameter seed to 1
-
-                    byte[] hashedDomain;
-                    using (SHA1Managed sha1 = new SHA1Managed())
-                    {
-                        hashedDomain = sha1.ComputeHash(domain_parameter_seed);
-                    }
-
-                    BigInteger hashedDomainInt = new BigInteger(hashedDomain);
-
-                    BigInteger mod = BigInteger.Pow(2, N - 1);
-
-                    BigInteger U = hashedDomainInt % mod;
-
-                    q = mod + U + 1 - (U % 2);
+                    q = SetQ(outlenPow, remainingBits, domain_parameter_seed);
 
                 } while (MillerRabin(q, 20) == 1);
 
-                int offset = 1;
-
-                BigInteger[] V = new BigInteger[n+1];
-
-                BigInteger mod2 = BigInteger.Pow(2, seedlen);
-
-                //loop 11
-                for (int i = 0; i <= (4 * L - 1); i++)
+                int counter = 0, offset = 2;
+                do
                 {
-                    for (int j = 0; j <= n; j++)
-                    {
-                        using (SHA1Managed sha1 = new SHA1Managed())
-                        {
-                            BigInteger temp = new BigInteger(domain_parameter_seed) + offset + j;
-                            V[j] = new BigInteger(sha1.ComputeHash((temp % mod2).ToByteArray()));
-                        }
-                    }
+                    BigInteger p = SetP(L, outlen, outlenPow, n, b, domain_parameter_seed, q, ref counter, ref offset);
 
-                    BigInteger W = new BigInteger();
-
-                    for (int j = 0; j < n; j++)
-                    {
-                        BigInteger exp = BigInteger.Pow(2, j * outlen);
-                        W += V[j] * exp;
-                    }
-
-                    W += (V[n] % BigInteger.Pow(2, b)) * BigInteger.Pow(2, n * outlen);
-
-                    BigInteger X = new BigInteger();
-                    X = W + BigInteger.Pow(2, L - 1);
-                    BigInteger c = X % (2 * q);
-                    BigInteger p = X - (c - 1);
                     if (p < BigInteger.Pow(2, L - 1))
                     {
+                        counter++;
                         offset = offset + n + 1;
+                        if (counter == 4096)
+                        {
+                            backToStep1 = true;
+                            backToStep7 = false;
+                        }
+                        else
+                        {
+                            backToStep1 = false;
+                            backToStep7 = true;
+                        }
                     }
                     else
                     {
                         if (MillerRabin(p, 20) == 1)
                         {
-                            KeyPair result = new KeyPair()
+                            return new KeyPair() {p = p, q = q};
+                        }
+                        else
+                        {
+                            counter++;
+                            offset = offset + n + 1;
+                            if (counter == 4096)
                             {
-                                q = q,
-                                p = p
-                            };
-                            return result;
+                                backToStep1 = true;
+                                backToStep7 = false;
+                            }
+                            else
+                            {
+                                backToStep1 = false;
+                                backToStep7 = true;
+                            }
                         }
                     }
-                }
-            } 
+                } while (backToStep7);
+
+            } while (backToStep1);
+
+            return null;
 
             //BigInteger domain_parameter_seed = new BigInteger();
 
-
         }
 
-
-
-        public KeyPair GenerateKeys()
+        private BigInteger SetQ(BigInteger outlenPow, int remainingBits, byte[] domain_parameter_seed)
         {
-            QLengthBytes = QLengthBits / 8;
-            PLengthBytes = PLengthBits / 8;
+            BigInteger q;
+            rndProvider.GetBytes(domain_parameter_seed);
 
-            alfa = PLengthBits - QLengthBits;
-
-            BigInteger tempP;// = GeneratePrimeNumber(PLengthBytes);
-            BigInteger tempQ = GeneratePrimeNumber(QLengthBytes);
-
-
-            int counter = 0;
-            do
+            if (remainingBits > 0)
             {
-                tempQ = GeneratePrimeNumber(QLengthBytes);
-                tempP = (alfa * tempQ) + 1;
-                
-                counter++;
+                byte mask = 0;
+                for (int i = 0; i < remainingBits; i++)
+                {
+                    mask |= (byte)(1 << i);
+                }
 
-            } while (MillerRabin(tempP, 23) != 1);
+                domain_parameter_seed[domain_parameter_seed.Length - 1] &= mask;
+            }
 
-            var length = tempP.ToByteArray().Length;
+            domain_parameter_seed[domain_parameter_seed.Length - 1] |= (byte)(1 << (remainingBits > 0 ? remainingBits : 7));
 
-            KeyPair keyPair = new KeyPair()
+            //set last bit of domain parameter seed to 1
+
+            byte[] hashedDomain;
+            byte[] hashedMod;
+
+            byte[] Utmp;
+            using (SHA1Managed sha1 = new SHA1Managed())
             {
-                q = tempQ,
-                p = tempP
-            };
+                hashedDomain = sha1.ComputeHash(domain_parameter_seed);
+                byte[] domain_parameter_seed_with_zero = new byte[domain_parameter_seed.Length + 1];
+                domain_parameter_seed.CopyTo(domain_parameter_seed_with_zero, 0);
+                BigInteger temporary = new BigInteger(domain_parameter_seed_with_zero) + BigInteger.One;
+                hashedMod = sha1.ComputeHash((temporary % outlenPow).ToByteArray());
 
-            return keyPair;
+                Utmp = ByteArrayXOR(hashedDomain, hashedMod);
+            }
+
+            Utmp[0] |= 1;
+            Utmp[Utmp.Length - 1] |= (byte)(1 << 7);
+            byte[] U = new byte[Utmp.Length + 1];
+            Utmp.CopyTo(U, 0);
+
+            q = new BigInteger(U);
+            return q;
         }
 
-        public BigInteger GeneratePrimeNumber(int numberLength)
+        private static BigInteger SetP(int L, int outlen, BigInteger outlenPow, int n, int b, byte[] domain_parameter_seed, BigInteger q, ref int counter, ref int offset)
         {
-            BigInteger result;
+            BigInteger[] V = new BigInteger[n + 1];
 
-            do
+
+            for (int j = 0; j <= n; j++)
             {
-                RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-                byte[] randomNumber = new byte[numberLength];
-                rng.GetBytes(randomNumber);
-                result = new BigInteger(randomNumber);
-                result = BigInteger.Abs(result);
-            } while (MillerRabin(result, 20) != 1);
+                using (SHA1Managed sha1 = new SHA1Managed())
+                {
+                    BigInteger temp = new BigInteger(domain_parameter_seed) + new BigInteger(offset) + new BigInteger(j);
+                    V[j] = new BigInteger(sha1.ComputeHash((temp % outlenPow).ToByteArray()));
+                }
+            }
 
+            BigInteger W = new BigInteger();
+
+            for (int j = 0; j < n; j++)
+            {
+                BigInteger exp = BigInteger.Pow(2, j * outlen);
+                W += V[j] * exp;
+            }
+
+            W += (V[n] % BigInteger.Pow(2, b)) * BigInteger.Pow(2, n * outlen);
+
+            BigInteger X = W + BigInteger.Pow(2, L - 1);
+
+            BigInteger c = X % (new BigInteger(2) * q);
+
+           return (X - (c - 1));
+        }
+
+        public byte[] ByteArrayXOR(byte[] first, byte[] second)
+        {
+            if(first.Length != second.Length)
+                throw new ArgumentException("Arrays should have the same length");
+
+            byte[] result = new byte[first.Length];
+
+            for (int i = 0; i < first.Length; i++)
+            {
+                result[i] = (byte)(first[i] ^ second[i]);
+            }
 
             return result;
         }
-
 
         private int MillerRabin(BigInteger n, int reps)
         {
