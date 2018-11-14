@@ -44,7 +44,9 @@
   <ItemGroup>
     <Compile Include="KeyGenerator.cs" />
     <Compile Include="Model\KeyPair.cs" />
+    <Compile Include="Model\Signature.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchnorrAlgorithm.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
