@@ -121,18 +121,14 @@ namespace RSATests
             string decryptedPath = @"C:\Users\Jakub\Desktop\krypto_test\de.bmp";
 
             int howManyOk = 0;
+            int howManyTrials = 5;
 
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < howManyTrials; j++)
             {
                 DataChunker chunker = new DataChunker();
                 int blockSize = RSAAlgorithm.NumberOfBytes;
                 FullKey key = RSAAlgorithm.GenerateKey();
-                byte[] byteValues = File.ReadAllBytes(dataPath); //new byte[]
-                //{
-                //    0x0A, 0x0B, 0x0C, 0x0D, 0x0A, 0x0B, 0x0C,
-                //    0x0A, 0x0B, 0x0C, 0x0D, 0x0A,
-                //};
-
+                byte[] byteValues = File.ReadAllBytes(dataPath); 
 
                 var paddedValue = chunker.ChunkData(byteValues, blockSize);
 
@@ -147,8 +143,6 @@ namespace RSATests
                 var loadedDataFromFile = File.ReadAllBytes(encryptedPath);
 
                 var loadedData = chunker.BytesToBigIntegers(loadedDataFromFile, blockSize);
-
-                //loadedData.Should().BeEquivalentTo(paddedValue);
 
                 for (int i = 0; i < loadedData.Length; i++)
                 {
@@ -167,7 +161,7 @@ namespace RSATests
 
                 if (orginal.Length != loadedDecrypt.Length)
                 {
-                    Console.WriteLine("lip" + key.N);
+                    Console.WriteLine("lipa " + key.N + " len:" + key.N.ToString().Length);
                     Console.WriteLine(" Diff " + (orginal.Length - loadedDecrypt.Length));
                     isOk = false;
                 }
@@ -188,13 +182,13 @@ namespace RSATests
                 if (isOk)
                 {
                     howManyOk++;
-                    Console.WriteLine("git" + key.N);
+                    Console.WriteLine("git " + key.N + " len:" + key.N.ToString().Length);
                 }
 
                 //loadedDecrypt.Should().BeEquivalentTo(orginal);
             }
             
-            Assert.AreEqual(5, howManyOk);
+            Assert.AreEqual(howManyTrials, howManyOk);
 
         }
     }

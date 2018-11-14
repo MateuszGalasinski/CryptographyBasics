@@ -10,7 +10,7 @@ namespace RSA
         public static readonly BigInteger BigOne = new BigInteger(1);
 
         public static int NumberOfBytes => NumberOfBits / 8;
-        public static int BlockSize => NumberOfBytes;
+        public static int /*BlockSize {get; set;}*/ BlockSize => NumberOfBytes/2;
 
         public static BigInteger Encrypt(BigInteger data, BigInteger e, BigInteger n) => data.modPow(e, n);
 
@@ -18,16 +18,38 @@ namespace RSA
 
         public static FullKey GenerateKey()
         {
-            Random rand = new Random();
-            BigInteger p = BigInteger.genPseudoPrime(NumberOfBits/2, Confidence, rand);
-            BigInteger q = BigInteger.genPseudoPrime(NumberOfBits/2, Confidence, rand);
-            BigInteger modulus = (p - BigOne) * (q - BigOne);
+            Random rand;
+            BigInteger p;
+            BigInteger q;
+            BigInteger modulus;
 
-            BigInteger e = (modulus).genCoPrime(NumberOfBits, rand);
+            BigInteger e;
 
-            BigInteger d = e.modInverse(modulus);
+            BigInteger d;
 
-            BigInteger n = p * q;
+            BigInteger n;
+
+            int NLength;
+
+            //do
+            //{
+                rand = new Random();
+                 p = BigInteger.genPseudoPrime(NumberOfBits / 2, Confidence, rand);
+                 q = BigInteger.genPseudoPrime(NumberOfBits / 2, Confidence, rand);
+                 modulus = (p - BigOne) * (q - BigOne);
+
+                 e = (modulus).genCoPrime(NumberOfBits, rand);
+
+                 d = e.modInverse(modulus);
+
+                 n = p * q;
+
+                NLength = n.ToString().Length;
+              //  if (NLength == 308)
+                //    Console.WriteLine();
+
+            //} while (NLength != 309);
+            
 
             return new FullKey()
             {
@@ -35,6 +57,8 @@ namespace RSA
                 D = d,
                 N = n
             };
+
+            //BlockSize = n.dataLength;
         }
     }
 }

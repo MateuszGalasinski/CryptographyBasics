@@ -16,11 +16,14 @@ namespace SchnorDigitalSign.Tests
         public void GenerateKeysKeyGeneratorTest()
         {
             KeyGenerator keyGen = new KeyGenerator();
-            var key = keyGen.GenerateKeys();
+            var key = keyGen.GenerateKeysProbablePrimes(136, 512, 160);
+
+            var plen = key.p.ToByteArray().Length;
+            var qlen = key.q.ToByteArray().Length;
 
             var c = 1;
-            Debug.WriteLine(key.p.ToString());
-            Debug.WriteLine(key.q.ToString());
+            //Debug.WriteLine(key.p.ToString());
+            //Debug.WriteLine(key.q.ToString());
 
         }
 

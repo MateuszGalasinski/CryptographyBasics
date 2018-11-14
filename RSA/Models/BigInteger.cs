@@ -1911,7 +1911,12 @@ Console.WriteLine("Not prime!  Divisible by {0}\n",
         {
             result.genRandomBits(bits, rand);
             result.data[0] |= 0x01;     // make it odd
-
+            var last = result.data[bits / 32 - 1];
+            int firstDigit = (int)(last.ToString()[0]) - 48;
+            if (firstDigit < 4)
+            {
+                continue;
+            }
             // prime test
             done = result.isProbablePrime(confidence);
         }
