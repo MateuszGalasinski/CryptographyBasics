@@ -23,7 +23,7 @@ namespace SchnorDigitalSign.Tests
             for (int i = 0; i < howManyShouldBeOk; i++)
             {
                 KeyGenerator keyGen = new KeyGenerator();
-                var key = keyGen.GenerateKeysProbablePrimes_Book(136, 512, 160);
+                var key = keyGen.GenerateKeysProbablePrimes(136, 512, 160);
 
                 if (((key.p - BigInteger.One) % key.q) == 0)
                     OkCounter++;
