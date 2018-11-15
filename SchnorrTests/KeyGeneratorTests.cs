@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,29 +17,22 @@ namespace SchnorDigitalSign.Tests
         [TestMethod()]
         public void GenerateKeysKeyGeneratorTest()
         {
-            KeyGenerator keyGen = new KeyGenerator();
-            var key = keyGen.GenerateKeysProbablePrimes_Book(136, 512, 160);
+            int howManyShouldBeOk = 10;
+            int OkCounter = 0;
+
+            for (int i = 0; i < howManyShouldBeOk; i++)
+            {
+                KeyGenerator keyGen = new KeyGenerator();
+                var key = keyGen.GenerateKeysProbablePrimes_Book(136, 512, 160);
+
+                if (((key.p - BigInteger.One) % key.q) == 0)
+                    OkCounter++;
+
+            }
             //var key = keyGen.GenerateKeysProbablePrimes_FIPS(136, 512, 160);
 
-            var plen = key.p;
-            var qlen = key.q;
-
-            var c = 1;
-            //Debug.WriteLine(key.p.ToString());
-            //Debug.WriteLine(key.q.ToString());
-
+            Assert.AreEqual(howManyShouldBeOk, OkCounter);
         }
 
-        [TestMethod()]
-        public void GeneratePrimeNumberKeyGeneratorTest()
-        {
-            Assert.IsTrue(true);
-        }
-
-        [TestMethod()]
-        public void GenerateRandomBigIntegerKeyGeneratorTest()
-        {
-            Assert.IsTrue(true);
-        }
     }
 }

@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace SchnorDigitalSign.Model
 {
-    public class KeyPair
+    public class UserKeys
     {
-        public BigInteger p { get; set; }
-        public BigInteger q { get; set; }
-        
-        public BigInteger a { get; set; }
+        public BigInteger PublicKey { get; set; }
 
+        public BigInteger PrivateKey { get; set; }
     }
 }
