@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using SchnorDigitalSign.Model;
+using System;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using SchnorDigitalSign.Model;
 
 namespace SchnorDigitalSign
 {
@@ -22,6 +17,17 @@ namespace SchnorDigitalSign
 
         private static RNGCryptoServiceProvider rndProvider = new RNGCryptoServiceProvider();
 
+        public KeyPair Generate(int N, int L, int seedlen)
+        {
+            KeyPair key = GenerateKeysProbablePrimes_Book(N, L, seedlen);
+            while ((key.p - 1) % key.q != 1) // try again
+            {
+                key = GenerateKeysProbablePrimes_Book(N, L, seedlen);
+            }
+
+            return key;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -29,7 +35,7 @@ namespace SchnorDigitalSign
         /// <param name="L">The desired length of the prime p</param>
         /// <param name="seedlen">The desired length of the domain parameter seed</param>
         /// <returns></returns>
-        public KeyPair GenerateKeysProbablePrimes_Book(int N, int L, int seedlen)
+        private KeyPair GenerateKeysProbablePrimes_Book(int N, int L, int seedlen)
         {
             //N and L have to be acceptable
 
