@@ -20,10 +20,12 @@ namespace SchnorDigitalSign
         public KeyPair Generate(int N, int L, int seedlen)
         {
             KeyPair key = GenerateKeysProbablePrimes(N, L, seedlen);
-            while ((key.p - 1) % key.q != 1) // try again
+            while ((key.p - 1) % key.q != 0) // try again
             {
                 key = GenerateKeysProbablePrimes(N, L, seedlen);
             }
+
+            key.a = GeneratorGenerator.Generate(key.p, key.q);
 
             return key;
         }

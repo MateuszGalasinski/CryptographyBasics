@@ -1,4 +1,5 @@
-﻿using SchnorDigitalSign.Model;
+﻿using System;
+using SchnorDigitalSign.Model;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -7,24 +8,25 @@ namespace SchnorDigitalSign
 {
     public class SchnorrAlgorithm
     {
-        private UserKeys userKeys;
+        //Big Integer problem with byte array length
 
-        public Signature SignMessage(byte[] message, KeyPair keyPair)
+        public Signature SignMessage(byte[] message, KeyPair keyPair, UserKeys userKeys)
         {
             RNGCryptoServiceProvider randomProvider = new RNGCryptoServiceProvider();
-            int numberSmallerThanQ = KeyGenerator.QLengthBits - 8;
+            int numberSmallerThanQLength = (KeyGenerator.QLengthBits - 8) / 8;
 
-            byte[] byteR = new byte[numberSmallerThanQ];
-            randomProvider.GetBytes(byteR);
-            BigInteger r  = new BigInteger(byteR);
+            BigInteger r = GenerateR(randomProvider, numberSmallerThanQLength);
 
-            BigInteger a = new BigInteger(); // implement
-
-            BigInteger x = BigInteger.ModPow(a, r, keyPair.p);
+            BigInteger x = BigInteger.ModPow(keyPair.a, r, keyPair.p);
 
             BigInteger e;
 
             byte[] messageWithSalt = message.Concat(x.ToByteArray()).ToArray();
+
+            if (messageWithSalt.Length != message.Length + x.ToByteArray().Length)
+            {
+                throw new Exception("Message with salt length = " + messageWithSalt.Length);
+            }
 
             using (SHA1 sha1 = new SHA1Cng())
             {
@@ -33,13 +35,6 @@ namespace SchnorDigitalSign
                 byteE.CopyTo(byteEWithZero, 0);
                 e = new BigInteger(byteEWithZero);
             }
-
-            // public and private key
-            byte[] bytePrivateKey = new byte[numberSmallerThanQ];
-            randomProvider.GetBytes(bytePrivateKey);
-
-            userKeys.PrivateKey = new BigInteger(bytePrivateKey);
-            userKeys.PublicKey = BigInteger.ModPow(a, BigInteger.MinusOne * userKeys.PrivateKey, keyPair.p);
 
             BigInteger y = (r + (userKeys.PrivateKey * e)) % keyPair.q;
 
@@ -52,9 +47,52 @@ namespace SchnorDigitalSign
             return signature;
         }
 
-        public bool Verify(byte[] message, KeyPair keyPair, Signature signature, BigInteger SenderPublicKey)
+        public static BigInteger GenerateR(RNGCryptoServiceProvider randomProvider,  int numberSmallerThanQLength)
         {
-            return false;
+            byte[] byteR = new byte[numberSmallerThanQLength];
+            randomProvider.GetBytes(byteR);
+            byte[] byteRZero = new byte[byteR.Length + 1];
+            byteR.CopyTo(byteRZero, 0);
+
+            return new BigInteger(byteRZero);
         }
+
+        public bool Verify(byte[] message, KeyPair keyPair, Signature signature, BigInteger senderPublicKey)
+        {
+            BigInteger exponent = BigInteger.ModPow(signature.e, keyPair.p - 2, keyPair.p);
+            BigInteger x = BigInteger.ModPow(keyPair.a, signature.y, keyPair.p) * BigInteger.ModPow(senderPublicKey, exponent , keyPair.p);
+
+            byte[] messageWithSalt = message.Concat(x.ToByteArray()).ToArray();
+
+            BigInteger resultE;
+            using (SHA1 sha1 = new SHA1Cng())
+            {
+                byte[] byteE = sha1.ComputeHash(messageWithSalt);
+                byte[] byteEWithZero = new byte[byteE.Length + 1];
+                byteE.CopyTo(byteEWithZero, 0);
+                resultE = new BigInteger(byteEWithZero);
+            }
+
+            if (AreEqual(resultE.ToByteArray(), signature.e.ToByteArray()))
+                return true;
+            else
+                return false;
+
+        }
+
+        public bool AreEqual(byte[] first, byte[] second)
+        {
+            if (first.Length != second.Length)
+                return false;
+
+            for (int i = 0; i < first.Length; i++)
+            {
+                if (first[i] != second[i])
+                    return false;
+            }
+
+            return true;
+        }
+
     }
 }

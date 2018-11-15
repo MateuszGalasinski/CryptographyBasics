@@ -23,7 +23,7 @@ namespace SchnorrTests
             int howManyShouldBeOk = 50;
             int OkCounter = 0;
 
-            KeyPair baseKeys = _keyGenerator.GenerateKeysProbablePrimes_Book(136, 512, 160);
+            KeyPair baseKeys = _keyGenerator.Generate(136, 512, 160);
 
             for (int i = 0; i < howManyShouldBeOk; i++)
             {
