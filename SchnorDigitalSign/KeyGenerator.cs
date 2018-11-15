@@ -17,6 +17,17 @@ namespace SchnorDigitalSign
 
         private static RNGCryptoServiceProvider rndProvider = new RNGCryptoServiceProvider();
 
+        public KeyPair Generate(int N, int L, int seedlen)
+        {
+            KeyPair key = GenerateKeysProbablePrimes(N, L, seedlen);
+            while ((key.p - 1) % key.q != 1) // try again
+            {
+                key = GenerateKeysProbablePrimes(N, L, seedlen);
+            }
+
+            return key;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -24,7 +35,7 @@ namespace SchnorDigitalSign
         /// <param name="L">The desired length of the prime p</param>
         /// <param name="seedlen">The desired length of the domain parameter seed</param>
         /// <returns></returns>
-        public KeyPair GenerateKeysProbablePrimes(int N, int L, int seedlen)
+        private KeyPair GenerateKeysProbablePrimes(int N, int L, int seedlen)
         {
             //N and L have to be acceptable
 
