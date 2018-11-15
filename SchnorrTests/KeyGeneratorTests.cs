@@ -1,13 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SchnorDigitalSign;
-using System;
-using System.Collections;
-using System.Diagnostics;
-using System.Linq;
 using System.Numerics;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchnorDigitalSign.Tests
 {

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using SchnorDigitalSign.Model;
+using System;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using SchnorDigitalSign.Model;
 
 namespace SchnorDigitalSign
 {
