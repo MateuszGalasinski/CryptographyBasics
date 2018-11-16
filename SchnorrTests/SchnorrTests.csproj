@@ -57,6 +57,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigIntegerExtensionsTest.cs" />
     <Compile Include="GeneratorGeneratorTests.cs" />
     <Compile Include="KeyGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

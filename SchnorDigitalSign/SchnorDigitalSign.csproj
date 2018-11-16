@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BigIntegerExtensions.cs" />
     <Compile Include="GeneratorGenerator.cs" />
     <Compile Include="KeyGenerator.cs" />
     <Compile Include="Model\KeyPair.cs" />

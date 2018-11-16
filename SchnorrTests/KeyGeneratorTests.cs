@@ -17,7 +17,7 @@ namespace SchnorDigitalSign.Tests
                 KeyGenerator keyGen = new KeyGenerator();
                 var key = keyGen.Generate(136, 512, 160);
 
-                if (((key.p - BigInteger.One) % key.q) == 0)
+                if (((key.p - BigInteger.One) % key.q) == BigInteger.Zero)
                     OkCounter++;
 
             }

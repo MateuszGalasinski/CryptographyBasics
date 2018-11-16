@@ -1,8 +1,7 @@
-﻿using System;
-using System.Security.Cryptography;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SchnorDigitalSign;
 using SchnorDigitalSign.Model;
+using System.Security.Cryptography;
 
 namespace SchnorrTests
 {
@@ -15,25 +14,37 @@ namespace SchnorrTests
         [TestMethod]
         public void SignAndVerify_Test()
         {
-            KeyGenerator keyGen = new KeyGenerator();
+            int howManyShouldBeOk = 3;
+            int OkCounter = 0;
 
-            KeyPair keyPair = keyGen.Generate(136, 512, 160);
-
-            byte[] message = new byte[]
+            for (int i = 0; i < howManyShouldBeOk; i++)
             {
-                0x0A, 0x0B, 0x0C, 0x0D, 0x0A, 0x0B, 0x0C,
-                0x0A, 0x0B, 0x0C, 0x0D, 0x0A,
-            };
+                KeyGenerator keyGen = new KeyGenerator();
 
-            SchnorrAlgorithm schnorrAlgorithm = new SchnorrAlgorithm();
+                KeyPair keyPair = keyGen.Generate(136, 512, 160);
 
-            UserKeys userKeys = UserKeyGenerator.Generate(keyPair);
+                byte[] message = new byte[]
+                {
+                    0x0A, 0x0B, 0x0C, 0x0D,
+                    0x0A, 0x0B, 0x0C, 0x07,
+                    0x0A, 0x0B, 0x0C, 0x0D,
+                    0x0A, 0x04, 0x0A, 0x04
+                };
 
-            Signature signature = schnorrAlgorithm.SignMessage(message, keyPair, userKeys);
+                SchnorrAlgorithm schnorrAlgorithm = new SchnorrAlgorithm();
 
-            bool isValid = schnorrAlgorithm.Verify(message, keyPair, signature, userKeys.PublicKey);
+                UserKeys userKeys = UserKeyGenerator.Generate(keyPair);
 
-            Assert.IsTrue(isValid);
+                Signature signature = schnorrAlgorithm.SignMessage(message, keyPair, userKeys);
+
+                bool isValid = schnorrAlgorithm.Verify(message, keyPair, signature, userKeys.PublicKey);
+                if (isValid)
+                {
+                    OkCounter++;
+                }
+            }
+
+            Assert.AreEqual(howManyShouldBeOk, OkCounter);
         }
 
         [TestMethod]

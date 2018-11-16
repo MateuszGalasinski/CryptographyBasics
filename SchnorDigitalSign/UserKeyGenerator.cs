@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using SchnorDigitalSign.Model;
 using System.Numerics;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using SchnorDigitalSign.Model;
 
 namespace SchnorDigitalSign
 {
@@ -13,6 +8,11 @@ namespace SchnorDigitalSign
     {
         public static UserKeys Generate(KeyPair keyPair)
         {
+            //return new UserKeys()
+            //{
+            //    PrivateKey = new BigInteger(1),
+            //    PublicKey = new BigInteger(3)
+            //};
             UserKeys userKeys = new UserKeys();
             RNGCryptoServiceProvider randomProvider = new RNGCryptoServiceProvider();
             int numberSmallerThanQ = (KeyGenerator.QLengthBits - 8)/8;
@@ -21,9 +21,9 @@ namespace SchnorDigitalSign
             randomProvider.GetBytes(bytePrivateKey);
             byte[] bytePrivateKeyZero = new byte[bytePrivateKey.Length + 1];
             bytePrivateKey.CopyTo(bytePrivateKeyZero, 0);
-            userKeys.PrivateKey = new BigInteger(bytePrivateKeyZero);
-            BigInteger exponent = BigInteger.ModPow(userKeys.PrivateKey, keyPair.p - 2, keyPair.p);
-            userKeys.PublicKey = BigInteger.ModPow(keyPair.a, exponent, keyPair.p);
+            userKeys.PrivateKey = new BigInteger(bytePrivateKeyZero) % keyPair.q;
+            userKeys.PrivateKey = new BigInteger(1);
+            userKeys.PublicKey = BigInteger.ModPow(keyPair.a, userKeys.PrivateKey.ModInv(keyPair.p), keyPair.p);
 
             return userKeys;
         }

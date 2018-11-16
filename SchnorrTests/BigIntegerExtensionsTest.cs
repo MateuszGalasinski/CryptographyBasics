@@ -6,7 +6,7 @@ using System.Numerics;
 namespace SchnorrTests
 {
     [TestClass]
-    public class GeneratorGeneratorTests
+    public class BigIntegerExtensionsTest
     {
         private KeyGenerator _keyGenerator;
 
@@ -16,20 +16,22 @@ namespace SchnorrTests
             _keyGenerator = new KeyGenerator();
         }
 
-
         [TestMethod]
-        public void GenerateKeysKeyGeneratorTest()
+        public void ModInvTest()
         {
-            int howManyShouldBeOk = 50;
+            int howManyShouldBeOk = 10;
             int OkCounter = 0;
 
-            KeyPair baseKeys = _keyGenerator.Generate(136, 512, 160);
 
             for (int i = 0; i < howManyShouldBeOk; i++)
             {
-                BigInteger generator = GeneratorGenerator.Generate(baseKeys.p, baseKeys.q);
-
-                OkCounter += BigInteger.ModPow(generator, baseKeys.q, baseKeys.p) == BigInteger.One ? 1 : 0;
+                KeyPair keys = _keyGenerator.Generate(136, 512, 160);
+                BigInteger inverse = keys.a.ModInv(keys.p);
+                BigInteger result = (inverse * keys.a) % keys.p;
+                if (result == BigInteger.One)
+                {
+                    OkCounter++;
+                }
             }
 
             Assert.AreEqual(howManyShouldBeOk, OkCounter);

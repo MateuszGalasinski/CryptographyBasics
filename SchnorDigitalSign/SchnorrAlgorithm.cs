@@ -1,5 +1,4 @@
-﻿using System;
-using SchnorDigitalSign.Model;
+﻿using SchnorDigitalSign.Model;
 using System.Linq;
 using System.Numerics;
 using System.Security.Cryptography;
@@ -19,15 +18,14 @@ namespace SchnorDigitalSign
 
             BigInteger x = BigInteger.ModPow(keyPair.a, r, keyPair.p);
 
-            BigInteger e;
-
             byte[] messageWithSalt = message.Concat(x.ToByteArray()).ToArray();
 
-            if (messageWithSalt.Length != message.Length + x.ToByteArray().Length)
-            {
-                throw new Exception("Message with salt length = " + messageWithSalt.Length);
-            }
+            //if (messageWithSalt.Length != message.Length + x.ToByteArray().Length)
+            //{
+            //    throw new Exception("Message with salt length = " + messageWithSalt.Length);
+            //}
 
+            BigInteger e;
             using (SHA1 sha1 = new SHA1Cng())
             {
                 byte[] byteE = sha1.ComputeHash(messageWithSalt);
@@ -49,6 +47,7 @@ namespace SchnorDigitalSign
 
         public static BigInteger GenerateR(RNGCryptoServiceProvider randomProvider,  int numberSmallerThanQLength)
         {
+            //return new BigInteger(1);
             byte[] byteR = new byte[numberSmallerThanQLength];
             randomProvider.GetBytes(byteR);
             byte[] byteRZero = new byte[byteR.Length + 1];
@@ -59,8 +58,8 @@ namespace SchnorDigitalSign
 
         public bool Verify(byte[] message, KeyPair keyPair, Signature signature, BigInteger senderPublicKey)
         {
-            BigInteger exponent = BigInteger.ModPow(signature.e, keyPair.p - 2, keyPair.p);
-            BigInteger x = BigInteger.ModPow(keyPair.a, signature.y, keyPair.p) * BigInteger.ModPow(senderPublicKey, exponent , keyPair.p);
+            BigInteger x = BigInteger.ModPow(keyPair.a, signature.y, keyPair.p) * BigInteger.ModPow(senderPublicKey.ModInv(keyPair.p), signature.e, keyPair.p);
+            x = x % keyPair.p;
 
             byte[] messageWithSalt = message.Concat(x.ToByteArray()).ToArray();
 

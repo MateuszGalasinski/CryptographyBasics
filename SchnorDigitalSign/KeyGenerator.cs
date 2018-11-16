@@ -19,6 +19,16 @@ namespace SchnorDigitalSign
 
         public KeyPair Generate(int N, int L, int seedlen)
         {
+            //BigInteger p = new BigInteger(11);
+            //BigInteger q = new BigInteger(5);
+
+            //return new KeyPair()
+            //{
+            //    a = new BigInteger(3),
+            //    p = p,
+            //    q = q
+            //};
+
             KeyPair key = GenerateKeysProbablePrimes(N, L, seedlen);
             while ((key.p - 1) % key.q != 0) // try again
             {
