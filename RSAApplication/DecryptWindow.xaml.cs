@@ -65,7 +65,7 @@ namespace RSAApplication
 
                 var blocksWithoutPadding = _dataChunker.MergeDataAndRemovePadding(dataBlocks, RSAAlgorithm.BlockSize);
 
-                File.WriteAllText(fileDialog.FileName, Encoding.ASCII.GetString(blocksWithoutPadding));
+                File.WriteAllBytes(fileDialog.FileName, blocksWithoutPadding);
             }
         }
 

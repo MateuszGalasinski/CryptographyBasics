@@ -61,12 +61,13 @@ namespace RSAApplication
             fileDialog.Title = "Save file to: ";
             if (fileDialog.ShowDialog() == true)
             {
-                using (var file = new FileStream(fileDialog.FileName, FileMode.Create))
-                {
+                //using (var file = new FileStream(fileDialog.FileName, FileMode.Create))
+                //{
                     var data = _dataChunker.MergeData(blocksToEncode, RSAAlgorithm.BlockSize);
-                    file.Write(data, 0, data.Length);
-                }
-                EncryptedTextBox.Text = fileDialog.FileName;
+                    //file.Write(data, 0, data.Length);
+                File.WriteAllBytes(fileDialog.FileName, data);
+                //}
+                //EncryptedTextBox.Text = fileDialog.FileName;
             }
         }
 

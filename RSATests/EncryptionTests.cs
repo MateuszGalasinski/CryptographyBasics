@@ -1,4 +1,6 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.IO;
+using FluentAssertions;
 using NUnit.Framework;
 using RSA;
 using RSA.Models;
@@ -109,6 +111,84 @@ namespace RSATests
                 0x0A, 0x0B, 0x0C, 0x0D, 0x0A, 0x0B, 0x0C,
                 0x0A, 0x0B, 0x0C, 0x0D, 0x0A
             });
+        }
+        [Test]
+        public void FullOperationWithoutEncryptDecrypt()
+        {
+            string dataPath = @"C:\Users\Johnny\Desktop\test.txt";
+            string encryptedPath = @"C:\Users\Johnny\Desktop\en";
+            string decryptedPath = @"C:\Users\Johnny\Desktop\de.txt";
+            int howManyOk = 0;
+            int howManyTrials = 10;
+
+            for (int j = 0; j < howManyTrials; j++)
+            {
+                DataChunker chunker = new DataChunker();
+                int blockSize = RSAAlgorithm.NumberOfBytes;
+                FullKey key = RSAAlgorithm.GenerateKey();
+                byte[] byteValues = File.ReadAllBytes(dataPath);
+
+                var paddedValue = chunker.ChunkData(byteValues, blockSize);
+
+                for (int i = 0; i < paddedValue.Length; i++)
+                {
+                    paddedValue[i] = RSAAlgorithm.Encrypt(paddedValue[i], key.E, key.N);
+                }
+
+                var savedData = chunker.MergeData(paddedValue, blockSize);
+
+                File.WriteAllBytes(encryptedPath, savedData);
+                var loadedDataFromFile = File.ReadAllBytes(encryptedPath);
+
+                var loadedData = chunker.BytesToBigIntegers(loadedDataFromFile, blockSize);
+
+                for (int i = 0; i < loadedData.Length; i++)
+                {
+                    loadedData[i] = RSAAlgorithm.Decrypt(loadedData[i], key.D, key.N);
+                }
+
+                var decrypted = chunker.MergeDataAndRemovePadding(loadedData, blockSize);
+
+                File.WriteAllBytes(decryptedPath, decrypted);
+
+                var loadedDecrypt = File.ReadAllBytes(decryptedPath);
+
+                var orginal = File.ReadAllBytes(dataPath);
+
+                bool isOk = true;
+
+                if (orginal.Length != loadedDecrypt.Length)
+                {
+                    Console.WriteLine("lipa " + key.N + " len:" + key.N.ToString().Length);
+                    Console.WriteLine(" Diff " + (orginal.Length - loadedDecrypt.Length));
+                    isOk = false;
+                }
+                else
+                {
+                    for (int i = 0; i < loadedDecrypt.Length; i++)
+                    {
+                        if (orginal[i] != loadedDecrypt[i])
+                        {
+                            Console.WriteLine(i.ToString());
+                            Console.WriteLine("lipa " + key.N + " len:" + key.N.ToString().Length);
+                            isOk = false;
+                            break;
+                        }
+
+                    }
+                }
+
+                if (isOk)
+                {
+                    howManyOk++;
+                    Console.WriteLine("git " + key.N + " len:" + key.N.ToString().Length);
+                }
+
+                //loadedDecrypt.Should().BeEquivalentTo(orginal);
+            }
+
+            Assert.AreEqual(howManyTrials, howManyOk);
+
         }
     }
 }
