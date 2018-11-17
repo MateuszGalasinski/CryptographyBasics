@@ -23,7 +23,7 @@
             <RowDefinition Height="4*" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
-        <TextBlock FontSize="44" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2"> Schnnor Sign </TextBlock>
+        <TextBlock FontSize="44" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.ColumnSpan="2">Schnorr Signature</TextBlock>
         <Button x:Name="EncryptButton" Grid.Row="1" Margin="10" Height="Auto" FontSize="30" Click="EncryptButton_Click" Content="Sign"/>
         <Button x:Name="DecryptButton" Grid.Row="1" Grid.Column="1" Margin="10" Height="Auto" FontSize="30" Click="DecryptButton_Click" Content="Verify&#xD;&#xA;"/>
         <Button Name="GenerateKeyButton" Grid.Row="2" Grid.Column="0" Margin="50" Height="Auto" FontSize="30" Click="GenerateKeyButton_OnClick">Generate new keys</Button>
