@@ -9,7 +9,7 @@ namespace SchnorDigitalSign
     {
         //Big Integer problem with byte array length
 
-        public Signature SignMessage(byte[] message, KeyPair keyPair, UserKeys userKeys)
+        public static Signature SignMessage(byte[] message, KeyPair keyPair, UserKeys userKeys)
         {
             RNGCryptoServiceProvider randomProvider = new RNGCryptoServiceProvider();
             int numberSmallerThanQLength = (KeyGenerator.QLengthBits - 8) / 8;
@@ -56,7 +56,7 @@ namespace SchnorDigitalSign
             return new BigInteger(byteRZero);
         }
 
-        public bool Verify(byte[] message, KeyPair keyPair, Signature signature, BigInteger senderPublicKey)
+        public static bool Verify(byte[] message, KeyPair keyPair, Signature signature, BigInteger senderPublicKey)
         {
             BigInteger x = BigInteger.ModPow(keyPair.a, signature.y, keyPair.p) * BigInteger.ModPow(senderPublicKey.ModInv(keyPair.p), signature.e, keyPair.p);
             x = x % keyPair.p;
@@ -79,7 +79,7 @@ namespace SchnorDigitalSign
 
         }
 
-        public bool AreEqual(byte[] first, byte[] second)
+        public static bool AreEqual(byte[] first, byte[] second)
         {
             if (first.Length != second.Length)
                 return false;

@@ -31,13 +31,13 @@ namespace SchnorrTests
                     0x0A, 0x04, 0x0A, 0x04
                 };
 
-                SchnorrAlgorithm schnorrAlgorithm = new SchnorrAlgorithm();
+                //SchnorrAlgorithm schnorrAlgorithm = new SchnorrAlgorithm();
 
                 UserKeys userKeys = UserKeyGenerator.Generate(keyPair);
 
-                Signature signature = schnorrAlgorithm.SignMessage(message, keyPair, userKeys);
+                Signature signature = SchnorrAlgorithm.SignMessage(message, keyPair, userKeys);
 
-                bool isValid = schnorrAlgorithm.Verify(message, keyPair, signature, userKeys.PublicKey);
+                bool isValid = SchnorrAlgorithm.Verify(message, keyPair, signature, userKeys.PublicKey);
                 if (isValid)
                 {
                     OkCounter++;
