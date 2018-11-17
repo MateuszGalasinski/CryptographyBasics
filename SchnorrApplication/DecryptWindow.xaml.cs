@@ -14,14 +14,14 @@ namespace SchnorrApplication
     /// </summary>
     public partial class DecryptWindow : Window
     {
-        private readonly KeyPair keyPair;
+        private readonly SystemKeys keyPair;
         private readonly UserKeys userKeys;
         private string messageFilePath = string.Empty;
         private string signatureFilePath = string.Empty;
         private byte[] messageToSign;
         private BigInteger senderPublicKey;
 
-        public DecryptWindow(KeyPair keyPair, BigInteger senderPublicKey)
+        public DecryptWindow(SystemKeys keyPair, BigInteger senderPublicKey)
         {
             this.keyPair = keyPair;
             this.senderPublicKey = senderPublicKey;

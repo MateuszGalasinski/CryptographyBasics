@@ -7,23 +7,16 @@ namespace SchnorDigitalSign
 {
     public class SchnorrAlgorithm
     {
-        //Big Integer problem with byte array length
-
-        public static Signature SignMessage(byte[] message, KeyPair keyPair, UserKeys userKeys)
+        public static Signature SignMessage(byte[] message, SystemKeys keyPair, UserKeys userKeys)
         {
             RNGCryptoServiceProvider randomProvider = new RNGCryptoServiceProvider();
             int numberSmallerThanQLength = (KeyGenerator.QLengthBits - 8) / 8;
 
             BigInteger r = GenerateR(randomProvider, numberSmallerThanQLength);
 
-            BigInteger x = BigInteger.ModPow(keyPair.a, r, keyPair.p);
+            BigInteger x = BigInteger.ModPow(keyPair.A, r, keyPair.P);
 
             byte[] messageWithSalt = message.Concat(x.ToByteArray()).ToArray();
-
-            //if (messageWithSalt.Length != message.Length + x.ToByteArray().Length)
-            //{
-            //    throw new Exception("Message with salt length = " + messageWithSalt.Length);
-            //}
 
             BigInteger e;
             using (SHA1 sha1 = new SHA1Cng())
@@ -34,7 +27,7 @@ namespace SchnorDigitalSign
                 e = new BigInteger(byteEWithZero);
             }
 
-            BigInteger y = (r + (userKeys.PrivateKey * e)) % keyPair.q;
+            BigInteger y = (r + (userKeys.PrivateKey * e)) % keyPair.Q;
 
             Signature signature = new Signature()
             {
@@ -47,7 +40,6 @@ namespace SchnorDigitalSign
 
         public static BigInteger GenerateR(RNGCryptoServiceProvider randomProvider,  int numberSmallerThanQLength)
         {
-            //return new BigInteger(1);
             byte[] byteR = new byte[numberSmallerThanQLength];
             randomProvider.GetBytes(byteR);
             byte[] byteRZero = new byte[byteR.Length + 1];
@@ -56,10 +48,10 @@ namespace SchnorDigitalSign
             return new BigInteger(byteRZero);
         }
 
-        public static bool Verify(byte[] message, KeyPair keyPair, Signature signature, BigInteger senderPublicKey)
+        public static bool Verify(byte[] message, SystemKeys keyPair, Signature signature, BigInteger senderPublicKey)
         {
-            BigInteger x = BigInteger.ModPow(keyPair.a, signature.y, keyPair.p) * BigInteger.ModPow(senderPublicKey.ModInv(keyPair.p), signature.e, keyPair.p);
-            x = x % keyPair.p;
+            BigInteger x = BigInteger.ModPow(keyPair.A, signature.y, keyPair.P) * BigInteger.ModPow(senderPublicKey.ModInv(keyPair.P), signature.e, keyPair.P);
+            x = x % keyPair.P;
 
             byte[] messageWithSalt = message.Concat(x.ToByteArray()).ToArray();
 
@@ -72,10 +64,7 @@ namespace SchnorDigitalSign
                 resultE = new BigInteger(byteEWithZero);
             }
 
-            if (AreEqual(resultE.ToByteArray(), signature.e.ToByteArray()))
-                return true;
-            else
-                return false;
+            return AreEqual(resultE.ToByteArray(), signature.e.ToByteArray());
 
         }
 

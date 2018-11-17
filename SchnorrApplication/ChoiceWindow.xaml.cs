@@ -10,7 +10,7 @@ namespace SchnorrApplication
     /// </summary>
     public partial class ChoiceWindow : Window
     {
-        public static KeyPair KeyPair { get; set; }
+        public static SystemKeys KeyPair { get; set; }
         public static UserKeys UserKeys{ get; set; }
 
         public ChoiceWindow()
@@ -54,9 +54,9 @@ namespace SchnorrApplication
         {
             if (KeyPair != null)
             {
-                TextBoxKeyP.Text = KeyPair.p.ToString();
-                TextBoxKeyQ.Text = KeyPair.q.ToString();
-                TextBoxKeyA.Text = KeyPair.a.ToString();
+                TextBoxKeyP.Text = KeyPair.P.ToString();
+                TextBoxKeyQ.Text = KeyPair.Q.ToString();
+                TextBoxKeyA.Text = KeyPair.A.ToString();
             }
         }
     }

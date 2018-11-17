@@ -12,14 +12,14 @@ namespace SchnorrApplication
     /// </summary>
     public partial class EncryptWindow : Window
     {
-        private readonly KeyPair keyPair;
+        private readonly SystemKeys keyPair;
         private readonly UserKeys userKeys;
         private string filePath = string.Empty;
         private byte[] messageToSign;
         private Signature signature;
 
 
-        public EncryptWindow(KeyPair keyPair, UserKeys userKeys)
+        public EncryptWindow(SystemKeys keyPair, UserKeys userKeys)
         {
             this.keyPair = keyPair;
             this.userKeys = userKeys;

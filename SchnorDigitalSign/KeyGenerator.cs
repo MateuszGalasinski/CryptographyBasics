@@ -17,25 +17,15 @@ namespace SchnorDigitalSign
 
         private static RNGCryptoServiceProvider rndProvider = new RNGCryptoServiceProvider();
 
-        public KeyPair Generate(int N, int L, int seedlen)
+        public SystemKeys Generate(int N, int L, int seedlen)
         {
-            //BigInteger p = new BigInteger(11);
-            //BigInteger q = new BigInteger(5);
-
-            //return new KeyPair()
-            //{
-            //    a = new BigInteger(3),
-            //    p = p,
-            //    q = q
-            //};
-
-            KeyPair key = GenerateKeysProbablePrimes(N, L, seedlen);
-            while ((key.p - 1) % key.q != 0) // try again
+            SystemKeys key = GenerateKeysProbablePrimes(N, L, seedlen);
+            while ((key.P - 1) % key.Q != 0) // try again
             {
                 key = GenerateKeysProbablePrimes(N, L, seedlen);
             }
 
-            key.a = GeneratorGenerator.Generate(key.p, key.q);
+            key.A = GeneratorGenerator.Generate(key.P, key.Q);
 
             return key;
         }
@@ -47,7 +37,7 @@ namespace SchnorDigitalSign
         /// <param name="L">The desired length of the prime p</param>
         /// <param name="seedlen">The desired length of the domain parameter seed</param>
         /// <returns></returns>
-        private KeyPair GenerateKeysProbablePrimes(int N, int L, int seedlen)
+        private SystemKeys GenerateKeysProbablePrimes(int N, int L, int seedlen)
         {
             //N and L have to be acceptable
 
@@ -111,7 +101,7 @@ namespace SchnorDigitalSign
                     {
                         if (MillerRabin(p, 20) == 1)
                         {
-                            return new KeyPair() {p = p, q = q};
+                            return new SystemKeys() {P = p, Q = q};
                         }
                         else
                         {

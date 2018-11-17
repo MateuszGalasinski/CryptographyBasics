@@ -45,7 +45,7 @@
     <Compile Include="BigIntegerExtensions.cs" />
     <Compile Include="GeneratorGenerator.cs" />
     <Compile Include="KeyGenerator.cs" />
-    <Compile Include="Model\KeyPair.cs" />
+    <Compile Include="Model\SystemKeys.cs" />
     <Compile Include="Model\Signature.cs" />
     <Compile Include="Model\UserKeys.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

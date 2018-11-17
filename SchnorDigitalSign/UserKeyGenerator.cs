@@ -6,24 +6,19 @@ namespace SchnorDigitalSign
 {
     public class UserKeyGenerator
     {
-        public static UserKeys Generate(KeyPair keyPair)
+        public static UserKeys Generate(SystemKeys keyPair)
         {
-            //return new UserKeys()
-            //{
-            //    PrivateKey = new BigInteger(1),
-            //    PublicKey = new BigInteger(3)
-            //};
             UserKeys userKeys = new UserKeys();
             RNGCryptoServiceProvider randomProvider = new RNGCryptoServiceProvider();
-            int numberSmallerThanQ = (KeyGenerator.QLengthBits - 8)/8;
+            int numberSmallerThanQLength = (KeyGenerator.QLengthBits - 8)/8;
 
-            byte[] bytePrivateKey = new byte[numberSmallerThanQ];
+            byte[] bytePrivateKey = new byte[numberSmallerThanQLength];
             randomProvider.GetBytes(bytePrivateKey);
             byte[] bytePrivateKeyZero = new byte[bytePrivateKey.Length + 1];
             bytePrivateKey.CopyTo(bytePrivateKeyZero, 0);
-            userKeys.PrivateKey = new BigInteger(bytePrivateKeyZero) % keyPair.q;
+            userKeys.PrivateKey = new BigInteger(bytePrivateKeyZero) % keyPair.Q;
             userKeys.PrivateKey = new BigInteger(1);
-            userKeys.PublicKey = BigInteger.ModPow(keyPair.a, userKeys.PrivateKey.ModInv(keyPair.p), keyPair.p);
+            userKeys.PublicKey = BigInteger.ModPow(keyPair.A, userKeys.PrivateKey.ModInv(keyPair.P), keyPair.P);
 
             return userKeys;
         }

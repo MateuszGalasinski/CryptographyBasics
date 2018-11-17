@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SchnorDigitalSign;
 using SchnorDigitalSign.Model;
-using System.Security.Cryptography;
 
 namespace SchnorrTests
 {
@@ -21,7 +20,7 @@ namespace SchnorrTests
             {
                 KeyGenerator keyGen = new KeyGenerator();
 
-                KeyPair keyPair = keyGen.Generate(136, 512, 160);
+                SystemKeys keyPair = keyGen.Generate(136, 512, 160);
 
                 byte[] message = new byte[]
                 {
@@ -47,23 +46,22 @@ namespace SchnorrTests
             Assert.AreEqual(howManyShouldBeOk, OkCounter);
         }
 
-        [TestMethod]
-        public void GenerateR_Test()
-        {
-            int howManyShouldBeOk = 10;
-            int OkCounter = 0;
+        //[TestMethod]
+        //public void GenerateR_Test()
+        //{
+        //    int howManyShouldBeOk = 10;
+        //    int OkCounter = 0;
 
-            for (int i = 0; i < howManyShouldBeOk; i++)
-            {
-                var byteLength = (KeyGenerator.QLengthBits - 8) / 8;
-                var r = SchnorrAlgorithm.GenerateR(new RNGCryptoServiceProvider(), byteLength );
+        //    for (int i = 0; i < howManyShouldBeOk; i++)
+        //    {
+        //        var byteLength = (KeyGenerator.QLengthBits - 8) / 8;
+        //        var r = SchnorrAlgorithm.GenerateR(new RNGCryptoServiceProvider(), byteLength );
 
-                if (r.ToByteArray().Length == byteLength)
-                    OkCounter++;
-            }
+        //        if (r.ToByteArray().Length == byteLength)
+        //            OkCounter++;
+        //    }
 
-            Assert.AreEqual(howManyShouldBeOk, OkCounter);
-        }
-
+        //    Assert.AreEqual(howManyShouldBeOk, OkCounter);
+        //}
     }
 }

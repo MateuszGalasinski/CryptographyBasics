@@ -20,16 +20,16 @@ namespace SchnorrTests
         [TestMethod]
         public void GenerateKeysKeyGeneratorTest()
         {
-            int howManyShouldBeOk = 50;
+            int howManyShouldBeOk = 10;
             int OkCounter = 0;
 
-            KeyPair baseKeys = _keyGenerator.Generate(136, 512, 160);
+            SystemKeys baseKeys = _keyGenerator.Generate(136, 512, 160);
 
             for (int i = 0; i < howManyShouldBeOk; i++)
             {
-                BigInteger generator = GeneratorGenerator.Generate(baseKeys.p, baseKeys.q);
+                BigInteger generator = GeneratorGenerator.Generate(baseKeys.P, baseKeys.Q);
 
-                OkCounter += BigInteger.ModPow(generator, baseKeys.q, baseKeys.p) == BigInteger.One ? 1 : 0;
+                OkCounter += BigInteger.ModPow(generator, baseKeys.Q, baseKeys.P) == BigInteger.One ? 1 : 0;
             }
 
             Assert.AreEqual(howManyShouldBeOk, OkCounter);

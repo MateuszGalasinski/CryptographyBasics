@@ -25,9 +25,9 @@ namespace SchnorrTests
 
             for (int i = 0; i < howManyShouldBeOk; i++)
             {
-                KeyPair keys = _keyGenerator.Generate(136, 512, 160);
-                BigInteger inverse = keys.a.ModInv(keys.p);
-                BigInteger result = (inverse * keys.a) % keys.p;
+                SystemKeys keys = _keyGenerator.Generate(136, 512, 160);
+                BigInteger inverse = keys.A.ModInv(keys.P);
+                BigInteger result = (inverse * keys.A) % keys.P;
                 if (result == BigInteger.One)
                 {
                     OkCounter++;
