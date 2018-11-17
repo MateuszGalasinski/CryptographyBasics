@@ -39,8 +39,8 @@ namespace SchnorrApplication
                 messageToSign = File.ReadAllBytes(filePath);
                 signature = SchnorrAlgorithm.SignMessage(messageToSign, keyPair, userKeys);
             }
+            SaveToFileButton.IsEnabled = true;
 
-            
         }
 
         private void ChooseFileButton_Click(object sender, RoutedEventArgs e)

@@ -25,7 +25,6 @@ namespace SchnorrApplication
         {
             this.keyPair = keyPair;
             this.senderPublicKey = senderPublicKey;
-
             InitializeComponent();
         }
 
@@ -49,6 +48,8 @@ namespace SchnorrApplication
                 signatureFilePath = fileDialog.FileName;
                 //TextToDecryptTextBox.Text = filePath;
             }
+
+            DecryptButton.IsEnabled = true;
         }
 
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
