@@ -74,61 +74,63 @@ namespace RSATests
             });
         }
 
-        [Test]
-        public void FullEncryptDecryptOperation()
-        {
-            DataChunker chunker = new DataChunker();
-            int blockSize = RSAAlgorithm.NumberOfBytes;
-            FullKey key = RSAAlgorithm.GenerateKey();
-            byte[] byteValues = new byte[]
-            {
-                0x0A, 0x0B, 0x0C, 0x0D, 0x0A, 0x0B, 0x0C,
-                0x0A, 0x0B, 0x0C, 0x0D, 0x0A,
-            };
+        //[Test]
+        //public void FullEncryptDecryptOperation()
+        //{
+        //    DataChunker chunker = new DataChunker();
+        //    int blockSize = RSAAlgorithm.NumberOfBytes;
+        //    FullKey key = RSAAlgorithm.GenerateKey();
+        //    byte[] byteValues = new byte[]
+        //    {
+        //        0x0A, 0x0B, 0x0C, 0x0D, 0x0A, 0x0B, 0x0C,
+        //        0x0A, 0x0B, 0x0C, 0x0D, 0x0A,
+        //    };
 
-            var paddedValue = chunker.ChunkData(byteValues, blockSize);
+        //    var paddedValue = chunker.ChunkData(byteValues, blockSize);
 
-            for (int i = 0; i < paddedValue.Length; i++)
-            {
-                paddedValue[i] = RSAAlgorithm.Encrypt(paddedValue[i], key.E, key.N);
-            }
+        //    for (int i = 0; i < paddedValue.Length; i++)
+        //    {
+        //        paddedValue[i] = RSAAlgorithm.Encrypt(paddedValue[i], key.E, key.N);
+        //    }
 
-            var savedData = chunker.MergeData(paddedValue, blockSize);
+        //    var savedData = chunker.MergeData(paddedValue, blockSize);
 
-            var loadedData = chunker.BytesToBigIntegers(savedData, blockSize);
+        //    var loadedData = chunker.BytesToBigIntegers(savedData, blockSize);
 
-            loadedData.Should().BeEquivalentTo(paddedValue);
+        //    loadedData.Should().BeEquivalentTo(paddedValue);
 
-            for (int i = 0; i < loadedData.Length; i++)
-            {
-                loadedData[i] = RSAAlgorithm.Decrypt(loadedData[i], key.D, key.N);
-            }
+        //    for (int i = 0; i < loadedData.Length; i++)
+        //    {
+        //        loadedData[i] = RSAAlgorithm.Decrypt(loadedData[i], key.D, key.N);
+        //    }
 
-            var decrypted = chunker.MergeDataAndRemovePadding(loadedData, blockSize);
+        //    var decrypted = chunker.MergeDataAndRemovePadding(loadedData, blockSize);
 
-            decrypted.Should().BeEquivalentTo(new byte[]
-            {
-                0x0A, 0x0B, 0x0C, 0x0D, 0x0A, 0x0B, 0x0C,
-                0x0A, 0x0B, 0x0C, 0x0D, 0x0A
-            });
-        }
+        //    decrypted.Should().BeEquivalentTo(new byte[]
+        //    {
+        //        0x0A, 0x0B, 0x0C, 0x0D, 0x0A, 0x0B, 0x0C,
+        //        0x0A, 0x0B, 0x0C, 0x0D, 0x0A
+        //    });
+        //}
+
         [Test]
         public void FullOperationWithoutEncryptDecrypt()
         {
-            string dataPath = @"C:\Users\Mateusz\Desktop\vote.bmp";
+            string dataPath = @"C:\Users\Mateusz\Desktop\tkst.txt";
             string encryptedPath = @"C:\Users\Mateusz\Desktop\en";
-            string decryptedPath = @"C:\Users\Mateusz\Desktop\vote2.bmp";
+            string decryptedPath = @"C:\Users\Mateusz\Desktop\tkst2.txt";
             int howManyOk = 0;
-            int howManyTrials = 1;
+            int howManyTrials = 10;
 
             for (int j = 0; j < howManyTrials; j++)
             {
                 DataChunker chunker = new DataChunker();
-                int blockSize = RSAAlgorithm.NumberOfBytes;
+                int blockSize = RSAAlgorithm.BlockSize;
                 FullKey key = RSAAlgorithm.GenerateKey();
+
                 byte[] byteValues = File.ReadAllBytes(dataPath);
 
-                var paddedValue = chunker.ChunkData(byteValues, blockSize);
+                var paddedValue = chunker.ChunkData(byteValues, blockSize-8);
 
                 for (int i = 0; i < paddedValue.Length; i++)
                 {
@@ -147,7 +149,7 @@ namespace RSATests
                     loadedData[i] = RSAAlgorithm.Decrypt(loadedData[i], key.D, key.N);
                 }
 
-                var decrypted = chunker.MergeDataAndRemovePadding(loadedData, blockSize);
+                var decrypted = chunker.MergeDataAndRemovePadding(loadedData, blockSize-8);
 
                 File.WriteAllBytes(decryptedPath, decrypted);
 

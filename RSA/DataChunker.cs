@@ -67,7 +67,6 @@ namespace RSA
                 padded.CopyTo(result, i * blockSize);
             }
 
-            //result = _paddingStrategy.RemovePadding(result,blockSize);
             return result;
         }
 

@@ -25,7 +25,7 @@ namespace RSA
 
             BigInteger e = (modulus).genCoPrime(NumberOfBits - 8, rand);
 
-            while (e >= modulus)
+            while (e % 2 == 0 || e >= modulus)
             {
                 e = (modulus).genCoPrime(NumberOfBits - 8, rand);
             }
