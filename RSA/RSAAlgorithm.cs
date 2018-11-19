@@ -23,7 +23,12 @@ namespace RSA
             BigInteger q = BigInteger.genPseudoPrime(NumberOfBits/2, Confidence, rand);
             BigInteger modulus = (p - BigOne) * (q - BigOne);
 
-            BigInteger e = (modulus).genCoPrime(NumberOfBits, rand);
+            BigInteger e = (modulus).genCoPrime(NumberOfBits - 8, rand);
+
+            while (e >= modulus)
+            {
+                e = (modulus).genCoPrime(NumberOfBits - 8, rand);
+            }
 
             BigInteger d = e.modInverse(modulus);
 

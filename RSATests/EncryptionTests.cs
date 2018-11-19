@@ -1,10 +1,10 @@
-﻿using System;
-using System.IO;
-using FluentAssertions;
+﻿using FluentAssertions;
 using NUnit.Framework;
 using RSA;
 using RSA.Models;
 using RSA.PaddingStrategies;
+using System;
+using System.IO;
 
 namespace RSATests
 {
@@ -33,13 +33,13 @@ namespace RSATests
             var key = RSAAlgorithm.GenerateKey();
             BigInteger encrypted = RSAAlgorithm.Encrypt(testValue, key.E, key.N);
             BigInteger decrypted = RSAAlgorithm.Decrypt(encrypted, key.D, key.N);
-            decrypted.Should().ShouldBeEquivalentTo(testValue);
+            decrypted.ShouldBeEquivalentTo(testValue);
         }
 
         [Test]
         public void EncryptDecryptOperation()
         {
-            int blockSize = RSAAlgorithm.NumberOfBytes - 1;
+            int blockSize = 7;//RSAAlgorithm.NumberOfBytes - 1;
             FullKey key = RSAAlgorithm.GenerateKey();
             var paddingStrategy = new CMSPaddingStrategy();
             byte[] byteValue = new byte[]
@@ -59,7 +59,7 @@ namespace RSATests
             BigInteger testValue = new BigInteger(paddedValue);
             BigInteger encrypted = RSAAlgorithm.Encrypt(testValue, key.E, key.N);
             BigInteger decrypted = RSAAlgorithm.Decrypt(encrypted, key.D, key.N);
-            decrypted.Should().ShouldBeEquivalentTo(testValue);
+            decrypted.ShouldBeEquivalentTo(testValue);
 
             decrypted.getBytes().Should().BeEquivalentTo(new byte[]
             {
@@ -115,11 +115,11 @@ namespace RSATests
         [Test]
         public void FullOperationWithoutEncryptDecrypt()
         {
-            string dataPath = @"C:\Users\Johnny\Desktop\test.txt";
-            string encryptedPath = @"C:\Users\Johnny\Desktop\en";
-            string decryptedPath = @"C:\Users\Johnny\Desktop\de.txt";
+            string dataPath = @"C:\Users\Mateusz\Desktop\vote.bmp";
+            string encryptedPath = @"C:\Users\Mateusz\Desktop\en";
+            string decryptedPath = @"C:\Users\Mateusz\Desktop\vote2.bmp";
             int howManyOk = 0;
-            int howManyTrials = 10;
+            int howManyTrials = 1;
 
             for (int j = 0; j < howManyTrials; j++)
             {
