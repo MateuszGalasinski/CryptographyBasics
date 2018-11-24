@@ -36,7 +36,7 @@ namespace RSAApplication
                 textToEncodeBytes = File.ReadAllBytes(filePath);
             }
 
-            blocksToEncode = _dataChunker.ChunkData(textToEncodeBytes, RSAAlgorithm.BlockSize);
+            blocksToEncode = _dataChunker.ChunkData(textToEncodeBytes, RSAAlgorithm.BlockSize - 8);
 
             for (int i = 0; i < blocksToEncode.Length; i++)
             {
@@ -67,7 +67,7 @@ namespace RSAApplication
                     //file.Write(data, 0, data.Length);
                 File.WriteAllBytes(fileDialog.FileName, data);
                 //}
-                //EncryptedTextBox.Text = fileDialog.FileName;
+                EncryptedTextBox.Text = fileDialog.FileName;
             }
         }
 

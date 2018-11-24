@@ -116,9 +116,9 @@ namespace RSATests
         [Test]
         public void FullOperationWithoutEncryptDecrypt()
         {
-            string dataPath = @"C:\Users\Mateusz\Desktop\tkst.txt";
-            string encryptedPath = @"C:\Users\Mateusz\Desktop\en";
-            string decryptedPath = @"C:\Users\Mateusz\Desktop\tkst2.txt";
+            string dataPath = @"C:\Users\Jakub\Desktop\test.bmp";
+            string encryptedPath = @"C:\Users\Jakub\Desktop\en";
+            string decryptedPath = @"C:\Users\Jakub\Desktop\test_de.bmp";
             int howManyOk = 0;
             int howManyTrials = 10;
 
