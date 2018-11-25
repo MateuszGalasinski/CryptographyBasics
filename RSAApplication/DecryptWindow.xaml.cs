@@ -3,7 +3,6 @@ using RSA;
 using RSA.Models;
 using RSA.PaddingStrategies;
 using System.IO;
-using System.Text;
 using System.Windows;
 
 namespace RSAApplication
@@ -39,13 +38,13 @@ namespace RSAApplication
 
         private void DecryptButton_Click(object sender, RoutedEventArgs e)
         {
-            byte[] textToDecodeBytes;
-
-                dataBlocks = _dataChunker.BytesToBigIntegers(File.ReadAllBytes(filePath), RSAAlgorithm.BlockSize);
+            dataBlocks = _dataChunker.BytesToBigIntegers(File.ReadAllBytes(filePath), RSAAlgorithm.BlockSize);
             for (int i = 0; i < dataBlocks.Length; i++)
             {
                 dataBlocks[i] = RSAAlgorithm.Decrypt(dataBlocks[i], _key.D, _key.N);
             }
+
+            MessageBox.Show("Finished decryption.");
         }
 
         private void SaveToFileButton_Click(object sender, RoutedEventArgs e)
@@ -54,8 +53,6 @@ namespace RSAApplication
             fileDialog.Title = "Save file to: ";
             if (fileDialog.ShowDialog() == true)
             {
-                DecryptedTextBox.Text = fileDialog.FileName;
-
                 var blocksWithoutPadding = _dataChunker.MergeDataAndRemovePadding(dataBlocks, RSAAlgorithm.BlockSize-8);
 
                 File.WriteAllBytes(fileDialog.FileName, blocksWithoutPadding);

@@ -42,6 +42,8 @@ namespace RSAApplication
             {
                 blocksToEncode[i] = RSAAlgorithm.Encrypt(blocksToEncode[i], _key.E, _key.N);
             }
+            
+            MessageBox.Show("Finished encryption.");
         }
 
         private void ChooseFileButton_Click(object sender, RoutedEventArgs e)
@@ -61,13 +63,8 @@ namespace RSAApplication
             fileDialog.Title = "Save file to: ";
             if (fileDialog.ShowDialog() == true)
             {
-                //using (var file = new FileStream(fileDialog.FileName, FileMode.Create))
-                //{
-                    var data = _dataChunker.MergeData(blocksToEncode, RSAAlgorithm.BlockSize);
-                    //file.Write(data, 0, data.Length);
+                var data = _dataChunker.MergeData(blocksToEncode, RSAAlgorithm.BlockSize);
                 File.WriteAllBytes(fileDialog.FileName, data);
-                //}
-                EncryptedTextBox.Text = fileDialog.FileName;
             }
         }
 

@@ -26,19 +26,15 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
         <TextBlock  TextAlignment="Center" Text="Decrypt your file/text:" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 30, 5, 30"></TextBlock>
         <TextBox Name="TextToDecryptTextBox" FontSize="20" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="5,30,5,30"></TextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="2" TextAlignment="Center" Text="Decrypted file/text:" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5, 30, 5, 30"></TextBlock>
-        <TextBox TextWrapping="Wrap" IsEnabled="True" Name="DecryptedTextBox" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="20" Margin="5,30,5,30"></TextBox>
-
         <Button Name="FileButton" Grid.Column="3" Grid.Row="0" FontSize="20" Margin="5, 30, 5, 30" Click="FileButton_Click">File to decrypt</Button>
-        <Button Name="DecryptButton" Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" Margin="5,30,5,30" FontSize="20" Click="DecryptButton_Click" >Decrypt</Button>
+        <Button Name="DecryptButton" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="5,30,5,30" FontSize="20" Click="DecryptButton_Click" >Decrypt</Button>
         <Button Name="SaveToFileButton" Grid.Column="3" Grid.Row="2" FontSize="20" Margin="5, 30, 5, 30" Click="SaveToFileButton_Click">Save to file</Button>
-        <Button Name="BackButton" FontFamily="Marlett" FontSize="30" Content="3" Height="Auto" Margin="70, 30, 70, 30" Grid.Row="3" Background="Transparent" BorderThickness="0" Click="BackButton_Click"/>
+        <Button Name="BackButton" FontFamily="Marlett" FontSize="30" Content="3" Height="Auto" Margin="70, 30, 70, 30" Grid.Row="2" Background="Transparent" BorderThickness="0" Click="BackButton_Click"/>
 
     </Grid>
 </Window>
